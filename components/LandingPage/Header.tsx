@@ -45,10 +45,10 @@ export function Header() {
           {["home", "pricing", "faqs", "blog"].map((page) => (
             <li key={page}>
               <Link
-                href={page === "home" ? "/home" : `/home/${page}`} // Updated for home page
+                href={page === "home" ? "/home" : page === "blog" ? "https://agentcoachblogteamlumio.wordpress.com/" : `/home/${page}`}
                 className="text-black hover:text-blue-500 w-full text-left"
               >
-                {page.charAt(0).toUpperCase() + page.slice(1)}
+                {page === "faqs" ? "FAQ's" : page.charAt(0).toUpperCase() + page.slice(1)}
               </Link>
             </li>
           ))}
