@@ -22,19 +22,18 @@ const ChatPage: React.FC = () => {
 
   // Redirect signed-out users immediately
   useEffect(() => {
-    console.log(isLoaded,"--> ",isSignedIn,'--->',isLoaded && !isSignedIn)
-    if (isLoaded===true && isSignedIn) {
-      router.push("/home");
-    }
-  }, [isLoaded, isSignedIn, router]);
+
+    router.push("/home");
+
+  }, []);
 
   return (
-        <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center text-white">
-          <div className="text-center transition-opacity duration-500 ease-in-out">
-            <h2 className="text-2xl font-semibold mb-4 animate-pulse opacity-90">Redirecting to aicoach...</h2>
-            <p className="text-gray-300">Please wait...</p>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center text-white">
+      <div className="text-center transition-opacity duration-500 ease-in-out">
+        <h2 className="text-2xl font-semibold mb-4 animate-pulse opacity-90">Redirecting to aicoach...</h2>
+        <p className="text-gray-300">Please wait...</p>
+      </div>
+    </div>
   );
 };
 
