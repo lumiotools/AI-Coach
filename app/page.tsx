@@ -22,12 +22,9 @@ const ChatPage: React.FC = () => {
 
   // Redirect signed-out users immediately
   useEffect(() => {
-    setTimeout(() => {
-      console.log("timeout")
-    }, 200);
     console.log(isLoaded,"--> ",isSignedIn,'--->',isLoaded && !isSignedIn)
     if (isLoaded && !isSignedIn) {
-      router.push("/home");
+      // router.push("/home");
     }
   }, [isLoaded, isSignedIn, router]);
 
