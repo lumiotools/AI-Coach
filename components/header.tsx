@@ -102,7 +102,7 @@ export default function HeaderBar({
 
         <Button
           onClick={() =>
-            signOut({ redirectUrl: "https://agentaicoach.vercel.app/" })
+            signOut({ redirectUrl: "/home" })
           }
           variant="gradient"
           size="sm"

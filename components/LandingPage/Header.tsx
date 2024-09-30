@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { SignIn, SignInButton } from "@clerk/nextjs";
+// import { SignIn } from "@clerk/nextjs";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,7 +53,7 @@ export function Header() {
             </li>
           ))}
           <li className="md:hidden">
-            <Link href="https://blessed-perch-83.accounts.dev/sign-in">
+            <Link href="https://proud-pup-68.accounts.dev/sign-in">
               <Button
                 variant="ghost"
                 className="text-black hover:text-blue-500 w-full text-left"
@@ -61,7 +63,7 @@ export function Header() {
             </Link>
           </li>
           <li className="md:hidden">
-            <Link href="https://blessed-perch-83.accounts.dev/sign-in">
+            <Link href="https://proud-pup-68.accounts.dev/sign-in">
               <Button
                 className="bg-blue-600 hover:bg-blue-700 text-white w-full"
               >
@@ -72,15 +74,16 @@ export function Header() {
         </ul>
       </nav>
       <div className="hidden md:flex space-x-4">
-        <Link href="https://blessed-perch-83.accounts.dev/sign-in">
+        <Link href="https://proud-pup-68.accounts.dev/sign-in">
           <Button
             variant="ghost"
             className="text-black hover:text-blue-500"
           >
             Log In
           </Button>
+          {/* <SignInButton fallbackRedirectUrl={"http://localhost:3000"}>Login</SignInButton> */}
         </Link>
-        <Link href="https://blessed-perch-83.accounts.dev/sign-in">
+        <Link href="https://proud-pup-68.accounts.dev/sign-in">
           <Button
             className="bg-blue-600 hover:bg-blue-700 text-white"
           >
