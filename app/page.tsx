@@ -12,7 +12,7 @@ const ChatPage: React.FC = () => {
   const router = useRouter();
   const { isSignedIn, isLoaded } = useAuth();
   const { theme, toggleTheme } = useTheme(); // Theme management
-
+  const [step,setStep]=useState(1);
   // Detect if the user is on a mobile device
   useEffect(() => {
     const userAgent = typeof window.navigator === "undefined" ? "" : navigator.userAgent;
@@ -21,11 +21,16 @@ const ChatPage: React.FC = () => {
   }, []);
 
   // Redirect signed-out users immediately
+  
   useEffect(() => {
-    console.log(isLoaded,"--> ",isSignedIn,'--->',isLoaded && !isSignedIn)
-    if (isLoaded && !isSignedIn) {
-      // router.push("/home");
+    if(step==2){
+
+      console.log(isLoaded,"--> ",isSignedIn,'--->',isLoaded && !isSignedIn)
+      if (isLoaded && !isSignedIn) {
+        router.push("/home");
+      }
     }
+    setStep(step+1);
   }, [isLoaded, isSignedIn, router]);
 
   return (
