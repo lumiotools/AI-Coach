@@ -9,7 +9,7 @@ const MARKETING_BASE_URL = process.env.MARKETING_BASE_URL;
 const MOTIVATION_BASE_URL = process.env.MOTIVATION_BASE_URL;
 const PERPLEXITY_API_KEY = process.env.PERPLEXITY_API_KEY;
 
-// Map of chatbot types to their base URLs
+// Map of chatbot types to their base URLsss
 const BASE_URLS: { [key: string]: string } = {
   real_estate: REAL_ESTATE_BASE_URL!,
   sales: SALES_BASE_URL!,
