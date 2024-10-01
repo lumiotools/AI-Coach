@@ -251,7 +251,7 @@ export default function Home() {
                 <div className="p-[6px] rounded-full bg-blue-600">
                   <Check className="text-black"></Check>
                 </div>
-                <p className="">Free leads included</p>
+                <p className="">Free general coach included</p>
               </div>
             </div>
           </div>

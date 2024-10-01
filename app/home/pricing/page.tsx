@@ -125,7 +125,10 @@ function parsePrice(price: string): number {
   return parseFloat(price.replace("$", ""));
 }
 
-function calculateSavingsPercentage(monthlyPrice: number, annualPrice: number): number {
+function calculateSavingsPercentage(
+  monthlyPrice: number,
+  annualPrice: number
+): number {
   const monthlyEquivalent = annualPrice / 12;
   return (1 - monthlyEquivalent / monthlyPrice) * 100;
 }
@@ -164,7 +167,9 @@ const averageSavings = getAverageSavings(tiers);
 
 export default function PricingPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [billingPeriod, setBillingPeriod] = useState<"monthly" | "annual">("monthly");
+  const [billingPeriod, setBillingPeriod] = useState<"monthly" | "annual">(
+    "monthly"
+  );
 
   const handleSubscribe = async (plan: string) => {
     if (plan === "free") {
@@ -177,7 +182,7 @@ export default function PricingPage() {
       return;
     }
 
-    setIsLoading(true);
+    setIsLoading(true); // Start loader
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/create-checkout-session`,
@@ -199,17 +204,18 @@ export default function PricingPage() {
 
       if (stripe) {
         const { error } = await stripe.redirectToCheckout({ sessionId });
+        setIsLoading(false); // Remove loader after redirect
 
         if (error) {
           console.error("Error:", error);
         }
       } else {
         console.error("Stripe not loaded");
+        setIsLoading(false); // Remove loader if Stripe fails to load
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Remove loader on error
     }
   };
 
