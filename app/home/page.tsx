@@ -152,7 +152,6 @@ export default function Home() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-
   useEffect(() => {
     console.log(currentIndex);
     const intervalId = setInterval(() => {
@@ -167,7 +166,7 @@ export default function Home() {
   const [subtitle, setSubtitle] = useState<string>("");
   const [rotatingTexts, setRotatingTexts] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Added loading state
-
+    
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true); // Set loading to true before fetching
@@ -177,11 +176,13 @@ export default function Home() {
         );
         const { title, subtitle, rotatingTexts } = response.data;
 
-        const titleWords = title.split(" ");
+        const title1=title.split("With")[0]
+        const title2=title.split("Career")[1]
+        // const titleWords = title.split(" ");
         console.log("Line 163", rotatingTexts);
-        const midpoint = Math.ceil(titleWords.length / 1.7);
-        setTitle1(titleWords.slice(0, midpoint).join(" "));
-        setTitle2(titleWords.slice(midpoint).join(" "));
+        // const midpoint = Math.ceil(titleWords.length / 2.7);
+        setTitle1(title1);
+        setTitle2(title2);
 
         setSubtitle(subtitle);
         setRotatingTexts(rotatingTexts);
@@ -218,18 +219,20 @@ export default function Home() {
           <p className="text-base md:text-xl mb-6 text-gray-400">
             Introducing AI-Powered Coaching for Real Estate Agents
           </p>
-          <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white">
+          <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white text-clip">
             {title1}
-            <br />
-            {title2}
-            <br />
-            <span className="text-blue-400">
+            <br className="hidden md:block"/>
+            {title2} 
+            <br className="hidden md:block"/>
+            {/* <span className="text-clip">{title}</span> */}
+            <span className="text-blue-400 ml-1">
               {rotatingTexts.filter((text) => text).length > 0
                 ? rotatingTexts.filter((text) => text)[index]
                 : "..."}{" "}
               <span className="text-white">{subtitle}</span>
             </span>
           </h1>
+                    
           <Link
             className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
             href="https://proud-pup-68.accounts.dev/sign-up"
@@ -444,10 +447,10 @@ export default function Home() {
               SIGN UP FOR FREE
             </Button> */}
             <Link
-              className="w-1/2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
+              className="text-center md:w-1/2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
               href="https://proud-pup-68.accounts.dev/sign-up"
             >
-              SIGN UP FOR FREE 
+              SIGN UP FOR FREE
             </Link>
           </div>
           <div className="md:w-1/2">
