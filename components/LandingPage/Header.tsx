@@ -27,7 +27,9 @@ export function Header() {
         agentcoach.ai
       </div> */}
           <div className="flex items-center">
-            <Image src={logo} alt="AgentCoach Logo" className="w-auto h-16" />  {/* Adjusted className for width */}
+            <Link href="/home">
+              <Image src={logo} alt="AgentCoach Logo" className="w-auto h-16" />  {/* Adjusted className for width */}
+            </Link>
           </div>
       <button
         className="md:hidden text-black"
