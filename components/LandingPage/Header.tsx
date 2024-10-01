@@ -61,7 +61,7 @@ export function Header() {
             </li>
           ))}
           <li className="md:hidden">
-            <Link href="https://proud-pup-68.accounts.dev/sign-in">
+            <Link href="/signin">
               <Button
                 variant="ghost"
                 className="text-black hover:text-blue-500 w-full text-left"
@@ -71,7 +71,7 @@ export function Header() {
             </Link>
           </li>
           <li className="md:hidden">
-            <Link href="https://proud-pup-68.accounts.dev/sign-in">
+            <Link href="/signup">
               <Button
                 className="bg-blue-600 hover:bg-blue-700 text-white w-full"
               >
@@ -82,7 +82,7 @@ export function Header() {
         </ul>
       </nav>
       <div className="hidden md:flex space-x-4">
-        <Link href="https://proud-pup-68.accounts.dev/sign-in">
+        <Link href="/signin">
           <Button
             variant="ghost"
             className="text-black hover:text-blue-500"
@@ -91,7 +91,7 @@ export function Header() {
           </Button>
           {/* <SignInButton fallbackRedirectUrl={"http://localhost:3000"}>Login</SignInButton> */}
         </Link>
-        <Link href="https://proud-pup-68.accounts.dev/sign-in">
+        <Link href="/signup">
           <Button
             className="bg-blue-600 hover:bg-blue-700 text-white"
           >

@@ -235,7 +235,7 @@ export default function Home() {
                     
           <Link
             className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
-            href="https://proud-pup-68.accounts.dev/sign-up"
+            href="/signup"
           >
             SIGN UP FOR FREE
           </Link>
@@ -304,7 +304,7 @@ export default function Home() {
           </Button> */}
           <Link
             className="bg-blue-600 hover:bg-blue-700 text-white text-base py-3 px-8 rounded-xl mt-8"
-            href="https://proud-pup-68.accounts.dev/sign-up"
+            href="/signup"
           >
             TRY IT NOW
           </Link>
@@ -448,7 +448,7 @@ export default function Home() {
             </Button> */}
             <Link
               className="text-center md:w-1/2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
-              href="https://proud-pup-68.accounts.dev/sign-up"
+              href="/signup"
             >
               SIGN UP FOR FREE
             </Link>
