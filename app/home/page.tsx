@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 // import TestimonialSlider from "@/components/TestimonialSlider"; // Updated import path
 import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
+import Link from "next/link";
 
 const TEXTS: string[] = [
   "General Advisor",
@@ -36,7 +37,7 @@ export default function Home() {
   const scrollRef3 = useRef<HTMLDivElement | null>(null);
   const [index, setIndex] = useState<number>(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  console.log(hoveredIndex)
+  console.log(hoveredIndex);
 
   const handleMouseEnter = useCallback((index: number) => {
     setHoveredIndex(index);
@@ -49,30 +50,37 @@ export default function Home() {
   useEffect(() => {
     const intervalId = setInterval(
       () => setIndex((index) => (index + 1) % TEXTS.length),
-      3000,
+      3000
     );
     return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
-    const scrollContainers = [scrollRef1.current, scrollRef2.current, scrollRef3.current];
+    const scrollContainers = [
+      scrollRef1.current,
+      scrollRef2.current,
+      scrollRef3.current,
+    ];
     scrollContainers.forEach((scrollContainer, index) => {
       if (scrollContainer) {
         let scrollAmount = 0;
-        const step = 2; // Increased speed for all containers
+        const step = 0.4; // Increased speed for all containers
 
         const scroll = () => {
           scrollAmount += step;
-          if (index === 1) { // Move second container to the right
+          if (index === 1) {
+            // Move second container to the right
             if (scrollAmount >= scrollContainer.scrollWidth / 2) {
               scrollAmount = 0;
             }
             scrollContainer.scrollLeft = scrollAmount;
-          } else { // Move first and third containers to the left
+          } else {
+            // Move first and third containers to the left
             if (scrollAmount >= scrollContainer.scrollWidth / 2) {
               scrollAmount = 0;
             }
-            scrollContainer.scrollLeft = scrollContainer.scrollWidth / 2 - scrollAmount; // Reverse direction
+            scrollContainer.scrollLeft =
+              scrollContainer.scrollWidth / 2 - scrollAmount; // Reverse direction
           }
           requestAnimationFrame(scroll);
         };
@@ -86,19 +94,22 @@ export default function Home() {
     {
       name: "Lisa Kim",
       role: "Broker Associate",
-      quote: "I love how convenient it is to access coaching resources at any time!",
+      quote:
+        "I love how convenient it is to access coaching resources at any time!",
       avatarUrl: "https://picsum.photos/seed/lisa/200/200",
     },
     {
       name: "Mike Rodriguez",
       role: "Realtor",
-      quote: "The real-time feedback is invaluable. It's like having a mentor in my pocket.",
+      quote:
+        "The real-time feedback is invaluable. It's like having a mentor in my pocket.",
       avatarUrl: "https://picsum.photos/seed/mike/200/200",
     },
     {
       name: "Jan Stiedemann",
       role: "Global Applications Representative",
-      quote: "Agent Coach.ai has revolutionized my approach to negotiations. I feel more confident than ever!",
+      quote:
+        "Agent Coach.ai has revolutionized my approach to negotiations. I feel more confident than ever!",
       avatarUrl: "https://picsum.photos/seed/jan/200/200",
     },
     {
@@ -141,8 +152,9 @@ export default function Home() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+
   useEffect(() => {
-    console.log(currentIndex)
+    console.log(currentIndex);
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
     }, 5000); // Change every 5 seconds
@@ -160,11 +172,13 @@ export default function Home() {
     const fetchData = async () => {
       setLoading(true); // Set loading to true before fetching
       try {
-        const response = await axios.get("https://admindashbord-lumio.onrender.com/get-landing-page");
+        const response = await axios.get(
+          "https://admindashbord-lumio.onrender.com/get-landing-page"
+        );
         const { title, subtitle, rotatingTexts } = response.data;
 
         const titleWords = title.split(" ");
-        console.log("Line 163", rotatingTexts)
+        console.log("Line 163", rotatingTexts);
         const midpoint = Math.ceil(titleWords.length / 1.7);
         setTitle1(titleWords.slice(0, midpoint).join(" "));
         setTitle2(titleWords.slice(midpoint).join(" "));
@@ -182,7 +196,7 @@ export default function Home() {
 
   useEffect(() => {
     const rotateText = setInterval(() => {
-      const filteredTexts = rotatingTexts.filter(text =>
+      const filteredTexts = rotatingTexts.filter((text) =>
         console.log("Line 180", text)
       );
       if (filteredTexts.length > 0) {
@@ -195,58 +209,61 @@ export default function Home() {
 
   return (
     <div className="bg-black text-white">
-
-
       {loading ? ( // Conditional rendering for loader
         <div className="flex justify-center items-center h-screen">
           <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
         </div>
       ) : (
-        <div
-          className="flex flex-col items-center justify-center min-h-screen text-center px-4"
-        >
+        <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
           <p className="text-base md:text-xl mb-6 text-gray-400">
             Introducing AI-Powered Coaching for Real Estate Agents
           </p>
-          <h1
-            className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white"
-          >
+          <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white">
             {title1}
             <br />
             {title2}
             <br />
             <span className="text-blue-400">
-              {rotatingTexts.filter(text => text).length > 0 ? rotatingTexts.filter(text => text)[index] : "..."}{" "}
-              <span className="text-white">
-                {subtitle}
-              </span>
+              {rotatingTexts.filter((text) => text).length > 0
+                ? rotatingTexts.filter((text) => text)[index]
+                : "..."}{" "}
+              <span className="text-white">{subtitle}</span>
             </span>
           </h1>
-          <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xl py-6 px-8"
+          <Link
+            className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
+            href="https://proud-pup-68.accounts.dev/sign-up"
           >
-            GET STARTED FREE!
-          </Button>
+            SIGN UP FOR FREE
+          </Link>
+          <div className="flex flex-col">
+            <div className="flex flex-row gap-10 mt-5">
+              <div className="flex flex-row gap-4 mt-5 items-center">
+                <div className="p-[6px] rounded-full bg-blue-600">
+                  <Check className="text-black"></Check>
+                </div>
+                <p className="">No credit card required</p>
+              </div>
+              <div className="flex flex-row gap-4 mt-5 items-center">
+                <div className="p-[6px] rounded-full bg-blue-600">
+                  <Check className="text-black"></Check>
+                </div>
+                <p className="">Free leads included</p>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
-      <div
-        className="py-16 px-4 bg-white text-black"
-      >
-        <h2
-          className="text-3xl font-bold text-center mb-8"
-        >
+      <div className="py-16 px-4 bg-white text-black">
+        <h2 className="text-3xl font-bold text-center mb-8">
           Explore AI Chatbots
         </h2>
-        <p
-          className="text-center text-gray-600 mb-12 max-w-3xl mx-auto"
-        >
+        <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
           Engage with our AI chatbots to receive expert guidance tailored to
           your needs in Sales, Negotiation, Marketing, and more.
         </p>
-        <div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <ChatbotCard
             title="Sales Advisor"
             description="Boost your property sales with expert tips and proven strategies tailored for real estate professionals."
@@ -265,9 +282,7 @@ export default function Home() {
             icon="📢"
           />
         </div>
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto mt-8"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto mt-8">
           <ChatbotCard
             title="Motivation Guide"
             description="Stay inspired and focused with personalized tips, affirmations, and goal-setting strategies from the Motivation Mentor bot."
@@ -281,32 +296,28 @@ export default function Home() {
           />
         </div>
         <div className="text-center mt-12">
-          <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+          {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            TRY IT NOW
+          </Button> */}
+          <Link
+            className="bg-blue-600 hover:bg-blue-700 text-white text-base py-3 px-8 rounded-xl mt-8"
+            href="https://proud-pup-68.accounts.dev/sign-up"
           >
             TRY IT NOW
-          </Button>
+          </Link>
         </div>
       </div>
 
       <div className="bg-black py-16 px-4">
-        <h2
-          className="text-3xl font-bold text-center mb-8 text-white"
-        >
+        <h2 className="text-3xl font-bold text-center mb-8 text-white">
           Explore AgentCoach.ai&apos;s Expertise
         </h2>
-        <p
-          className="text-center text-gray-400 mb-12 max-w-3xl mx-auto"
-        >
+        <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
           Scroll through example prompts to see how our AI delivers expert
           advice on real estate topics.
         </p>
         <div className="flex w-full flex-col gap-6">
-
-          <div
-            className="max-w-full mx-auto overflow-hidden"
-            ref={scrollRef1}
-          >
+          <div className="max-w-full mx-auto overflow-hidden" ref={scrollRef1}>
             <div
               className="flex gap-4"
               style={{
@@ -325,10 +336,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div
-            className="max-w-full mx-auto overflow-hidden"
-            ref={scrollRef2}
-          >
+          <div className="max-w-full mx-auto overflow-hidden" ref={scrollRef2}>
             <div
               className="flex gap-4 ml-20"
               style={{
@@ -347,10 +355,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div
-            className="max-w-full mx-auto overflow-hidden"
-            ref={scrollRef3}
-          >
+          <div className="max-w-full mx-auto overflow-hidden" ref={scrollRef3}>
             <div
               className="flex gap-4"
               style={{
@@ -407,27 +412,18 @@ export default function Home() {
             </div> */}
 
           <TestimonialSlider></TestimonialSlider>
-
         </div>
       </div>
 
-      <div
-        className="py-16 px-4"
-      >
-        <h2
-          className="text-3xl font-bold text-center mb-4"
-        >
+      <div className="py-16 px-4">
+        <h2 className="text-3xl font-bold text-center mb-4">
           Start Transforming Your Real Estate Career Today - For Free!
         </h2>
-        <p
-          className="text-center mb-10 max-w-4xl mx-auto"
-        >
-          Unlock expert AI-driven advice for real estate, sales,
-          negotiation. Get started for free and elevate your career today!
+        <p className="text-center mb-10 max-w-4xl mx-auto">
+          Unlock expert AI-driven advice for real estate, sales, negotiation.
+          Get started for free and elevate your career today!
         </p>
-        <div
-          className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-5xl mx-auto"
-        >
+        <div className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-5xl mx-auto">
           <div className="md:w-1/2 flex flex-col justify-center">
             <p className="mb-4 text-justify">
               Get instant access to AgentCoach.ai and start experiencing expert
@@ -444,12 +440,15 @@ export default function Home() {
             >
               SIGN UP FOR FREE &amp; UNLOCK YOUR POTENTIAL TODAY!
             </p> */}
-            <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xl py-6 px-8 w-1/2 mt-5"
-            >
+            {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xl py-6 px-8 w-1/2 mt-5">
               SIGN UP FOR FREE
-
-            </Button>
+            </Button> */}
+            <Link
+              className="w-1/2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
+              href="https://proud-pup-68.accounts.dev/sign-up"
+            >
+              SIGN UP FOR FREE 
+            </Link>
           </div>
           <div className="md:w-1/2">
             <img
@@ -459,7 +458,7 @@ export default function Home() {
             />
 
             {/* <video
-              src=""
+              src={Video}
               controls={false}
               autoPlay
               loop
@@ -481,20 +480,12 @@ type ChatbotCardProps = {
 
 function ChatbotCard({ title, description, icon }: ChatbotCardProps) {
   return (
-    <div
-      className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-6 rounded-lg"
-    >
-      <div
-        className="text-4xl mb-4 bg-blue-600 w-16 h-16 flex items-center justify-center rounded-full mx-auto"
-      >
+    <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-6 rounded-lg">
+      <div className="text-4xl mb-4 bg-blue-600 w-16 h-16 flex items-center justify-center rounded-full mx-auto">
         {icon}
       </div>
-      <h3 className="text-xl font-bold mb-2">
-        {title}
-      </h3>
-      <p className="text-sm">
-        {description}
-      </p>
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p className="text-sm">{description}</p>
     </div>
   );
 }
@@ -503,23 +494,19 @@ type PromptCardProps = {
   readonly prompt: string;
   readonly onMouseEnter: () => void;
   readonly onMouseLeave: () => void;
-}
+};
 
 function PromptCard({ prompt, onMouseEnter, onMouseLeave }: PromptCardProps) {
   return (
     <button
-      tabIndex={0}  // Added tabIndex for keyboard navigation
+      tabIndex={0} // Added tabIndex for keyboard navigation
       style={{ width: "300px", flexShrink: 0 }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-4 rounded-lg flex items-center justify-between transition-all duration-300"
     >
-      <p className="text-sm">
-        {prompt}
-      </p>
-      <span className="ml-2">
-        →
-      </span>
+      <p className="text-sm">{prompt}</p>
+      <span className="ml-2">→</span>
     </button>
   );
 }

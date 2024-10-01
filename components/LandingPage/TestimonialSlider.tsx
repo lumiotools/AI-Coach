@@ -87,7 +87,7 @@ const TestimonialCard: React.FC<Testimonial> = ({ name, position, text, image })
       <img
         src={image}
         alt={name}
-        className="w-24 h-24 rounded-full border-4 border-white"
+        className="w-32 h-32 rounded-full border-4 border-white"
       />
     </div>
     <p className="text-lg italic mb-4 text-center h-24 ">
@@ -104,7 +104,7 @@ const TestimonialCard: React.FC<Testimonial> = ({ name, position, text, image })
 
 const TestimonialSlider: React.FC = () => {
   return (
-    <section className="py-5">
+    <section className="py-5 cursor-pointer">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
          <h2 className="text-3xl font-bold text-center mb-8 text-black">
@@ -121,7 +121,7 @@ const TestimonialSlider: React.FC = () => {
           centeredSlides={true}
           pagination={false} // Disable pagination dots
           autoplay={{
-            delay: 2500,
+            delay: 4500,
             disableOnInteraction: false,
           }}
           breakpoints={{

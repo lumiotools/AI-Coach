@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import Link from "next/link";
+import logo from "@/components/Assets/logo.png";
+import Image from 'next/image'; // Add this import
 
 export function Footer() {
   return (
@@ -13,9 +15,9 @@ export function Footer() {
         className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12"
       >
         <div className="space-y-4">
-          <h3 className="text-2xl font-bold">
-            AGENTCOACH.AI
-          </h3>
+          <div className="w-full">
+            <Image src={logo} alt="AgentCoach Logo" className="h-16 w-auto" /> 
+          </div>
           <p className="text-sm text-gray-500">
             Empowering real estate professionals with AI-driven coaching and
             insights.
@@ -124,11 +126,11 @@ export function Footer() {
             <Input
               type="email"
               placeholder="Enter your email"
-              className="bg-white/10 border-white/20 text-white placeholder-gray-400 border-black-2 shadow-sm outline-none"
+              className="bg-white/10 border-white/20 text-black placeholder-gray-400 border-black-2 shadow-sm outline-none rounded-lg"
             />
 
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
             >
               Subscribe
             </Button>

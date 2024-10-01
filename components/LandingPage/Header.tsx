@@ -6,6 +6,9 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { SignIn, SignInButton } from "@clerk/nextjs";
 // import { SignIn } from "@clerk/nextjs";
+import logo from "@/components/Assets/logo.png";
+import Image from 'next/image'; // Add this import
+
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,13 +19,16 @@ export function Header() {
 
   return (
     <header
-      className="py-4 px-6 flex justify-between items-center bg-white relative"
+      className="py-2 px-6 flex justify-between items-center bg-white relative"
     >
-      <div
+      {/* <div
         className="text-xl md:text-2xl font-bold text-black"
       >
         agentcoach.ai
-      </div>
+      </div> */}
+          <div className="flex items-center">
+            <Image src={logo} alt="AgentCoach Logo" className="w-auto h-16" />  {/* Adjusted className for width */}
+          </div>
       <button
         className="md:hidden text-black"
         onClick={toggleMenu}

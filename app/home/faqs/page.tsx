@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./faq.module.css";
 import downicon from "@/components/Assets/faqdownicon.svg";
 import axios from "axios"; // Added axios
+import { Loader2 } from "lucide-react";
 
 interface FaqItem {
   question: string;
@@ -17,10 +18,13 @@ const Faq: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null); // {{ edit_1 }} Added activeIndex state
   const answerRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => { // Added useEffect for fetching data
+  useEffect(() => {
+    // Added useEffect for fetching data
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://admindashbord-lumio.onrender.com/faqs");
+        const response = await axios.get(
+          "https://admindashbord-lumio.onrender.com/faqs"
+        );
         const { faqs } = response.data; // Adjust based on your API response structure
         setFaqData(faqs);
       } catch (error) {
@@ -32,7 +36,13 @@ const Faq: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading) return <div>Loading...</div>; // Added loading state handling
+  if (loading)
+    return (
+      // {{ edit_1 }} Updated loading state handling
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
+      </div>
+    ); // Conditional rendering for loader
 
   const toggleAnswer = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index); // {{ edit_2 }} Ensure activeIndex is defined
@@ -60,11 +70,13 @@ const Faq: React.FC = () => {
             >
               {item.question}
               <div className={styles.icon}>
-                <Image 
-                  src={downicon} 
-                  className={`${styles.arr} ${activeIndex === index ? 'transform rotate-180' : ''} transition-transform duration-300`} 
-                  alt="Toggle answer" 
-                  width={20} 
+                <Image
+                  src={downicon}
+                  className={`${styles.arr} ${
+                    activeIndex === index ? "transform rotate-180" : ""
+                  } transition-transform duration-300`}
+                  alt="Toggle answer"
+                  width={20}
                   height={20}
                 />
               </div>
