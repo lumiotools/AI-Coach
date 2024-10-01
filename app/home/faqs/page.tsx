@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./faq.module.css";
 import downicon from "@/components/Assets/faqdownicon.svg";
-import axios from "axios"; // Added axios
+import axios from "axios";
 import { Loader2 } from "lucide-react";
 
 interface FaqItem {
@@ -13,19 +13,18 @@ interface FaqItem {
 }
 
 const Faq: React.FC = () => {
-  const [faqData, setFaqData] = useState<FaqItem[]>([]); // Changed to use fetched data
-  const [loading, setLoading] = useState<boolean>(true); // Added loading state
-  const [activeIndex, setActiveIndex] = useState<number | null>(null); // {{ edit_1 }} Added activeIndex state
+  const [faqData, setFaqData] = useState<FaqItem[]>([]); 
+  const [loading, setLoading] = useState<boolean>(true); 
+  const [activeIndex, setActiveIndex] = useState<number | null>(null); 
   const answerRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    // Added useEffect for fetching data
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "https://admindashbord-lumio.onrender.com/faqs"
         );
-        const { faqs } = response.data; // Adjust based on your API response structure
+        const { faqs } = response.data; 
         setFaqData(faqs);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -38,14 +37,13 @@ const Faq: React.FC = () => {
 
   if (loading)
     return (
-      // {{ edit_1 }} Updated loading state handling
       <div className="flex justify-center items-center h-screen">
         <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
       </div>
-    ); // Conditional rendering for loader
+    );
 
   const toggleAnswer = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index); // {{ edit_2 }} Ensure activeIndex is defined
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
@@ -83,8 +81,8 @@ const Faq: React.FC = () => {
             </div>
             <div
               ref={(el) => {
-                answerRef.current[index] = el; // Store the element
-                return; // Ensure the function returns void
+                answerRef.current[index] = el;
+                return;
               }}
               className={`${styles.answerBox} ${
                 activeIndex === index ? styles.visible : ""
@@ -92,7 +90,7 @@ const Faq: React.FC = () => {
               style={{
                 height:
                   activeIndex === index
-                    ? ⁠ ${(answerRef.current[index]?.scrollHeight || 0) + 40}px ⁠
+                    ? `${(answerRef.current[index]?.scrollHeight || 0) + 40}px`
                     : "0px",
                 opacity: activeIndex === index ? 1 : 0,
               }}
