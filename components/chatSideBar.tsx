@@ -54,13 +54,10 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
           chat.messages.length > 0
             ? chat.messages[0].content
             : "No messages yet";
-        const firstMessagePreview =
-          firstMessageContent.split(" ").slice(0, 3).join(" ") +
-          (firstMessageContent.split(" ").length > 3 ? "..." : "");
 
         return {
           chat_id: chat.chat_id,
-          firstMessage: firstMessagePreview,
+          firstMessage: firstMessageContent,
           created_at: new Date(chat.created_at),
           coach_type: chat.coach_type,
         };
@@ -182,7 +179,7 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
                       <Link key={chat.chat_id} href={`/chat/${chat.chat_id}`}>
                         <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-2 dark:hover:bg-white rounded-lg cursor-pointer">
                           <div>
-                            <p className="text-sm text-gray-300 dark:text-[#435B8C]">
+                            <p className="text-sm text-gray-300 dark:text-[#435B8C] line-clamp-1 text-ellipsis">
                               {chat.firstMessage}
                             </p>
                             <p className="text-xs text-gray-500">
@@ -224,7 +221,7 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
                       <Link key={chat.chat_id} href={`/chat/${chat.chat_id}`}>
                         <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-1 dark:hover:bg-white rounded-lg cursor-pointer">
                           <div>
-                            <p className="text-sm text-gray-300 dark:text-[#435B8C]">
+                            <p className="text-sm text-gray-300 dark:text-[#435B8C] line-clamp-1 text-ellipsis">
                               {chat.firstMessage}
                             </p>
                             <p className="text-xs text-gray-500">
@@ -276,7 +273,7 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
                         <Link key={chat.chat_id} href={`/chat/${chat.chat_id}`}>
                           <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-2 dark:hover:bg-white rounded-lg cursor-pointer">
                             <div>
-                              <p className="text-sm text-gray-300 dark:text-[#435B8C]">
+                              <p className="text-sm text-gray-300 dark:text-[#435B8C] line-clamp-1 text-ellipsis">
                                 {chat.firstMessage}
                               </p>
                               <p className="text-xs text-gray-500">

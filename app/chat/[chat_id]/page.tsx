@@ -673,10 +673,11 @@ export default function Page({ params: { chat_id } }: Props) {
                     />
                   </div>
                 ) : (
+                  user &&
                   messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`flex items-start space-x-4 ${
+                      className={`flex items-start space-x-4 mt-4 ${
                         message.role === "user"
                           ? "flex-row-reverse space-x-reverse"
                           : ""
@@ -685,7 +686,10 @@ export default function Page({ params: { chat_id } }: Props) {
                       <Avatar className="w-8 h-8 flex-shrink-0">
                         {message.role === "user" ? (
                           <AvatarImage
-                            src="https://static.vecteezy.com/system/resources/previews/005/129/844/non_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
+                            src={
+                              user?.imageUrl ||
+                              "https://static.vecteezy.com/system/resources/previews/005/129/844/non_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
+                            }
                             alt="User"
                             className="object-cover"
                           />

@@ -11,6 +11,7 @@ import moon from "@/components/Assets/MoonStars.svg";
 import lightlogo from "@/components/Assets/light-logo1.png";
 import darklogo from "@/components/Assets/dark-logo3.png";
 import useTheme from "@/app/hooks/useTheme";
+import { useClerk } from "@clerk/nextjs";
 // Removed UserPlus import
 // Removed useState import
 // Removed PersonalizeModal import
@@ -21,6 +22,7 @@ export default function HeaderBar({
   signOut,
 }: any) {
   const { theme, toggleTheme } = useTheme(); // Use theme hook
+  const { openUserProfile } = useClerk();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-2 text-white bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] dark:bg-[#A5C3FF3D]">
@@ -73,6 +75,7 @@ export default function HeaderBar({
           )}
         </Button>
         <Button
+          onClick={() => openUserProfile()}
           variant="navbtn"
           size="nav"
           className="font-100 text-white md:hidden "
@@ -92,6 +95,7 @@ export default function HeaderBar({
         </Button>
 
         <Button
+          onClick={() => openUserProfile()}
           variant="gradient"
           size="sm"
           className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2"
@@ -101,9 +105,7 @@ export default function HeaderBar({
         </Button>
 
         <Button
-          onClick={() =>
-            signOut({ redirectUrl: "/home" })
-          }
+          onClick={() => signOut({ redirectUrl: "/home" })}
           variant="gradient"
           size="sm"
           className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2"
