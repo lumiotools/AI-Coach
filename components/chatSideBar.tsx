@@ -308,12 +308,15 @@ export default function Sidebar({
   handleExpertClick,
 }: any) {
   const [activeExpert, setActiveExpert] = useState<string | null>(null);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState({
+    isOpen: false,
+    expert: "",
+  });
   const router = useRouter();
 
   const handleExpertButtonClick = (expert: string) => {
     if (
-      !userId &&
+      userId &&
       [
         "Real Estate",
         "Sales",
@@ -322,33 +325,24 @@ export default function Sidebar({
         "Motivation",
       ].includes(expert)
     ) {
-      setShowPopup(true);
+      setShowPopup({
+        isOpen: true,
+        expert,
+      });
     } else {
       setActiveExpert(expert);
       handleExpertClick(expert);
     }
   };
 
-  const handleExpertButtonHover = (expert: string) => {
-    if (
-      [
-        "Real Estate",
-        "Sales",
-        "Marketing",
-        "Negotiation",
-        "Motivation",
-      ].includes(expert)
-    ) {
-      setShowPopup(true);
-    }
-  };
-
   const handlePopupClose = () => {
-    setShowPopup(false);
+    setActiveExpert(showPopup.expert);
+    handleExpertClick(showPopup.expert);
+    setShowPopup((prev) => ({ ...prev, isOpen: false }));
   };
 
   const handleUnlock = () => {
-    router.push("/signup");
+    router.push("/home/pricing");
   };
 
   return (
@@ -396,7 +390,6 @@ export default function Sidebar({
                   : ""
               }`}
               onClick={() => handleExpertButtonClick(expert)}
-              onMouseEnter={(e) => handleExpertButtonHover(expert)}
             >
               {expert === "Real Estate" && <Home className="mr-2 h-4 w-4" />}
               {expert === "Sales" && <TrendingUp className="mr-2 h-4 w-4" />}
@@ -412,7 +405,7 @@ export default function Sidebar({
       </div>
       <ChatHistory userId={userId} supabase={supabase} userEmail={userEmail} />
       <UnlockAccessDialog
-        isOpen={showPopup && !userId}
+        isOpen={showPopup.isOpen}
         onClose={handlePopupClose}
         onUnlock={handleUnlock}
       />

@@ -51,6 +51,8 @@ export function Page() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isIntroModalOpen, setIsIntroModalOpen] = useState(true);
 
+  console.log("User", user);
+
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       setUserEmail(user.primaryEmailAddress?.emailAddress || "");

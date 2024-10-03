@@ -22,7 +22,7 @@ export default function UnlockAccessDialog({
 }: UnlockAccessDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] dark:bg-[#A5C3FF3D] border-gray-400 space-y-2 py-4">
+      <DialogContent className="sm:max-w-[425px] bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] dark:bg-[#A5C3FF3D] space-y-2 py-4 border-gray-700">
         <DialogHeader className="">
           <DialogTitle className="text-2xl leading-none text-white">
             Unlock Exclusive Access
@@ -37,13 +37,13 @@ export default function UnlockAccessDialog({
             onClick={onClose}
             className="hover:bg-transparent hover:text-white rounded-md mt-4 sm:mt-0"
           >
-            Close
+            Skip for now
           </Button>
           <Button
             className="bg-[#2F76FF] dark:bg-white rounded-md"
             onClick={onUnlock}
           >
-            Sign Up
+            Unlock Access
           </Button>
         </DialogFooter>
       </DialogContent>
