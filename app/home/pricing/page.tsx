@@ -15,6 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle2, Star } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { motion } from "framer-motion";
+import { useUser, SignIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 // Define types for pricing tiers
 interface Price {
@@ -166,12 +168,21 @@ function getAverageSavings(tiers: Tier[]): number {
 const averageSavings = getAverageSavings(tiers);
 
 export default function PricingPage() {
+  const { isSignedIn, user } = useUser();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [billingPeriod, setBillingPeriod] = useState<"monthly" | "annual">(
     "monthly"
   );
 
+  console.log("User:", user);
+
   const handleSubscribe = async (plan: string) => {
+    if (!isSignedIn) {
+      router.push("/signin");
+      return;
+    }
+
     if (plan === "free") {
       alert("Please sign up for the free plan directly from the app.");
       return;
@@ -194,7 +205,7 @@ export default function PricingPage() {
           body: JSON.stringify({
             plan,
             billingPeriod,
-            email: "kunalsalunkhe360@gmail.com",
+            clerkEmail: user?.primaryEmailAddress?.emailAddress,
           }),
         }
       );
@@ -445,7 +456,7 @@ function PricingCard({
           onClick={() => onSubscribe(tier.plan)}
           disabled={isLoading}
         >
-          {tier.plan === "enterprise" ? "Contact Us" : "Choose Plan"}
+          {tier.plan === "organization" ? "Contact Us" : "Choose Plan"}
         </Button>
       </CardFooter>
     </Card>

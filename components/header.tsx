@@ -35,7 +35,7 @@ export default function HeaderBar({
         >
           <Menu className="h-5 w-5 text-[#ffffff] dark:text-[#001c4f]" />
         </Button>
-        <Link href="/">
+        <Link href="/home">
           {theme === "light" ? (
             <Image
               src={lightlogo}
