@@ -4,70 +4,43 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 
-import pp1 from "@/components/Assets/pp1.png";
-import pp3 from "@/components/Assets/pp3.png";
-import pp2 from "@/components/Assets/pp2.png"; // Corrected path for pp2
-import pp4 from "@/components/Assets/pp4.png"; // Assuming pp4.png exists
-import pp5 from "@/components/Assets/pp5.png"; // Assuming pp5.png exists
-import pp6 from "@/components/Assets/pp6.png"; // Assuming pp6.png exists
-import pp7 from "@/components/Assets/pp7.png"; // Assuming pp7.png exists
 import icon12 from "@/components/Assets/icon12.svg";
+import pp1 from "@/components/Assets/images/kathy.png";
+import pp2 from "@/components/Assets/images/jeff.png";
+import pp3 from "@/components/Assets/images/merlin.png";
+import pp4 from "@/components/Assets/images/james.png";
 
 export const testimonials = [
   {
     id: 1,
-    image: pp1, // Use pp1 for the first testimonial
+    image: pp1, 
     icon: icon12,
-    text: '"Agent Coach.ai has revolutionized my approach to negotiations. I feel more confident than ever!"',
-    name: "Jan Stiedemann",
-    position: "Global Applications Representative",
+    text: '"The real-time feedback is invaluable. It\'s like having a mentor in my pocket."',
+    name: "Kathy Welsh",
+    position: "Real Estate Agent",
   },
   {
     id: 2,
-    image: pp2, // Use pp2 for the second testimonial
+    image: pp2, 
     icon: icon12,
-    text: '"I\'ve seen a significant boost in my marketing strategies thanks to the personalized coaching."',
-    name: "Sara Smith",
+    text: '"Agent Coach.ai has revolutionized my approach to negotiations. I feel more confident than ever!"',
+    name: "Jeff Hammerberg",
     position: "Real Estate Agent",
   },
   {
     id: 3,
-    image: pp3, // Use pp3 for the third testimonial
+    image: pp3, 
     icon: icon12,
-    text: '"The real-time feedback is invaluable. It\'s like having a mentor in my pocket."',
-    name: "Tom Johnson",
-    position: "Realtor",
+    text: '"The interactive scenarios have empowered me to negotiate confidently and overcome objections with ease."',
+    name: "Merlin Parker",
+    position: "Broker/Owner",
   },
   {
     id: 4,
-    image: pp4, // Use pp4 for the fourth testimonial
+    image: pp4, 
     icon: icon12,
-    text: '"The interactive scenarios helped me prepare for real-life challenges."',
-    name: "Emily White",
-    position: "Real Estate Broker",
-  },
-  {
-    id: 5,
-    image: pp5, // Use pp5 for the fifth testimonial
-    icon: icon12,
-    text: '"Thanks to this AI Coach, I was able to close more deals this year."',
-    name: "David Brown",
-    position: "Real Estate Consultant",
-  },
-  {
-    id: 6,
-    image: pp6, // Use pp6 for the sixth testimonial
-    icon: icon12,
-    text: '"I love how convenient it is to access coaching resources at any time!"',
-    name: "Lisa Kim",
-    position: "Broker Associate",
-  },
-  {
-    id: 7,
-    image: pp7, // Use pp7 for the seventh testimonial
-    icon: icon12,
-    text: '"The real-time feedback is invaluable. It\'s like having a mentor in my pocket."',
-    name: "Mike Rodriguez",
+    text: '"I love how convenient it is to access my AI coach 24/7!"',
+    name: "James Alonso",
     position: "Realtor",
   },
 ];
@@ -125,7 +98,7 @@ const TestimonialSlider: React.FC = () => {
           centeredSlides={true}
           pagination={false}
           autoplay={{
-            delay: 4500,
+            delay: 4000,
             disableOnInteraction: false,
           }}
           breakpoints={{
