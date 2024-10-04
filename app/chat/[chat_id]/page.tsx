@@ -268,6 +268,10 @@ export default function Page({ params: { chat_id } }: Props) {
 
       setMessages((prev) => [...prev, userMessage]);
 
+      const personalizedAIData = JSON.parse(
+        localStorage.getItem("personalizedAIData") as string
+      );
+
       try {
         const response = await fetch("/api/chat", {
           method: "POST",
@@ -276,6 +280,7 @@ export default function Page({ params: { chat_id } }: Props) {
             messages: [...messages, userMessage],
             chatbot: currentExpert.toLowerCase(),
             expert: currentExpert,
+            personalizedAIData: personalizedAIData,
           }),
         });
 

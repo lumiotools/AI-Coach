@@ -125,8 +125,7 @@ async function determineModel(question: string): Promise<string> {
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, chatbot, expert, personalizationDetails } =
-      await req.json();
+    const { messages, chatbot, expert, personalizedAIData } = await req.json();
 
     if (!messages || !chatbot || !expert) {
       return new Response(
@@ -186,10 +185,12 @@ export async function POST(req: NextRequest) {
       context += "No relevant context found.";
     }
 
+    console.log("Personalized AI Data:", personalizedAIData);
+
     // Add personalization details to the context
-    if (personalizationDetails) {
+    if (personalizedAIData) {
       context += "\n\nUser Personalization Details:\n";
-      for (const [key, value] of Object.entries(personalizationDetails)) {
+      for (const [key, value] of Object.entries(personalizedAIData)) {
         context += `${key}: ${value}\n`;
       }
     }
