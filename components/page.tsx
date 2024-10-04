@@ -49,15 +49,21 @@ export function Page() {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || "";
   const supabase = createClient(supabaseUrl, supabaseKey);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const [isIntroModalOpen, setIsIntroModalOpen] = useState(true);
+  const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
 
   console.log("User", user);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       setUserEmail(user.primaryEmailAddress?.emailAddress || "");
+
+      const hasSeenIntro = localStorage.getItem(`hasSeenIntro_${userId}`);
+
+      if (!hasSeenIntro) {
+        setIsIntroModalOpen(true);
+      }
     }
-  }, [isLoaded, isSignedIn, user]);
+  }, [isLoaded, isSignedIn, user, userId]);
 
   useEffect(() => {
     const expertType = searchParams.get("expertType");
@@ -151,6 +157,10 @@ export function Page() {
 
   const closeIntroModal = () => {
     setIsIntroModalOpen(false);
+
+    if (userId) {
+      localStorage.setItem(`hasSeenIntro_${userId}`, "true");
+    }
   };
 
   return (
