@@ -8,6 +8,7 @@ import { add, format } from "date-fns";
 import styles from "./overall.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import {
   Brain,
   Handshake,
@@ -308,15 +309,18 @@ export default function Sidebar({
   handleExpertClick,
 }: any) {
   const [activeExpert, setActiveExpert] = useState<string | null>(null);
-  const [showPopup, setShowPopup] = useState({
-    isOpen: false,
-    expert: "",
-  });
+  const [showPopup, setShowPopup] = useState(false);
   const router = useRouter();
+
+  const { user } = useUser();
+  const userPlanDetails = user?.publicMetadata?.paymentInfo as {
+    planDetails: { name: string };
+  };
+  const userPlan = userPlanDetails?.planDetails?.name;
 
   const handleExpertButtonClick = (expert: string) => {
     if (
-      userId &&
+      !userPlan &&
       [
         "Real Estate",
         "Sales",
@@ -325,10 +329,7 @@ export default function Sidebar({
         "Motivation",
       ].includes(expert)
     ) {
-      setShowPopup({
-        isOpen: true,
-        expert,
-      });
+      setShowPopup(true);
     } else {
       setActiveExpert(expert);
       handleExpertClick(expert);
@@ -336,9 +337,7 @@ export default function Sidebar({
   };
 
   const handlePopupClose = () => {
-    setActiveExpert(showPopup.expert);
-    handleExpertClick(showPopup.expert);
-    setShowPopup((prev) => ({ ...prev, isOpen: false }));
+    setShowPopup(false);
   };
 
   const handleUnlock = () => {
@@ -405,7 +404,7 @@ export default function Sidebar({
       </div>
       <ChatHistory userId={userId} supabase={supabase} userEmail={userEmail} />
       <UnlockAccessDialog
-        isOpen={showPopup.isOpen}
+        isOpen={showPopup}
         onClose={handlePopupClose}
         onUnlock={handleUnlock}
       />
