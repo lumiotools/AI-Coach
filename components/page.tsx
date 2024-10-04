@@ -57,7 +57,9 @@ export function Page() {
     if (isLoaded && isSignedIn && user) {
       setUserEmail(user.primaryEmailAddress?.emailAddress || "");
 
-      const hasSeenIntro = localStorage.getItem(`hasSeenIntro_${userId}`);
+      const hasSeenIntro = user.unsafeMetadata?.hasSeenIntro;
+
+      console.log("hasSeenIntro", hasSeenIntro);
 
       if (!hasSeenIntro) {
         setIsIntroModalOpen(true);
@@ -158,8 +160,12 @@ export function Page() {
   const closeIntroModal = () => {
     setIsIntroModalOpen(false);
 
-    if (userId) {
-      localStorage.setItem(`hasSeenIntro_${userId}`, "true");
+    if (user) {
+      user.update({
+        unsafeMetadata: {
+          hasSeenIntro: true,
+        },
+      });
     }
   };
 
