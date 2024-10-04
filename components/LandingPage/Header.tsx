@@ -71,8 +71,8 @@ export function Header() {
                 </Button>
               </li>
               <li className="md:hidden">
-                <Link href="/demo">
-                  <Button className="text-white w-full rounded-md">
+                <Link href="/home#home-page-bottom-section">
+                  <Button className="text-white w-full rounded-md bg-black">
                     See Demo
                   </Button>
                 </Link>
@@ -92,7 +92,7 @@ export function Header() {
               </li>
               <li className="md:hidden">
                 <Link href="/signup">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full rounded-md">
                     Sign Up
                   </Button>
                 </Link>
@@ -133,12 +133,14 @@ export function Header() {
               </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md">
                 Sign Up
               </Button>
             </Link>
             <Link href="/home#home-page-bottom-section">
-              <Button className="text-white w-full rounded-md">See Demo</Button>
+              <Button className="text-white w-full rounded-md bg-black">
+                See Demo
+              </Button>
             </Link>
           </>
         )}
