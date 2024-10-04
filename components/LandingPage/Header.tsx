@@ -26,11 +26,11 @@ export function Header() {
       >
         agentcoach.ai
       </div> */}
-          <div className="flex items-center">
-            <Link href="/home">
-              <Image src={logo} alt="AgentCoach Logo" className="w-auto h-16" />  {/* Adjusted className for width */}
-            </Link>
-          </div>
+      <div className="flex items-center">
+        <Link href="/home">
+          <Image src={logo} alt="AgentCoach Logo" className="w-auto h-16" />  {/* Adjusted className for width */}
+        </Link>
+      </div>
       <button
         className="md:hidden text-black"
         onClick={toggleMenu}
@@ -43,9 +43,8 @@ export function Header() {
         )}
       </button>
       <nav
-        className={`${
-          isMenuOpen ? "block" : "hidden"
-        } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-50`}
+        className={`${isMenuOpen ? "block" : "hidden"
+          } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-50`}
       >
         <ul
           className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0"
@@ -73,9 +72,18 @@ export function Header() {
           <li className="md:hidden">
             <Link href="/signup">
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white w-full"
+                className="bg-blue-600 hover:bg-blue-700 text-white w-full rounded-md"
               >
                 Sign Up
+              </Button>
+            </Link>
+          </li>
+          <li className="md:hidden">
+            <Link href="/demo">
+              <Button
+                className="text-white w-full rounded-md"
+              >
+                See Demo
               </Button>
             </Link>
           </li>
@@ -93,11 +101,19 @@ export function Header() {
         </Link>
         <Link href="/signup">
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-md"
           >
             Sign Up
           </Button>
         </Link>
+        <Link href="/home#home-page-bottom-section">
+          <Button
+            className="text-white w-full rounded-md"
+          >
+            See Demo
+          </Button>
+        </Link>
+
       </div>
     </header>
   );

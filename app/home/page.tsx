@@ -8,6 +8,20 @@ import { Check, Loader2 } from "lucide-react";
 import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
 
+import DemoVideo from "@/components/Assets/video/demo.mp4"
+
+interface DemoVideoComponentProps {
+    className: string;
+}
+
+export const DemoVideoComponent: React.FC<DemoVideoComponentProps> = ({ className}) => {
+  return (
+    <video className={className} preload="auto" autoPlay playsInline controls>
+      <source src={DemoVideo} type="video/mp4" />
+    </video>
+  );
+}
+
 const TEXTS: string[] = [
   "General Advisor",
   "Negotiation Expert",
@@ -166,7 +180,7 @@ export default function Home() {
   const [subtitle, setSubtitle] = useState<string>("");
   const [rotatingTexts, setRotatingTexts] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Added loading state
-    
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true); // Set loading to true before fetching
@@ -176,8 +190,8 @@ export default function Home() {
         );
         const { title, subtitle, rotatingTexts } = response.data;
 
-        const title1=title.split("With")[0]
-        const title2=title.split("Career")[1]
+        const title1 = title.split("With")[0]
+        const title2 = title.split("Career")[1]
         // const titleWords = title.split(" ");
         console.log("Line 163", rotatingTexts);
         // const midpoint = Math.ceil(titleWords.length / 2.7);
@@ -221,9 +235,9 @@ export default function Home() {
           </p>
           <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white text-clip">
             {title1}
-            <br className="hidden md:block"/>
-            {title2} 
-            <br className="hidden md:block"/>
+            <br className="hidden md:block" />
+            {title2}
+            <br className="hidden md:block" />
             {/* <span className="text-clip">{title}</span> */}
             <span className="text-blue-400 ml-1">
               {rotatingTexts.filter((text) => text).length > 0
@@ -232,7 +246,7 @@ export default function Home() {
               <span className="text-white">{subtitle}</span>
             </span>
           </h1>
-                    
+
           <Link
             className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
             href="/signup"
@@ -418,7 +432,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="py-16 px-4">
+      <div className="py-16 px-4" id="home-page-bottom-section">
         <h2 className="text-3xl font-bold text-center mb-4">
           Start Transforming Your Real Estate Career Today - For Free!
         </h2>
@@ -453,21 +467,8 @@ export default function Home() {
               SIGN UP FOR FREE
             </Link>
           </div>
-          <div className="md:w-1/2">
-            <img
-              src="https://picsum.photos/seed/agentcoach/600/400"
-              alt="AgentCoach.ai Dashboard"
-              className="rounded-lg shadow-lg border"
-            />
-
-            {/* <video
-              src={Video}
-              controls={false}
-              autoPlay
-              loop
-              muted
-              className="w-full object-cover h-auto"
-            /> */}
+          <div className="md:w-1/2 border-gray-100 rounded-lg">
+            <DemoVideoComponent className="w-full object-cover h-auto"/>
           </div>
         </div>
       </div>
