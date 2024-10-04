@@ -60,15 +60,24 @@ export function Header() {
             </li>
           ))}
           {isSignedIn ? (
-            <li className="md:hidden">
-              <Button
-                variant="ghost"
-                className="text-black hover:text-blue-500 w-full text-left"
-                onClick={handleLogout}
-              >
-                Log Out
-              </Button>
-            </li>
+            <>
+              <li className="md:hidden">
+                <Button
+                  variant="ghost"
+                  className="text-black hover:text-blue-500 w-full text-left"
+                  onClick={handleLogout}
+                >
+                  Log Out
+                </Button>
+              </li>
+              <li className="md:hidden">
+                <Link href="/demo">
+                  <Button className="text-white w-full rounded-md">
+                    See Demo
+                  </Button>
+                </Link>
+              </li>
+            </>
           ) : (
             <>
               <li className="md:hidden">
@@ -88,19 +97,31 @@ export function Header() {
                   </Button>
                 </Link>
               </li>
+              <li className="md:hidden">
+                <Link href="/demo">
+                  <Button className="text-white w-full rounded-md">
+                    See Demo
+                  </Button>
+                </Link>
+              </li>
             </>
           )}
         </ul>
       </nav>
       <div className="hidden md:flex space-x-4">
         {isSignedIn ? (
-          <Button
-            variant="ghost"
-            className="text-black hover:text-blue-500"
-            onClick={handleLogout}
-          >
-            Log Out
-          </Button>
+          <>
+            <Button
+              variant="ghost"
+              className="text-black hover:text-blue-500"
+              onClick={handleLogout}
+            >
+              Log Out
+            </Button>
+            <Link href="/home#home-page-bottom-section">
+              <Button className="text-white w-full rounded-md">See Demo</Button>
+            </Link>
+          </>
         ) : (
           <>
             <Link href="/signin">
@@ -115,6 +136,9 @@ export function Header() {
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                 Sign Up
               </Button>
+            </Link>
+            <Link href="/home#home-page-bottom-section">
+              <Button className="text-white w-full rounded-md">See Demo</Button>
             </Link>
           </>
         )}

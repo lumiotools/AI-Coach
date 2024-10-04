@@ -8,19 +8,21 @@ import { Check, Loader2 } from "lucide-react";
 import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
 
-import DemoVideo from "@/components/Assets/video/demo.mp4"
+import DemoVideo from "@/components/Assets/video/demo.mp4";
 
 interface DemoVideoComponentProps {
-    className: string;
+  className: string;
 }
 
-export const DemoVideoComponent: React.FC<DemoVideoComponentProps> = ({ className}) => {
+export const DemoVideoComponent: React.FC<DemoVideoComponentProps> = ({
+  className,
+}) => {
   return (
-    <video className={className} preload="auto" autoPlay playsInline controls>
+    <video className={className} preload="auto" autoPlay loop muted>
       <source src={DemoVideo} type="video/mp4" />
     </video>
   );
-}
+};
 
 const TEXTS: string[] = [
   "General Advisor",
@@ -190,8 +192,8 @@ export default function Home() {
         );
         const { title, subtitle, rotatingTexts } = response.data;
 
-        const title1 = title.split("With")[0]
-        const title2 = title.split("Career")[1]
+        const title1 = title.split("With")[0];
+        const title2 = title.split("Career")[1];
         // const titleWords = title.split(" ");
         console.log("Line 163", rotatingTexts);
         // const midpoint = Math.ceil(titleWords.length / 2.7);
@@ -468,7 +470,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="md:w-1/2 border-gray-100 rounded-lg">
-            <DemoVideoComponent className="w-full object-cover h-auto"/>
+            <DemoVideoComponent className="w-full object-cover h-auto" />
           </div>
         </div>
       </div>
