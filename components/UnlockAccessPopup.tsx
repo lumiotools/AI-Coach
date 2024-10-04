@@ -22,7 +22,7 @@ export default function UnlockAccessDialog({
 }: UnlockAccessDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] dark:bg-[#A5C3FF3D] space-y-2 py-4 border-gray-700">
+      <DialogContent className="sm:max-w-[425px] bg-custom-gradient backdrop-blur-20 space-y-2 py-4 border-gray-700">
         <DialogHeader className="">
           <DialogTitle className="text-2xl leading-none text-white">
             Unlock Exclusive Access
