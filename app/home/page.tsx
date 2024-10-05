@@ -53,7 +53,6 @@ export default function Home() {
   const scrollRef3 = useRef<HTMLDivElement | null>(null);
   const [index, setIndex] = useState<number>(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  console.log(hoveredIndex);
 
   const handleMouseEnter = useCallback((index: number) => {
     setHoveredIndex(index);
@@ -195,7 +194,6 @@ export default function Home() {
         const title1 = title.split("With")[0];
         const title2 = title.split("Career")[1];
         // const titleWords = title.split(" ");
-        console.log("Line 163", rotatingTexts);
         // const midpoint = Math.ceil(titleWords.length / 2.7);
         setTitle1(title1);
         setTitle2(title2);

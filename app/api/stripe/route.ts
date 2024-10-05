@@ -29,6 +29,7 @@ export async function POST(request: Request) {
     await clerkClient.users.updateUserMetadata(userId, {
       publicMetadata: {
         paymentInfo: {
+          payment_id: paymentInfo._id,
           email: paymentInfo.userEmail,
           planDetails: paymentInfo.planDetails,
         },

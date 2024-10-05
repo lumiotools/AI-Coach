@@ -45,21 +45,17 @@ export function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { signOut } = useClerk();
-  const supabaseUrl = "https://cfkdwcrvjjpprhbmzzxz.supabase.co";
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || "";
   const supabase = createClient(supabaseUrl, supabaseKey);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
-
-  console.log("User", user);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       setUserEmail(user.primaryEmailAddress?.emailAddress || "");
 
       const hasSeenIntro = user.unsafeMetadata?.hasSeenIntro;
-
-      console.log("hasSeenIntro", hasSeenIntro);
 
       if (!hasSeenIntro) {
         setIsIntroModalOpen(true);
@@ -90,11 +86,13 @@ export function Page() {
           .select("user_id")
           .eq("user_id", userId);
 
-        if (Boolean(user) && user !== null && user.length === 0) {
+        if (!user || user.length === 0) {
           const { data, error } = await supabase
             .from("user")
             .insert([{ user_id: userId }])
             .select();
+
+          console.log("data", data);
         }
       }
     }
