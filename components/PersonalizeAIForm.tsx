@@ -23,7 +23,6 @@ export default function PersonalizedAIForm({
     name: "",
     age: 25,
     occupation: "",
-    interests: "",
     learningStyle: "",
     contentType: "",
     communicationStyle: "",
@@ -174,30 +173,6 @@ export default function PersonalizedAIForm({
                     className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] rounded-[8px]focus:outline-none 
                                         dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
                                         placeholder:text-gray-100 dark:placeholder:text-gray-600 "
-                    style={{
-                      fontSize: "16px",
-                      fontStyle: "normal",
-                      fontWeight: 300,
-                    }}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="interests"
-                    className="text-sm font-medium text-white dark:text-black"
-                  >
-                    Interests
-                  </Label>
-                  <Textarea
-                    id="interests"
-                    name="interests"
-                    value={formData.interests}
-                    onChange={handleInputChange}
-                    placeholder="Tell us about your interests..."
-                    className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF]  rounded-[8px] focus:outline-none 
-                                        dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                                        placeholder:text-gray-100 dark:placeholder:text-gray-600"
                     style={{
                       fontSize: "16px",
                       fontStyle: "normal",
