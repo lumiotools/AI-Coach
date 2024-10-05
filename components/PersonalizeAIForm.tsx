@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
-import { Textarea } from "../components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "@clerk/nextjs";
 
@@ -68,12 +67,32 @@ export default function PersonalizedAIForm({
   };
 
   useEffect(() => {
-    if (user) {
-      setFormData((prevValue) => ({
-        ...prevValue,
-        name: user.fullName || "",
-      }));
-    }
+    const fetchPersonalizedData = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from("user")
+          .select("personalized_data")
+          .eq("user_id", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching personalized data:", error);
+        } else if (data && data.personalized_data) {
+          setFormData({
+            ...formData,
+            ...data.personalized_data,
+            name: user.fullName || data.personalized_data.name || "",
+          });
+        } else {
+          setFormData({
+            ...formData,
+            name: user.fullName || "",
+          });
+        }
+      }
+    };
+
+    fetchPersonalizedData();
   }, [user]);
 
   return (
@@ -122,8 +141,8 @@ export default function PersonalizedAIForm({
                       onChange={handleInputChange}
                       placeholder="Enter your name"
                       className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] rounded-[8px] focus:outline-none 
-                                            dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                                            placeholder:text-gray-100 dark:placeholder:text-gray-600"
+                      dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
+                      placeholder:text-gray-100 dark:placeholder:text-gray-600"
                       style={{
                         fontSize: "16px",
                         fontStyle: "normal",
@@ -149,8 +168,8 @@ export default function PersonalizedAIForm({
                       min="18"
                       max="100"
                       className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0]  border border-[#2F76FF]  rounded-[8px] focus:outline-none  
-                                            dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                                            placeholder:text-gray-100 dark:placeholder:text-gray-600"
+                      dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
+                      placeholder:text-gray-100 dark:placeholder:text-gray-600"
                       style={{
                         fontSize: "16px",
                         fontStyle: "normal",
@@ -175,8 +194,8 @@ export default function PersonalizedAIForm({
                       onChange={handleInputChange}
                       placeholder="Your current job"
                       className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF]  rounded-[8px] focus:outline-none 
-              dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-              placeholder:text-gray-100 dark:placeholder:text-gray-600"
+                      dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
+                      placeholder:text-gray-100 dark:placeholder:text-gray-600"
                       style={{
                         fontSize: "16px",
                         fontStyle: "normal",
@@ -200,8 +219,8 @@ export default function PersonalizedAIForm({
                     onChange={handleInputChange}
                     placeholder="Tell us about your background..."
                     className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] rounded-[8px]focus:outline-none 
-                                        dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                                        placeholder:text-gray-100 dark:placeholder:text-gray-600 "
+                    dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
+                    placeholder:text-gray-100 dark:placeholder:text-gray-600 "
                     style={{
                       fontSize: "16px",
                       fontStyle: "normal",
@@ -259,8 +278,8 @@ export default function PersonalizedAIForm({
                     onChange={handleInputChange}
                     placeholder="What are your learning or professional goals?"
                     className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] focus:outline-none rounded-[8px] 
-                                        dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                                        placeholder:text-gray-100 dark:placeholder:text-gray-600"
+                    dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
+                    placeholder:text-gray-100 dark:placeholder:text-gray-600"
                     style={{
                       fontSize: "16px",
                       fontStyle: "normal",
