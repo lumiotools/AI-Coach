@@ -22,7 +22,7 @@ export default function SignInPage() {
         {/* <SignIn redirectUrl="https://agentcoach-ai-new.vercel.app/ai" forceRedirectUrl="https://agentcoach-ai-new.vercel.app/ai" signUpUrl='https://agentcoach-ai-new.vercel.app/ai'/> */}
         <SignIn
           appearance={appearance}
-          signUpUrl={`${process.env.NEXT_PUBLIC_APP_URL}/signin`}
+          signUpUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/signup`}
         />
       </div>
     </div>
