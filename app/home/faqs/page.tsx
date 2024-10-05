@@ -53,8 +53,8 @@ const Faq: React.FC = () => {
           Frequently Asked Questions AboutAgent Coach.ai
         </h1>
         <p className="text-lg text-gray-400 text-center w-11/12">
-          Find answers to your queries about the capabilities and usage of
-          AgentCoach.ai.
+          Get the Answers You Need About AgentCoach.ai's Powerful Features and
+          Benefits!
         </p>
       </div>
       <div className={styles.faqContainer}>
