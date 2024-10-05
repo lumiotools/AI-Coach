@@ -112,7 +112,7 @@ const tiers: Tier[] = [
       discounted: "Contact us",
       strikethrough: false,
     },
-    description: "Tailored and Solutions for Organizations",
+    description: "Tailored Solutions for Organizations",
     features: [
       "Custom Built AI Coaches",
       "Organizational Branding",
