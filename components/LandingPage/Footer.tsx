@@ -9,9 +9,9 @@ import Image from "next/image";
 export function Footer() {
   return (
     <footer className="bg-white text-black py-16 px-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="space-y-4">
-          <div className="w-full">
+          <div className="w-full -ml-2">
             <Image src={logo} alt="AgentCoach Logo" className="h-16 w-auto" />
           </div>
           <p className="text-sm text-gray-500">
@@ -102,23 +102,6 @@ export function Footer() {
           <p className="text-sm">Email: support@agentcoach.ai</p>
           <p className="text-sm">Phone: (555) 123-4567</p>
           <p className="text-sm">Address: 123 AI Street, Tech City, TC 12345</p>
-        </div>
-
-        <div className="space-y-4">
-          <h4 className="text-lg font-semibold">Newsletter</h4>
-          <p className="text-sm">
-            Stay updated with our latest news and offers.
-          </p>
-          <form className="flex flex-col space-y-2">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              className="bg-white/10 border-white/20 text-black placeholder-gray-400 border-black-2 shadow-sm outline-none rounded-lg"
-            />
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
-              Subscribe
-            </Button>
-          </form>
         </div>
       </div>
       <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-gray-400">
