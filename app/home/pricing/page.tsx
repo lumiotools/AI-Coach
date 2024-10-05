@@ -366,6 +366,8 @@ export default function PricingPage() {
           </h2>
           <a
             href="mailto:support@agentcoach.ai"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-[#2F76FF] hover:underline transition-all duration-300 ease-in-out"
           >
             Reach Out
