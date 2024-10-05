@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -174,6 +174,25 @@ export default function PricingPage() {
   const [billingPeriod, setBillingPeriod] = useState<"monthly" | "annual">(
     "monthly"
   );
+  const [currentPlan, setCurrentPlan] = useState<string>("free");
+  const [currentBillingPeriod, setCurrentBillingPeriod] = useState<
+    "month" | "year" | null
+  >(null);
+
+  useEffect(() => {
+    if (
+      user &&
+      user.publicMetadata &&
+      (user.publicMetadata as any).paymentInfo
+    ) {
+      const paymentInfo = (user.publicMetadata as any).paymentInfo;
+      setCurrentPlan(paymentInfo.planDetails.name.toLowerCase());
+      setCurrentBillingPeriod(paymentInfo.planDetails.billingPeriod);
+    } else {
+      setCurrentPlan("free");
+      setCurrentBillingPeriod(null);
+    }
+  }, [user]);
 
   const handleSubscribe = async (plan: string) => {
     if (!isSignedIn) {
@@ -290,6 +309,12 @@ export default function PricingPage() {
                       onSubscribe={handleSubscribe}
                       isLoading={isLoading}
                       strikethrough={tier.monthlyPrice.strikethrough}
+                      isCurrentPlan={
+                        currentPlan === tier.plan.toLowerCase() &&
+                        (currentBillingPeriod === "month" ||
+                          currentPlan === "free")
+                      }
+                      currentPlan={currentPlan}
                     />
                   </motion.div>
                 ))}
@@ -312,6 +337,11 @@ export default function PricingPage() {
                       onSubscribe={handleSubscribe}
                       isLoading={isLoading}
                       strikethrough={tier.annualPrice.strikethrough}
+                      isCurrentPlan={
+                        currentPlan === tier.plan.toLowerCase() &&
+                        currentBillingPeriod === "year"
+                      }
+                      currentPlan={currentPlan}
                     />
                   </motion.div>
                 ))}
@@ -386,6 +416,8 @@ interface PricingCardProps {
   onSubscribe: (plan: string) => void;
   isLoading: boolean;
   strikethrough: boolean;
+  isCurrentPlan: boolean;
+  currentPlan: string;
 }
 
 function PricingCard({
@@ -396,6 +428,8 @@ function PricingCard({
   onSubscribe,
   isLoading,
   strikethrough,
+  isCurrentPlan,
+  currentPlan,
 }: PricingCardProps) {
   return (
     <Card
@@ -454,13 +488,22 @@ function PricingCard({
       <CardFooter className="mt-auto">
         <Button
           className={
-            "w-full hover:bg-[#3a7bc8] transition-all duration-300 ease-in-out transform hover:scale-105" +
-            `${tier.plan === "free" ? " bg-gray-400" : " bg-[#2F76FF]"}`
+            "w-full hover:bg-[#3a7bc8] transition-all duration-300 ease-in-out transform hover:scale-105 rounded-md" +
+            `${tier.plan === "free" ? " bg-gray-400" : " bg-[#2F76FF]"}` +
+            `${isCurrentPlan ? " bg-gray-400 hover:bg-gray-400" : ""}`
           }
           onClick={() => onSubscribe(tier.plan)}
-          disabled={isLoading}
+          disabled={
+            isLoading ||
+            isCurrentPlan ||
+            (tier.plan === "free" && currentPlan !== "free")
+          }
         >
-          {tier.plan === "organization" ? "Contact Us" : "Choose Plan"}
+          {isCurrentPlan
+            ? "Current Plan"
+            : tier.plan === "organization"
+            ? "Contact Us"
+            : "Choose Plan"}
         </Button>
       </CardFooter>
     </Card>
