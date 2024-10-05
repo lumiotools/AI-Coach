@@ -28,7 +28,7 @@ export default function UnlockAccessDialog({
             Unlock Exclusive Access
           </DialogTitle>
           <DialogDescription className="text-xs">
-            Sign up to access this expert feature and elevate your skills!
+            Upgrade to access this expert feature and elevate your skills!
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
