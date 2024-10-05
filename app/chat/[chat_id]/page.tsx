@@ -57,6 +57,7 @@ import avatarlight from "@/components/Assets/avatar.png";
 import avatardark from "@/components/Assets/darkavatar.png";
 // import aiavatar from ""
 import useTheme from "@/app/hooks/useTheme";
+import TrialEndPopup from "@/components/TrialEndsPopup";
 
 type Message = {
   role: "user" | "assistant" | "system";
@@ -208,6 +209,11 @@ export default function Page({ params: { chat_id } }: Props) {
   const { theme, toggleTheme } = useTheme();
   const [personalizedData, setPersonalizedData] =
     useState<PersonalizedData | null>(null);
+  const [showTrialEndPopup, setShowTrialEndPopup] = useState(false);
+
+  useEffect(() => {
+    setShowTrialEndPopup(true);
+  }, []);
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -959,6 +965,9 @@ export default function Page({ params: { chat_id } }: Props) {
         </div>
       </SignedIn>
       <ToastContainer />
+      {showTrialEndPopup && (
+        <TrialEndPopup onClose={() => setShowTrialEndPopup(false)} />
+      )}
     </div>
   );
 }
