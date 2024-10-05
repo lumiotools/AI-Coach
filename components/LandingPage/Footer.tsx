@@ -124,13 +124,28 @@ export function Footer() {
       <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-gray-400">
         <p>© 2024 Agentcoach.ai. All rights reserved.</p>
         <div className="mt-2 space-x-4">
-          <a href="#" className="hover:text-blue-400 transition-colors">
+          <a
+            href="/privacy-policy.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+          >
             Privacy Policy
           </a>
-          <a href="#" className="hover:text-blue-400 transition-colors">
+          <a
+            href="/terms-of-service.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+          >
             Terms of Service
           </a>
-          <a href="#" className="hover:text-blue-400 transition-colors">
+          <a
+            href="/cookie-policy.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+          >
             Cookie Policy
           </a>
         </div>
