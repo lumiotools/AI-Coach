@@ -161,6 +161,7 @@ export function Page() {
     if (user) {
       user.update({
         unsafeMetadata: {
+          ...user.unsafeMetadata,
           hasSeenIntro: true,
         },
       });

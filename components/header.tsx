@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { LogOut, Settings, Menu, BrainCircuit } from "lucide-react";
 import Link from "next/link";
@@ -11,21 +11,47 @@ import moon from "@/components/Assets/MoonStars.svg";
 import lightlogo from "@/components/Assets/light-logo1.png";
 import darklogo from "@/components/Assets/dark-logo3.png";
 import useTheme from "@/app/hooks/useTheme";
-import { useClerk } from "@clerk/nextjs";
+import { useClerk, useUser, useAuth } from "@clerk/nextjs";
 import PersonalizedAIForm from "./PersonalizeAIForm";
 
 export default function HeaderBar({
   isSidebarOpen,
   setIsSidebarOpen,
-  signOut
+  signOut,
 }: any) {
-  const { theme, toggleTheme } = useTheme(); 
+  const { theme, toggleTheme } = useTheme();
   const { openUserProfile } = useClerk();
+  const { isLoaded, isSignedIn, userId } = useAuth();
+  const { user } = useUser();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleOpenForm = () => setIsFormOpen(true);
-  const handleCloseForm = () => setIsFormOpen(false);
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn && user) {
+      const hasSeenPersonalizedIntro =
+        user.unsafeMetadata?.hasSeenPersonalizedIntro;
+      const hasSeenIntro = user.unsafeMetadata?.hasSeenIntro;
+
+      if (!hasSeenPersonalizedIntro && hasSeenIntro) {
+        setIsFormOpen(true);
+      }
+    }
+  }, [isLoaded, isSignedIn, user, userId]);
+
+  const closeIntroModal = () => {
+    setIsFormOpen(false);
+
+    if (user) {
+      user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata,
+          hasSeenPersonalizedIntro: true,
+        },
+      });
+    }
+  };
 
   return (
     <>
@@ -57,8 +83,6 @@ export default function HeaderBar({
           </Link>
         </div>
         <div className="flex items-center md:space-x-4 space-x-0">
-
-
           <Button
             onClick={() => handleOpenForm()}
             variant="navbtn"
@@ -143,7 +167,7 @@ export default function HeaderBar({
         </div>
       </header>
 
-      <PersonalizedAIForm isOpen={isFormOpen} onClose={handleCloseForm} />
+      <PersonalizedAIForm isOpen={isFormOpen} onClose={closeIntroModal} />
     </>
   );
 }
