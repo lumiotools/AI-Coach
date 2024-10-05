@@ -37,7 +37,7 @@ interface Tier {
 
 // Replace with your Stripe publishable key
 const stripePromise = loadStripe(
-  "pk_test_51OD7X2SGxfAbFy2L9HhqRfde5HzpY5pAb1LsDvgWMfNOyCjh9djhd8Me7TFODBFP7HArIWdBkDwNHvaHLpCxhsI300zZDZU0MO"
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
 
 const tiers: Tier[] = [

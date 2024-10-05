@@ -45,13 +45,11 @@ export function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { signOut } = useClerk();
-  const supabaseUrl = "https://cfkdwcrvjjpprhbmzzxz.supabase.co";
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || "";
   const supabase = createClient(supabaseUrl, supabaseKey);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
-
-  console.log("User", user);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
