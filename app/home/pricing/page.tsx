@@ -53,7 +53,7 @@ const tiers: Tier[] = [
       discounted: "$0",
       strikethrough: false,
     },
-    description: "Essential AI coaching for individuals",
+    description: "General AI coaching for individuals",
     features: ["General AI Coach Only", "Usage Limits"],
     plan: "free",
   },

@@ -62,13 +62,14 @@ export function Header() {
           {isSignedIn ? (
             <>
               <li className="md:hidden">
-                <Button
-                  variant="ghost"
-                  className="text-black hover:text-blue-500 w-full text-left"
-                  onClick={handleLogout}
-                >
-                  Log Out
-                </Button>
+                <Link href="/">
+                  <Button
+                    variant="ghost"
+                    className="text-black hover:text-blue-500 w-full text-left"
+                  >
+                    Go to Chatbot
+                  </Button>
+                </Link>
               </li>
               <li className="md:hidden">
                 <Link href="/home#home-page-bottom-section">
@@ -111,13 +112,11 @@ export function Header() {
       <div className="hidden md:flex space-x-4">
         {isSignedIn ? (
           <>
-            <Button
-              variant="ghost"
-              className="text-black hover:text-blue-500"
-              onClick={handleLogout}
-            >
-              Log Out
-            </Button>
+            <Link href="/">
+              <Button className="text-white bg-blue-500 hover:bg-blue-600 rounded-md w-full text-left">
+                Go to Chatbot
+              </Button>
+            </Link>
             <Link href="/home#home-page-bottom-section">
               <Button className="text-white w-full rounded-md">See Demo</Button>
             </Link>
