@@ -175,6 +175,15 @@ function parseCustomTags(content: string): string {
   );
 }
 
+type PersonalizedData = {
+  name: string;
+  age: number;
+  occupation: string;
+  learningStyle: string;
+  goals: string;
+  background: string;
+};
+
 export default function Page({ params: { chat_id } }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSending, setIsSending] = useState(false);
@@ -197,6 +206,9 @@ export default function Page({ params: { chat_id } }: Props) {
   );
   const [firstMessageSent, setFirstMessageSent] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [personalizedData, setPersonalizedData] =
+    useState<PersonalizedData | null>(null);
+
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
       if (newRouteRef.current) return;
@@ -234,6 +246,27 @@ export default function Page({ params: { chat_id } }: Props) {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  //Personalized AI Data
+  useEffect(() => {
+    const fetchPersonalizedData = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from("user")
+          .select("personalized_data")
+          .eq("user_id", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching personalized data:", error);
+        } else if (data) {
+          setPersonalizedData(data.personalized_data);
+        }
+      }
+    };
+
+    fetchPersonalizedData();
+  }, [user]);
+
   const handleSendMessage = async (message: string) => {
     // if(!isSidebarOpen) handleAskQuestion(message);
     if (isSending) return;
@@ -268,10 +301,6 @@ export default function Page({ params: { chat_id } }: Props) {
 
       setMessages((prev) => [...prev, userMessage]);
 
-      const personalizedAIData = JSON.parse(
-        localStorage.getItem("personalizedAIData") as string
-      );
-
       try {
         const response = await fetch("/api/chat", {
           method: "POST",
@@ -280,7 +309,7 @@ export default function Page({ params: { chat_id } }: Props) {
             messages: [...messages, userMessage],
             chatbot: currentExpert.toLowerCase(),
             expert: currentExpert,
-            personalizedAIData: personalizedAIData,
+            personalizedAIData: personalizedData,
           }),
         });
 

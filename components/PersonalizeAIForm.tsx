@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -9,6 +9,8 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
 import { Textarea } from "../components/ui/textarea";
+import { createClient } from "@supabase/supabase-js";
+import { useUser } from "@clerk/nextjs";
 
 interface PersonalizedAIFormProps {
   isOpen: boolean;
@@ -19,15 +21,17 @@ export default function PersonalizedAIForm({
   isOpen,
   onClose,
 }: PersonalizedAIFormProps) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || "";
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  const { user } = useUser();
+
   const [formData, setFormData] = useState({
     name: "",
-    age: 25,
+    age: "",
     occupation: "",
     learningStyle: "",
-    contentType: "",
-    communicationStyle: "",
     goals: "",
-    accessibilityNeeds: false,
     background: "",
   });
 
@@ -41,11 +45,36 @@ export default function PersonalizedAIForm({
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem("personalizedAIData", JSON.stringify(formData));
-    onClose();
+
+    if (!user) {
+      console.error("No user found");
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from("user")
+        .update({ personalized_data: formData })
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+
+      onClose();
+    } catch (error) {
+      console.error("Error saving data to Supabase:", error);
+    }
   };
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prevValue) => ({
+        ...prevValue,
+        name: user.fullName || "",
+      }));
+    }
+  }, [user]);
 
   return (
     <div>
@@ -216,61 +245,6 @@ export default function PersonalizedAIForm({
                   </RadioGroup>
                 </div>
 
-                {/* <div className="space-y-2">
-                                    <Label htmlFor="contentType" className="text-sm font-medium text-white dark:text-gray-300">Preferred Content Type</Label>
-                                    <Select onValueChange={(value) => handleSelectChange("contentType", value)}
-                                    >
-                                        <SelectTrigger    className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] focus:outline-none  pl-6 
-                                        dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                                        placeholder:text-gray-500"
-                                                                      style={{
-                                                                          fontSize: "16px",
-                                                                          fontStyle: "normal",
-                                                                          fontWeight: 300,
-                                                                      }}>
-                                            <SelectValue placeholder="Select content type" />
-                                        </SelectTrigger>
-                                        <SelectContent
-   className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] focus:outline-none 
-   dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-   placeholder:text-gray-500"
-                                 style={{
-                                     fontSize: "16px",
-                                     fontStyle: "normal",
-                                     fontWeight: 300,
-                                 }}
-                                        >
-                                            {["Text", "Audio", "Video", "Interactive"].map((type) => (
-                                                <SelectItem key={type} value={type.toLowerCase()} className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] focus:outline-none 
-                                                dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                                                placeholder:text-gray-500"
-                                                                              style={{
-                                                                                  fontSize: "16px",
-                                                                                  fontStyle: "normal",
-                                                                                  fontWeight: 300,
-                                                                              }}>{type}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="communicationStyle" className="text-sm font-medium text-white dark:text-gray-300">Preferred Communication Style</Label>
-                                    <Select onValueChange={(value) => handleSelectChange("communicationStyle", value)}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select communication style" className="text-white" />
-                                        </SelectTrigger>
-                                        <SelectContent 
-                                                                                className="bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] focus:outline-none"
->
-                                            {["Formal", "Casual", "Technical", "Humorous"].map((style) => (
-                                                <SelectItem key={style} value={style.toLowerCase()} className="text-black">{style}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div> */}
-
                 <div className="space-y-2">
                   <Label
                     htmlFor="goals"
@@ -294,17 +268,6 @@ export default function PersonalizedAIForm({
                     }}
                   />
                 </div>
-
-                {/* <div className="flex items-center space-x-2">
-                                    <Switch
-                                        id="accessibilityNeeds"
-                                        checked={formData.accessibilityNeeds}
-                                        onCheckedChange={handleSwitchChange}
-                                    />
-                                    <Label htmlFor="accessibilityNeeds" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        I have accessibility needs
-                                    </Label>
-                                </div> */}
 
                 <div className="flex justify-center items-center">
                   <Button
