@@ -13,7 +13,7 @@ import pp4 from "@/components/Assets/images/james.png";
 export const testimonials = [
   {
     id: 1,
-    image: pp1, 
+    image: pp1,
     icon: icon12,
     text: '"The real-time feedback is invaluable. It\'s like having a mentor in my pocket."',
     name: "Kathy Welsh",
@@ -21,15 +21,15 @@ export const testimonials = [
   },
   {
     id: 2,
-    image: pp2, 
+    image: pp2,
     icon: icon12,
-    text: '"Agent Coach.ai has revolutionized my approach to negotiations. I feel more confident than ever!"',
+    text: '"AgentCoach.ai has revolutionized my approach to negotiations. I feel more confident than ever!"',
     name: "Jeff Hammerberg",
     position: "Real Estate Agent",
   },
   {
     id: 3,
-    image: pp3, 
+    image: pp3,
     icon: icon12,
     text: '"The interactive scenarios have empowered me to negotiate confidently and overcome objections with ease."',
     name: "Merlin Parker",
@@ -37,7 +37,7 @@ export const testimonials = [
   },
   {
     id: 4,
-    image: pp4, 
+    image: pp4,
     icon: icon12,
     text: '"I love how convenient it is to access my AI coach 24/7!"',
     name: "James Alonso",
@@ -82,8 +82,8 @@ const TestimonialSlider: React.FC = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-8 text-black">
-            What Users Say <br className="block md:hidden" /> About Agent
-            Coach.ai
+            What Users Say <br className="block md:hidden" /> About
+            AgentCoach.ai
           </h2>
           <p className="text-sm sm:text-base text-center text-gray-600 mb-8 max-w-3xl mx-auto">
             Hear from real estate professionals who{" "}

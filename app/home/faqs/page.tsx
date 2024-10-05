@@ -13,9 +13,9 @@ interface FaqItem {
 }
 
 const Faq: React.FC = () => {
-  const [faqData, setFaqData] = useState<FaqItem[]>([]); 
-  const [loading, setLoading] = useState<boolean>(true); 
-  const [activeIndex, setActiveIndex] = useState<number | null>(null); 
+  const [faqData, setFaqData] = useState<FaqItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const answerRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const Faq: React.FC = () => {
         const response = await axios.get(
           "https://admindashbord-lumio.onrender.com/faqs"
         );
-        const { faqs } = response.data; 
+        const { faqs } = response.data;
         setFaqData(faqs);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -50,11 +50,11 @@ const Faq: React.FC = () => {
     <div className={styles.main}>
       <div className={styles.box}>
         <h1 className="text-3xl font-normal text-white mb-2">
-          Frequently Asked Questions About Agent Coach.ai
+          Frequently Asked Questions AboutAgent Coach.ai
         </h1>
         <p className="text-lg text-gray-400 text-center w-11/12">
-          Find answers to your queries about the capabilities and usage of Agent
-          Coach.ai.
+          Find answers to your queries about the capabilities and usage of
+          AgentCoach.ai.
         </p>
       </div>
       <div className={styles.faqContainer}>

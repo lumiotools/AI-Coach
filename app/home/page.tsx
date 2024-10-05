@@ -124,7 +124,7 @@ export default function Home() {
       name: "Jan Stiedemann",
       role: "Global Applications Representative",
       quote:
-        "Agent Coach.ai has revolutionized my approach to negotiations. I feel more confident than ever!",
+        "AgentCoach.ai has revolutionized my approach to negotiations. I feel more confident than ever!",
       avatarUrl: "https://picsum.photos/seed/jan/200/200",
     },
     {
