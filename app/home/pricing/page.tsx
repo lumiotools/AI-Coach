@@ -229,7 +229,7 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0C0D1C] text-white px-8 pt-28 pb-8">
+    <div className="min-h-screen bg-[#0C0D1C] text-white px-8 pt-20 pb-8">
       <div className="max-w-7xl mx-auto">
         <motion.h1
           className="text-3xl font-bold mb-2 text-center"
@@ -254,9 +254,6 @@ export default function PricingPage() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Tabs defaultValue="monthly" className="mb-12 relative">
-            <span className="bg-yellow-400 text-gray-800 text-xs font-bold rounded-lg p-1.5 absolute right-[5%] top-[-40px] md:right-[13%] md:top-[-32px] lg:right-[24%] xl:right-[29%] ">
-              {averageSavings.toFixed(0)}% off
-            </span>
             <TabsList className="bg-[#232b3e] grid w-full grid-cols-2 max-w-[400px] mx-auto my-10 h-fit rounded-full overflow-hidden">
               <TabsTrigger
                 value="monthly"
@@ -268,9 +265,12 @@ export default function PricingPage() {
               <TabsTrigger
                 value="annual"
                 onClick={() => setBillingPeriod("annual")}
-                className="p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
+                className="flex gap-4 p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
               >
-                Yearly
+                Yearly{" "}
+                <span className="bg-yellow-400 text-gray-800 text-xs font-bold rounded-md p-1.5">
+                  {averageSavings.toFixed(0)}% off
+                </span>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="monthly">
