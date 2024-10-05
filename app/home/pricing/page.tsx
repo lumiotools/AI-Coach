@@ -364,12 +364,12 @@ export default function PricingPage() {
           <h2 className="text-3xl font-bold mb-2 text-center">
             Still Have Questions?
           </h2>
-          <Link
-            href="/contact"
+          <a
+            href="mailto:support@agentcoach.ai"
             className="text-[#2F76FF] hover:underline transition-all duration-300 ease-in-out"
           >
             Reach Out
-          </Link>
+          </a>
         </div>
       </div>
     </div>
