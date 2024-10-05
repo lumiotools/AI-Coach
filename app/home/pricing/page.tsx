@@ -324,7 +324,7 @@ export default function PricingPage() {
             <CardContent className="p-10">
               <div className="flex justify-center mb-4">
                 <div className="bg-white text-[#1a2035] px-3 py-1 rounded-full text-sm font-semibold flex items-center">
-                  High Performer Spring 2023
+                  Testimonial
                 </div>
               </div>
               <div className="flex justify-center mb-4">
@@ -340,18 +340,22 @@ export default function PricingPage() {
                 functions&quot;
               </h3>
               <p className="text-center text-gray-300 mb-6 lg:w-1/2 mx-auto">
-                &quot;AgentCoach.AI is easy to use and powerful. Ever had a
-                situation where you need to schedule time with a colleague to
-                show them how to do something, but schedules don&apos;t align?
-                Make a quick AgentCoach.AI in these cases, creating can take as
-                little as a minute (seriously).&quot;
+                AgentCoach.AI has completely transformed my real estate business
+                reigniting my love and passion for the business again! The
+                AI-powered tools instantly provide everything from marketing
+                materials to client communication, saving me hours of work each
+                week. The personalized ai coaching bots have sharpened my sales
+                and negotiation skills, and the automated reports make it easy
+                to provide clients with up-to-date market insights, personalized
+                new buyer guides, sellers CMA, etc. Since using AgentCoach.AI,
+                I’ve seen a noticeable boost in both my productivity and income,
+                with more free time. I highly recommend it to any real estate
+                professional looking to take their business and life to the next
+                level!
               </p>
               <div className="text-center">
-                <p className="font-semibold text-white">Chris Widner</p>
-                <p className="text-sm text-gray-400">
-                  Business Operations Automation Lead
-                </p>
-                <p className="text-sm text-gray-400">IDK</p>
+                <p className="font-semibold text-white">Merlin Parker</p>
+                <p className="text-sm text-gray-400">Real Estate Broker</p>
               </div>
             </CardContent>
           </Card>
