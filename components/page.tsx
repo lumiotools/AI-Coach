@@ -57,8 +57,6 @@ export function Page() {
 
       const hasSeenIntro = user.unsafeMetadata?.hasSeenIntro;
 
-      console.log("hasSeenIntro", hasSeenIntro);
-
       if (!hasSeenIntro) {
         setIsIntroModalOpen(true);
       }
@@ -88,11 +86,13 @@ export function Page() {
           .select("user_id")
           .eq("user_id", userId);
 
-        if (Boolean(user) && user !== null && user.length === 0) {
+        if (!user || user.length === 0) {
           const { data, error } = await supabase
             .from("user")
             .insert([{ user_id: userId }])
             .select();
+
+          console.log("data", data);
         }
       }
     }

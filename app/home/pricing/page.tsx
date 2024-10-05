@@ -175,8 +175,6 @@ export default function PricingPage() {
     "monthly"
   );
 
-  console.log("User:", user);
-
   const handleSubscribe = async (plan: string) => {
     if (!isSignedIn) {
       router.push("/signin");
