@@ -23,16 +23,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userId = user.data[0].id;
+    const userData = user.data[0];
 
     // Update user metadata in Clerk
-    await clerkClient.users.updateUserMetadata(userId, {
+    await clerkClient.users.updateUserMetadata(userData.id, {
       publicMetadata: {
+        ...userData.publicMetadata,
         paymentInfo: {
           payment_id: paymentInfo._id,
           email: paymentInfo.userEmail,
-          planDetails: paymentInfo.planDetails,
         },
+        planDetails: paymentInfo.planDetails,
       },
     });
 
