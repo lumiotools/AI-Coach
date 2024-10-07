@@ -1,3 +1,5 @@
+"use client";
+
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,6 +9,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function TrialEndPopup({
   onClose,
@@ -17,19 +20,44 @@ export default function TrialEndPopup({
 }) {
   const isTrialEnded = remainingDays === 0;
 
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !isTrialEnded) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [onClose, isTrialEnded]);
+
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget && !isTrialEnded) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+      onClick={handleBackdropClick}
+    >
       <Card className="w-full max-w-md bg-custom-gradient backdrop-blur-20 rounded-lg shadow-lg relative text-white border-gray-700">
         <CardHeader className="text-right">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-2 top-2"
-            onClick={onClose}
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </Button>
+          {!isTrialEnded && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-2"
+              onClick={onClose}
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </Button>
+          )}
         </CardHeader>
         <CardContent className="text-center p-6">
           <div className="mb-4">

@@ -42,6 +42,7 @@ import avatarlight from "@/components/Assets/avatar.png";
 import avatardark from "@/components/Assets/darkavatar.png";
 // import aiavatar from ""
 import useTheme from "@/app/hooks/useTheme";
+import TrialEndPopupWrapper from "@/components/FreeTrialEnds/TrialEndsPopupWrapper";
 
 type Message = {
   role: "user" | "assistant" | "system";
@@ -943,6 +944,7 @@ export default function Page({ params: { chat_id } }: Props) {
         </div>
       </SignedIn>
       <ToastContainer />
+      <TrialEndPopupWrapper />
     </div>
   );
 }
