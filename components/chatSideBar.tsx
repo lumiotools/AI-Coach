@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import UnlockAccessDialog from "./UnlockAccessPopup";
+import AdminDashboardButton from "./AdminDashboardButton";
 
 type ChatPreview = {
   chat_id: string;
@@ -68,51 +69,7 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
     };
 
     fetchChatPreviews();
-
-    // const checkSubscriptionStatus = async () => {
-    //   const response = await fetch(
-    //     `${process.env.NEXT_PUBLIC_EMAIL_SERVER_URL}/check-email?email=${userEmail}`
-    //   );
-
-    //   if (!response.ok) {
-    //     console.error("Failed to check subscription status");
-    //     return;
-    //   }
-
-    //   const data = await response.json();
-    //   console.log("Subscription status:", data.subscribed);
-    //   setIsSubscribed(data.subscribed);
-    // };
-
-    // checkSubscriptionStatus();
   }, [userEmail, supabase, userId]);
-
-  // const handleSubscribe = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_EMAIL_SERVER_URL}/add-emails`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ emails: [userEmail] }),
-  //       }
-  //     );
-
-  //     console.log("Subscribed to newsletter:", response);
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to subscribe");
-  //     }
-
-  //     setIsSubscribed(true);
-  //     // toast.success("Successfully subscribed to newsletter!");
-  //   } catch (error) {
-  //     console.error("Error subscribing to newsletter:", error);
-  //     // toast.error("Failed to subscribe to newsletter. Please try again.");
-  //   }
-  // };
 
   const groupChatsByDate = (chats: ChatPreview[]) => {
     const groupedChats: { [key: string]: ChatPreview[] } = {};
@@ -135,19 +92,6 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
   return (
     <div className="w-64 h-full text-white">
       <hr className="border-gray-700"></hr>
-      {/* <div style={{padding:"100px"}}/> */}
-      {/* <div className={`${styles.subscribe} flex justify-center`}>
-        {!isSubscribed ? (
-          <Button
-            className="w-[200px] mb-4 mt-4 bg-transparent border-2 border-[rgba(67,91,140,1)] text-white dark:text-[rgba(67,91,140,1)] hover:bg-[rgba(67,91,140,1)] hover:text-white dark:hover:text-white transition-all duration-300 rounded-lg shadow-md group"
-            onClick={handleSubscribe}
-          >
-            <Newspaper className="mr-2 h-4 w-4 text-white dark:text-[rgba(67,91,140,1)] group-hover:text-white" />
-            Subscribe to Newsletter
-          </Button>
-        ) : null}
-      </div> */}
-
       <hr className="border-gray-700"></hr>
       <h2 className="dark:text-[#1E2A5E] flex pl-[29px] pt-[15px] text-xl font-semibold pt-2 pr-2 pl-2 pb-0 text-gray-100 common-text">
         Chat History
@@ -304,7 +248,6 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
 export default function Sidebar({
   isSidebarOpen,
   userId,
-  userEmail,
   supabase,
   handleExpertClick,
 }: any) {
@@ -323,6 +266,7 @@ export default function Sidebar({
     };
     trialStatus?: { trialEnded: boolean; remainingDays: number };
   };
+  const userEmail = user?.primaryEmailAddress?.emailAddress;
 
   const hasPaymentInfo = !!userMetadata?.paymentInfo;
   const hasPlanDetails = !!userMetadata?.planDetails;
@@ -386,7 +330,7 @@ export default function Sidebar({
               variant="ghost"
               className={`mx-auto dark:text-[#1E2A5E] w-full justify-start text-gray-300 
               hover:bg-white hover:text-white hover:bg-opacity-10 hover:rounded-lg 
-              dark:hover:bg-[rgba(30,42,94,0.12)] 
+              dark:hover:bg-[rgba(30,42,94,0.12)] pl-[22px]
               ${
                 activeExpert === expert
                   ? "rounded-lg bg-white bg-opacity-10 dark:bg-[rgba(30,42,94,0.12)]"
@@ -406,6 +350,7 @@ export default function Sidebar({
           )
         )}
       </div>
+      <AdminDashboardButton userEmail={userEmail} />
       {canAccessChatExperts && (
         <ChatHistory
           userId={userId}
