@@ -180,17 +180,15 @@ export default function PricingPage() {
   >(null);
 
   useEffect(() => {
-    if (
-      user &&
-      user.publicMetadata &&
-      (user.publicMetadata as any).paymentInfo
-    ) {
-      const paymentInfo = (user.publicMetadata as any).paymentInfo;
-      setCurrentPlan(paymentInfo.planDetails.name.toLowerCase());
-      setCurrentBillingPeriod(paymentInfo.planDetails.billingPeriod);
-    } else {
-      setCurrentPlan("free");
-      setCurrentBillingPeriod(null);
+    if (user && user.publicMetadata) {
+      const planDetails = (user.publicMetadata as any).planDetails;
+      if (planDetails) {
+        setCurrentPlan(planDetails.name.toLowerCase());
+        setCurrentBillingPeriod(planDetails.billingPeriod);
+      } else {
+        setCurrentPlan("free");
+        setCurrentBillingPeriod(null);
+      }
     }
   }, [user]);
 
@@ -205,12 +203,12 @@ export default function PricingPage() {
       return;
     }
 
-    if (plan === "enterprise") {
-      alert("Please contact us to subscribe to the Enterprise plan.");
+    if (plan === "organization") {
+      alert("Please contact us to subscribe to the Organization plan.");
       return;
     }
 
-    setIsLoading(true); // Start loader
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/create-checkout-session`,
@@ -232,18 +230,18 @@ export default function PricingPage() {
 
       if (stripe) {
         const { error } = await stripe.redirectToCheckout({ sessionId });
-        setIsLoading(false); // Remove loader after redirect
+        setIsLoading(false);
 
         if (error) {
           console.error("Error:", error);
         }
       } else {
         console.error("Stripe not loaded");
-        setIsLoading(false); // Remove loader if Stripe fails to load
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
-      setIsLoading(false); // Remove loader on error
+      setIsLoading(false);
     }
   };
 
