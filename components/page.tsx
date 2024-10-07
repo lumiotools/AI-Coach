@@ -26,6 +26,8 @@ import HeaderBar from "@/components/header";
 import TopicIntroduction from "@/components/topicIntroduction";
 import SpeechToText from "@/components/speechToText";
 import IntroductionModal from "@/components/IntroductionModal";
+import TrialEndPopup from "./FreeTrialEnds/TrialEndsPopup";
+import TrialEndPopupWrapper from "./FreeTrialEnds/TrialEndsPopupWrapper";
 
 type ExpertType =
   | "General"
@@ -314,6 +316,7 @@ export function Page() {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
       )}
       <IntroductionModal isOpen={isIntroModalOpen} onClose={closeIntroModal} />
+      <TrialEndPopupWrapper />
     </div>
   );
 }

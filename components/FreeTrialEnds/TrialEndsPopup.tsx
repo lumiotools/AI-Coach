@@ -8,7 +8,15 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function TrialEndPopup({ onClose }: { onClose: () => void }) {
+export default function TrialEndPopup({
+  onClose,
+  remainingDays,
+}: {
+  onClose: () => void;
+  remainingDays: number;
+}) {
+  const isTrialEnded = remainingDays === 0;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md bg-custom-gradient backdrop-blur-20 rounded-lg shadow-lg relative text-white border-gray-700">
@@ -38,10 +46,17 @@ export default function TrialEndPopup({ onClose }: { onClose: () => void }) {
               <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold mb-4">Your trial ends in 7 days</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            {isTrialEnded
+              ? "Your Free trial has ended"
+              : `Your Free trial ends in ${remainingDays} day${
+                  remainingDays !== 1 ? "s" : ""
+                }`}
+          </h2>
           <p className="text-gray-400 mb-6">
-            Are you making use of your trial as best as possible? Don't forget
-            to try out custom branding and blurring out sensitive information.
+            {isTrialEnded
+              ? "Your free trial period has come to an end. Upgrade now to continue enjoying our premium features."
+              : "Are you making use of your trial as best as possible? Don't forget to try out custom branding and blurring out sensitive information."}
           </p>
         </CardContent>
         <CardFooter className="flex justify-center space-x-4 p-6">

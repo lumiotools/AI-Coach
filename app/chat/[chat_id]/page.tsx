@@ -1,33 +1,22 @@
 "use client";
 
-import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { toast, ToastContainer } from "react-toastify";
-import genderNeutralAvatar from "@/components/avatar/gender neutral avatar.jpg";
 import "react-toastify/dist/ReactToastify.css";
 import {
   ArrowRight,
-  MessageCircle,
   Copy,
   ThumbsDown,
   ThumbsUp,
   Handshake,
   TrendingUp,
   Zap,
-  LogOut,
-  Settings,
   HelpCircle,
-  BarChart,
-  FileText,
-  Target,
   Brain,
-  Mic,
-  Menu,
   Megaphone,
   Home,
   BookCheck,
@@ -37,15 +26,11 @@ import {
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import { motion, AnimatePresence } from "framer-motion";
-import { useAuth, SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
+import { useAuth, SignedIn, useClerk } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
-import Link from "next/link";
-import { format } from "date-fns";
-import fs from "fs";
 import ChatSidebar from "@/components/chatSideBar";
 import HeaderBar from "@/components/header";
 import TopicIntroduction from "@/components/topicIntroduction";
@@ -57,7 +42,6 @@ import avatarlight from "@/components/Assets/avatar.png";
 import avatardark from "@/components/Assets/darkavatar.png";
 // import aiavatar from ""
 import useTheme from "@/app/hooks/useTheme";
-import TrialEndPopup from "@/components/TrialEndsPopup";
 
 type Message = {
   role: "user" | "assistant" | "system";
@@ -201,19 +185,13 @@ export default function Page({ params: { chat_id } }: Props) {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const searchParam = useSearchParams();
   const { user } = useUser();
-  const userEmail = user?.emailAddresses[0]?.emailAddress;
   const [placeholder, setPlaceholder] = useState(
     `Ask me any question about ${currentExpert.toLowerCase()}! Just type or use the microphone.`
   );
   const [firstMessageSent, setFirstMessageSent] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const [personalizedData, setPersonalizedData] =
     useState<PersonalizedData | null>(null);
-  const [showTrialEndPopup, setShowTrialEndPopup] = useState(false);
-
-  useEffect(() => {
-    setShowTrialEndPopup(true);
-  }, []);
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -965,9 +943,6 @@ export default function Page({ params: { chat_id } }: Props) {
         </div>
       </SignedIn>
       <ToastContainer />
-      {showTrialEndPopup && (
-        <TrialEndPopup onClose={() => setShowTrialEndPopup(false)} />
-      )}
     </div>
   );
 }
