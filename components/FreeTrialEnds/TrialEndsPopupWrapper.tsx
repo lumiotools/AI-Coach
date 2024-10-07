@@ -11,6 +11,22 @@ interface TrialStatus {
   trialEnded: boolean;
 }
 
+interface PlanDetails {
+  name: string;
+  price: number;
+  description: string;
+  billingPeriod: string;
+}
+
+interface UserMetadata {
+  paymentInfo?: {
+    email: string;
+    payment_id: string;
+  };
+  planDetails?: PlanDetails;
+  trialStatus?: TrialStatus;
+}
+
 export default function TrialEndPopupWrapper() {
   const [showPopup, setShowPopup] = useState(false);
   const [remainingDays, setRemainingDays] = useState<number | null>(null);
@@ -19,9 +35,9 @@ export default function TrialEndPopupWrapper() {
   useEffect(() => {
     const checkAndUpdateTrialStatus = async () => {
       if (isLoaded && user) {
-        let trialStatus = user.publicMetadata.trialStatus as
-          | TrialStatus
-          | undefined;
+        const metadata = user.publicMetadata as UserMetadata;
+        const trialStatus = metadata.trialStatus;
+        const planDetails = metadata.planDetails;
 
         if (!trialStatus) {
           const response = await fetch("/api/update-trial-status", {
@@ -29,16 +45,18 @@ export default function TrialEndPopupWrapper() {
           });
           const data = await response.json();
           if (data.success) {
-            trialStatus = data.trialStatus;
+            setRemainingDays(data.trialStatus.remainingDays);
+            setShowPopup(
+              data.trialStatus.remainingDays <= POPUP_THRESHOLD && !planDetails
+            );
           } else {
             console.error("Failed to update trial status:", data.error);
-            return;
           }
-        }
-
-        if (trialStatus) {
+        } else {
           setRemainingDays(trialStatus.remainingDays);
-          setShowPopup(trialStatus.remainingDays <= POPUP_THRESHOLD);
+          setShowPopup(
+            trialStatus.remainingDays <= POPUP_THRESHOLD && !planDetails
+          );
         }
       }
     };
