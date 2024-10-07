@@ -7,7 +7,7 @@ const AdminDashboardButton = ({
 }) => {
   if (userEmail !== undefined && userEmail === "salunkhekunal594@gmail.com") {
     return (
-      <div className="text-center px-8">
+      <div className="text-center px-8 mb-5">
         <a
           href="https://admin-dashboard-jade-gamma.vercel.app/"
           target="_blank"
