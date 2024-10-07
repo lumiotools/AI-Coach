@@ -18,6 +18,7 @@ import SpeechToText from "@/components/speechToText";
 import IntroductionModal from "@/components/IntroductionModal";
 import TrialEndPopup from "./FreeTrialEnds/TrialEndsPopup";
 import TrialEndPopupWrapper from "./FreeTrialEnds/TrialEndsPopupWrapper";
+import { ImageIcon } from "lucide-react";
 
 type ExpertType =
   | "General"
@@ -26,6 +27,12 @@ type ExpertType =
   | "Marketing"
   | "Negotiation"
   | "Motivation";
+
+type CommandOption = {
+  label: string;
+  icon: React.ReactNode;
+  action: () => void;
+};
 
 export function Page() {
   const [inputValue, setInputValue] = useState("");
@@ -42,11 +49,26 @@ export function Page() {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
+  const [showCommandMenu, setShowCommandMenu] = useState(false);
+  const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
+    {
+      label: "Picture",
+      icon: <ImageIcon className="w-4 h-4" />,
+      action: () => setSelectedCommand("picture"),
+    },
+  ]);
+
+  console.log("commandOptions", commandOptions);
+  console.log("showCommandMenu", showCommandMenu);
+  console.log("inputValue", inputValue);
+  console.log("selectedCommand", selectedCommand);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       setUserEmail(user.primaryEmailAddress?.emailAddress || "");
-
       const hasSeenIntro = user.unsafeMetadata?.hasSeenIntro;
 
       if (!hasSeenIntro) {
@@ -58,7 +80,6 @@ export function Page() {
   useEffect(() => {
     const expertType = searchParams.get("expertType");
     if (expertType) {
-      console.log(expertType);
       setCurrentExpert(expertType as ExpertType);
     }
   }, [searchParams]);
@@ -102,7 +123,24 @@ export function Page() {
           ])
           .select();
 
+        // if (selectedCommand === "picture") {
+        //   const response = await fetch("/api/generate-image", {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({ prompt: message }),
+        //   });
+
+        //   if (response.ok) {
+        //     const imageData = await response.json();
+        //     setGeneratedImage(imageData.imageUrl);
+        //   } else {
+        //     console.error("Failed to generate image");
+        //   }
+
+        //   setSelectedCommand(null);
+        // } else {
         router.push(`/chat/${chatId}?ques=${message}&new=true`);
+        // }
       } catch (error) {
         console.log("error", error);
       }
@@ -120,36 +158,54 @@ export function Page() {
     setIsSidebarOpen(false);
   };
 
-  const handleAskQuestion = (question: string) => {
-    handleSendMessage(question);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    console.log("value", value);
+    setInputValue(value);
+
+    if (value.includes("/")) {
+      const lastSlashIndex = value.lastIndexOf("/");
+      const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
+
+      setShowCommandMenu(true);
+
+      const filteredOptions = commandOptions.filter((option) =>
+        option.label.toLowerCase().startsWith(afterSlash)
+      );
+
+      setCommandOptions(
+        filteredOptions.length > 0 ? filteredOptions : commandOptions
+      );
+    } else {
+      setShowCommandMenu(false);
+      setCommandOptions([
+        {
+          label: "Picture",
+          icon: <ImageIcon className="w-4 h-4" />,
+          action: () => setSelectedCommand("picture"),
+        },
+      ]);
+    }
+  };
+
+  const handleCommandSelect = (option: CommandOption) => {
+    setInputValue(`${option.label} - `);
+    setSelectedCommand(option.label);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+    setCommandOptions((prevOptions) =>
+      prevOptions.filter((opt) => opt.label !== option.label)
+    );
+    setShowCommandMenu(false);
   };
 
   const handleTranscription = (transcribedText: string) => {
     setInputValue((prev) => `${prev} ${transcribedText}`);
   };
 
-  function handleActionClick(action: string): void {
-    switch (action) {
-      case "examples":
-        // Handle examples action
-        break;
-      case "specific":
-        // Handle specific action
-        break;
-      case "understand":
-        // Handle understand action
-        break;
-      case "continue":
-        // Handle continue action
-        break;
-      default:
-        console.log("Unknown action:", action);
-    }
-  }
-
   const closeIntroModal = () => {
     setIsIntroModalOpen(false);
-
     if (user) {
       user.update({
         unsafeMetadata: {
@@ -182,26 +238,31 @@ export function Page() {
           handleExpertClick={handleExpertClick}
         />
 
-        <div className="flex-1 flex flex-col  w-full bg-gradient-to-t from-[rgba(15, 16, 35, 0.80)] to-[rgba(15, 16, 35, 0.80)]">
-          {/* dark:bg-[rgba(213,227,255,0.74)] */}
+        <div className="flex-1 flex flex-col w-full bg-gradient-to-t from-[rgba(15, 16, 35, 0.80)] to-[rgba(15, 16, 35, 0.80)]">
           <ScrollArea className="flex-1" ref={scrollAreaRef}>
             <div className="p-4 space-y-4 min-h-[calc(100vh-12rem)]">
               <div className="pt-2">
                 <TopicIntroduction
                   topic={currentExpert}
-                  onAskQuestion={handleAskQuestion}
+                  onAskQuestion={handleSendMessage}
                 />
               </div>
+              {/* {generatedImage && (
+                <div className="mt-4">
+                  <img src={generatedImage} alt="Generated" className="max-w-full h-auto rounded-lg" />
+                </div>
+              )} */}
             </div>
           </ScrollArea>
 
-          <div className=" p-4">
+          <div className="p-4">
             <form
               onSubmit={handleFormSubmit}
               className="relative flex items-center w-full"
             >
               <div className={styles.main}>
                 <Input
+                  ref={inputRef} // Attach the ref to the Input component
                   className={`flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] rounded-full focus:outline-none pr-28 pl-6 
               dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
               placeholder:text-gray-500`}
@@ -212,7 +273,7 @@ export function Page() {
                     fontWeight: 300,
                   }}
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={handleInputChange}
                 />
 
                 <div className={styles.con}>
@@ -227,6 +288,20 @@ export function Page() {
                 </div>
               </div>
             </form>
+            {showCommandMenu && (
+              <div className="absolute bottom-28 bg-custom-gradient dark:bg-gray-800 rounded-md shadow-lg z-10">
+                {commandOptions.map((option, index) => (
+                  <button
+                    key={index}
+                    className="flex items-center w-full px-4 py-2 text-sm text-white"
+                    onClick={() => handleCommandSelect(option)}
+                  >
+                    {option.icon}
+                    <span className="ml-2">{option.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
             <p className="text-xs text-gray-500 mt-4 text-center">
               © 2024 AgentCoach.ai. All rights reserved.
             </p>

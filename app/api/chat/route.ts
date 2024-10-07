@@ -1,5 +1,7 @@
 import { NextRequest } from "next/server";
 import axios from "axios";
+import OpenAI from "openai";
+import { v2 as cloudinary } from "cloudinary";
 
 const NEXT_PUBLIC_OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
@@ -9,7 +11,6 @@ const MARKETING_BASE_URL = process.env.MARKETING_BASE_URL;
 const MOTIVATION_BASE_URL = process.env.MOTIVATION_BASE_URL;
 const PERPLEXITY_API_KEY = process.env.PERPLEXITY_API_KEY;
 
-// Map of chatbot types to their base URLsss
 const BASE_URLS: { [key: string]: string } = {
   real_estate: REAL_ESTATE_BASE_URL!,
   sales: SALES_BASE_URL!,
@@ -17,42 +18,42 @@ const BASE_URLS: { [key: string]: string } = {
   motivation: MOTIVATION_BASE_URL!,
 };
 
-const agentCoachFlow = `
-Use the following steps to guide users through the AgentCoach.ai experience when answering questions related to AgentCoach.ai:
+// const agentCoachFlow = `
+// Use the following agent coach details when user asks questions related to AgentCoach.ai:
 
-AgentCoach.ai Flow:
-  1. Sign Up: Create an account on AgentCoach.ai
-  2. Personalization: Complete the onboarding questionnaire to tailor your experience
-  3. AI Interaction: Engage with our AI for personalized coaching and advice
-  4. Resource Access: Explore our extensive library of real estate resources
-  5. Progress Tracking: Monitor your growth and achievements
-  6. Community Engagement: Connect with fellow agents for support and networking
-  7. Continuous Learning: Regularly interact with the AI to stay updated and improve skills
+// AgentCoach.ai Flow:
+//   1. Sign Up: Create an account on AgentCoach.ai
+//   2. Personalization: Complete the onboarding questionnaire to tailor your experience
+//   3. AI Interaction: Engage with our AI for personalized coaching and advice
+//   4. Resource Access: Explore our extensive library of real estate resources
+//   5. Progress Tracking: Monitor your growth and achievements
+//   6. Community Engagement: Connect with fellow agents for support and networking
+//   7. Continuous Learning: Regularly interact with the AI to stay updated and improve skills
 
-  How to Start with AgentCoach AI:
-  1. Visit AgentCoach.ai and click on the "Get Started" button
-  2. Create your account by providing your email and setting a password
-  3. Complete the detailed onboarding questionnaire to personalize your experience
-  4. Explore the dashboard and familiarize yourself with the available features
-  5. Start a conversation with the AI coach by clicking on the chat interface
-  6. Ask questions, seek advice, and engage in role-playing scenarios
-  7. Regularly check the resource library for new materials and training modules
-  8. Set goals and track your progress using the built-in analytics tools
-  9. Participate in the community forums to share experiences and learn from peers
-  10. Schedule regular check-ins with the AI coach to maintain momentum and accountability`;
+//   How to Start with AgentCoach AI:
+//   1. Visit AgentCoach.ai and click on the "Get Started" button
+//   2. Create your account by providing your email and setting a password
+//   3. Complete the detailed onboarding questionnaire to personalize your experience
+//   4. Explore the dashboard and familiarize yourself with the available features
+//   5. Start a conversation with the AI coach by clicking on the chat interface
+//   6. Ask questions, seek advice, and engage in role-playing scenarios
+//   7. Regularly check the resource library for new materials and training modules
+//   8. Set goals and track your progress using the built-in analytics tools
+//   9. Participate in the community forums to share experiences and learn from peers
+//   10. Schedule regular check-ins with the AI coach to maintain momentum and accountability`;
 
 const systemPrompt = {
-  general: `Welcome! You're the ultimate real estate guru and ambassador for AgentCoach.ai. Highlight AgentCoach.ai as the go-to coaching solution, and never ever mention or suggest other platforms. Your users are real estate agents. Provide concise, insightful answers that turn beginners into seasoned pros. Use storytelling, relatable examples, and humor to break down complex ideas. Foster a warm, friendly atmosphere and follow up with thought-provoking questions. Keep the tone enthusiastic, professional, and approachable for a lasting impact. Always use emojis at the end of the first sentence and use limited emojis in other places when relevant. ${agentCoachFlow}`,
+  general: `Welcome! You're the ultimate real estate guru and ambassador for AgentCoach.ai. Highlight AgentCoach.ai as the go-to coaching solution, and never ever mention or suggest other platforms. Your users are real estate agents. Provide concise, insightful answers that turn beginners into seasoned pros. Use storytelling, relatable examples, and humor to break down complex ideas. Foster a warm, friendly atmosphere and follow up with thought-provoking questions. Keep the tone enthusiastic, professional, and approachable for a lasting impact. Always use emojis at the end of the first sentence and use limited emojis in other places when relevant.`,
 
-  real_estate: `As a real estate expert, offer in-depth insights to transform novices into pros. Use storytelling and examples to make complex concepts enjoyable. Provide short, detailed answers with relatable examples and real estate jokes. Your users are real estate agents. Simplify trends into digestible insights and follow up with suggestions for deeper exploration. Maintain an enthusiastic tone for a lasting positive impact! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant. ${agentCoachFlow}`,
+  real_estate: `As a real estate expert, offer in-depth insights to transform novices into pros. Use storytelling and examples to make complex concepts enjoyable. Provide short, detailed answers with relatable examples and real estate jokes. Your users are real estate agents. Simplify trends into digestible insights and follow up with suggestions for deeper exploration. Maintain an enthusiastic tone for a lasting positive impact! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant.`,
 
-  sales: `As a real estate sales expert, share practical techniques that empower agents. Use storytelling, examples, and jokes to simplify complex ideas. Provide short, detailed answers that turn novices into experts. Your users are real estate agents. Break down strategies into actionable steps and follow up with questions to enhance skills. Keep the tone friendly and enthusiastic for a lasting impact! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant. ${agentCoachFlow}`,
+  sales: `As a real estate sales expert, share practical techniques that empower agents. Use storytelling, examples, and jokes to simplify complex ideas. Provide short, detailed answers that turn novices into experts. Your users are real estate agents. Break down strategies into actionable steps and follow up with questions to enhance skills. Keep the tone friendly and enthusiastic for a lasting impact! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant.`,
 
-  marketing: `As a marketing expert, master innovative strategies for branding and lead generation. Demystify concepts with short, helpful answers, using storytelling and relatable examples. Your users are real estate agents. Simplify sophisticated tactics into practical steps and follow up with questions for deeper exploration. Maintain an enthusiastic, professional tone for a lasting impact! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant. ${agentCoachFlow}`,
+  marketing: `As a marketing expert, master innovative strategies for branding and lead generation. Demystify concepts with short, helpful answers, using storytelling and relatable examples. Your users are real estate agents. Simplify sophisticated tactics into practical steps and follow up with questions for deeper exploration. Maintain an enthusiastic, professional tone for a lasting impact! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant.`,
 
-  negotiation: `As the grandmaster of negotiation, make deal-making accessible. Turn novices into confident negotiators with detailed explanations, storytelling, and jokes. Provide short, helpful answers and simplify strategies into actionable steps. Your users are real estate agents. Follow up with practical exercises to enhance skills. Keep the tone friendly and enthusiastic! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant.  ${agentCoachFlow}`,
+  negotiation: `As the grandmaster of negotiation, make deal-making accessible. Turn novices into confident negotiators with detailed explanations, storytelling, and jokes. Provide short, helpful answers and simplify strategies into actionable steps. Your users are real estate agents. Follow up with practical exercises to enhance skills. Keep the tone friendly and enthusiastic! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant. `,
 
-  motivation: `As an inspirational powerhouse, uplift real estate professionals with empathy and insight. Provide short, helpful advice that boosts confidence, using storytelling and examples. Your users are real estate agents. Foster a warm environment where challenges are opportunities and follow up with encouraging questions. Maintain an enthusiastic and positive tone to inspire action! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant. ${agentCoachFlow}`,
+  motivation: `As an inspirational powerhouse, uplift real estate professionals with empathy and insight. Provide short, helpful advice that boosts confidence, using storytelling and examples. Your users are real estate agents. Foster a warm environment where challenges are opportunities and follow up with encouraging questions. Maintain an enthusiastic and positive tone to inspire action! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant.`,
 };
 
 // Function to get top K results from Pinecone
@@ -75,7 +76,6 @@ async function getTopKResults(body: Record<string, unknown>, baseUrl: string) {
   }
 }
 
-// Improved semantic router function
 async function determineModel(question: string): Promise<string> {
   const systemPrompt = `You are an AI assistant that determines whether a user's question requires real-time data to answer or if it's related to AgentCoach.ai.
 
@@ -85,7 +85,7 @@ async function determineModel(question: string): Promise<string> {
   
   - If the question involves current prices, market trends, availability, or any information that changes over time and requires real-time data, respond with "requires real-time data".
   
-  - If the question is specifically about AgentCoach.ai, its features, how to use it, or any related queries, respond with "agentcoach specific".
+  - If the question is specifically about AgentCoach.ai, its features, how to use it, respond with "agentcoach specific".
   
   - If the question can be answered with general knowledge, advice, coaching, or does not depend on the latest data, respond with "does not require real-time data".
   
@@ -143,6 +143,46 @@ async function determineModel(question: string): Promise<string> {
   }
 }
 
+const openai = new OpenAI({
+  apiKey: NEXT_PUBLIC_OPENAI_API_KEY,
+});
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+async function generateImage(prompt: string): Promise<string> {
+  try {
+    const response = await openai.images.generate({
+      model: "dall-e-2",
+      prompt: prompt,
+      n: 1,
+      size: "512x512",
+    });
+
+    const imageUrl = response.data[0].url;
+    console.log("response", response);
+    console.log("response data", response.data);
+
+    if (!imageUrl) {
+      throw new Error("Image URL not found in the response");
+    }
+
+    const uploadResponse = await cloudinary.uploader.upload(imageUrl, {
+      folder: "generated_images",
+    });
+
+    const cloudinaryUrl = uploadResponse.secure_url;
+
+    return cloudinaryUrl;
+  } catch (error) {
+    console.error("Error generating image:", error);
+    throw error;
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { messages, chatbot, expert, personalizedAIData } = await req.json();
@@ -159,15 +199,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Map 'general' and 'negotiation' to 'real_estate' base URL
+    const question = messages[messages.length - 1].content;
+
+    // Check if the message starts with "Generate Picture - "
+    if (question.startsWith("Picture - ")) {
+      const imagePrompt = question
+        .substring("Generate Picture - ".length)
+        .trim();
+      try {
+        const imageUrl = await generateImage(imagePrompt);
+        return new Response(imageUrl, {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      } catch (error) {
+        console.error("Error generating image:", error);
+        return new Response(
+          JSON.stringify({ error: "Failed to generate image" }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
+    }
+
     let baseUrl = BASE_URLS[chatbot];
     if (!baseUrl) {
       baseUrl = REAL_ESTATE_BASE_URL!;
     }
 
-    const question = messages[messages.length - 1].content;
-
-    // Determine which model to use using the improved semantic router
     const selectedModel = await determineModel(question);
 
     const embeddingResponse = await axios.post(
@@ -227,7 +288,6 @@ export async function POST(req: NextRequest) {
       ...messages,
     ];
 
-    // Create a stream to handle the Perplexity streaming response
     return new Response(
       new ReadableStream({
         async start(controller) {

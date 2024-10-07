@@ -22,6 +22,8 @@ import {
   BookCheck,
   TargetIcon,
   Share,
+  ImageIcon,
+  Loader2,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -40,9 +42,9 @@ import { FaArrowRight } from "react-icons/fa6";
 import styles from "@/components/overall.module.css";
 import avatarlight from "@/components/Assets/avatar.png";
 import avatardark from "@/components/Assets/darkavatar.png";
-// import aiavatar from ""
 import useTheme from "@/app/hooks/useTheme";
 import TrialEndPopupWrapper from "@/components/FreeTrialEnds/TrialEndsPopupWrapper";
+import PercentageLoader from "@/components/PercentageLoader";
 
 type Message = {
   role: "user" | "assistant" | "system";
@@ -69,7 +71,6 @@ type ExpertType =
 
 function formatTables(content: string): string {
   console.log("loaded main");
-  // Check if the content is already in HTML format
   if (content.includes("<tr>") && content.includes("<td")) {
     const tableHtml = `
       <table class="border-collapse table-auto w-full text-sm my-4">
@@ -170,6 +171,12 @@ type PersonalizedData = {
   background: string;
 };
 
+type CommandOption = {
+  label: string;
+  icon: React.ReactNode;
+  action: () => void;
+};
+
 export default function Page({ params: { chat_id } }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSending, setIsSending] = useState(false);
@@ -193,6 +200,18 @@ export default function Page({ params: { chat_id } }: Props) {
   const { theme } = useTheme();
   const [personalizedData, setPersonalizedData] =
     useState<PersonalizedData | null>(null);
+
+  const [showCommandMenu, setShowCommandMenu] = useState(false);
+  const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
+    {
+      label: "Picture",
+      icon: <ImageIcon className="w-4 h-4" />,
+      action: () => setSelectedCommand("Picture"),
+    },
+  ]);
+  const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -257,6 +276,10 @@ export default function Page({ params: { chat_id } }: Props) {
     if (isSending) return;
     setIsSending(true);
 
+    if (selectedCommand === "Picture") {
+      setIsLoadingImage(true);
+    }
+
     if (message.trim()) {
       const prevOrder =
         messages.length > 0 ? messages[messages.length - 1].order : 0;
@@ -319,9 +342,7 @@ export default function Page({ params: { chat_id } }: Props) {
 
         setMessages((prev) => [...prev, assistantMessage]);
 
-        // Capture index for assistant message
         const assistantMessageIndex = prevLength + 1;
-
         const newMessages = [...messages, userMessage, assistantMessage];
 
         while (!done) {
@@ -375,6 +396,8 @@ export default function Page({ params: { chat_id } }: Props) {
           .from("message")
           .insert([userMessage])
           .select();
+
+        setIsLoadingImage(false);
       } finally {
         // Reset sending state
         setIsSending(false);
@@ -383,12 +406,19 @@ export default function Page({ params: { chat_id } }: Props) {
           `Ask me any question about ${currentExpert.toLowerCase()}! Just type or use the microphone.`
         );
         setFirstMessageSent(true);
+        setIsLoadingImage(false);
+        setSelectedCommand(null);
       }
     }
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (selectedCommand === "Picture") {
+      setIsLoadingImage(true);
+    }
+
     handleSendMessage(inputValue);
     setInputValue("");
   };
@@ -646,6 +676,48 @@ export default function Page({ params: { chat_id } }: Props) {
     handleSendMessage(message);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    console.log("value", value);
+    setInputValue(value);
+
+    if (value.includes("/")) {
+      const lastSlashIndex = value.lastIndexOf("/");
+      const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
+
+      setShowCommandMenu(true);
+
+      const filteredOptions = commandOptions.filter((option) =>
+        option.label.toLowerCase().startsWith(afterSlash)
+      );
+
+      setCommandOptions(
+        filteredOptions.length > 0 ? filteredOptions : commandOptions
+      );
+    } else {
+      setShowCommandMenu(false);
+      setCommandOptions([
+        {
+          label: "Picture",
+          icon: <ImageIcon className="w-4 h-4" />,
+          action: () => setSelectedCommand("Picture"),
+        },
+      ]);
+    }
+  };
+
+  const handleCommandSelect = (option: CommandOption) => {
+    setInputValue(`${option.label} - `);
+    setSelectedCommand(option.label);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+    setCommandOptions((prevOptions) =>
+      prevOptions.filter((opt) => opt.label !== option.label)
+    );
+    setShowCommandMenu(false);
+  };
+
   return (
     <div
       className={`flex flex-col h-screen text-white dark:bg-[rgba(213,227,255,1)] ${styles.mobilebg} bg-gradient-to-t from-[rgba(15, 16, 35, 0.8)] to-[rgba(15, 16, 35, 0.8)] bg-black`}
@@ -685,12 +757,14 @@ export default function Page({ params: { chat_id } }: Props) {
             <ScrollArea className="flex-1">
               <div className="p-4 space-y-4 min-h-[calc(100vh-15rem)]">
                 {messages.length === 0 ? (
-                  <div className="pt-2">
-                    <TopicIntroduction
-                      topic={currentExpert}
-                      onAskQuestion={handleAskQuestion}
-                    />
-                  </div>
+                  <>
+                    <div className="pt-2">
+                      <TopicIntroduction
+                        topic={currentExpert}
+                        onAskQuestion={handleAskQuestion}
+                      />
+                    </div>
+                  </>
                 ) : (
                   user &&
                   messages.map((message, index) => (
@@ -724,44 +798,55 @@ export default function Page({ params: { chat_id } }: Props) {
                               : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
                           }`}
                         >
-                          <ReactMarkdown
-                            components={{
-                              p: ({ node, ...props }) => (
-                                <p className="mb-2" {...props} />
-                              ),
-                              ul: ({ node, ...props }) => (
-                                <ul
-                                  className="list-disc pl-4 mb-2"
-                                  {...props}
-                                />
-                              ),
-                              ol: ({ node, ...props }) => (
-                                <ol
-                                  className="list-decimal pl-4 mb-2"
-                                  {...props}
-                                />
-                              ),
-                              li: ({ node, ...props }) =>
-                                node && <li className="mb-1" {...props} />,
-                              strong: ({ node, ...props }) =>
-                                node && (
-                                  <strong className="font-bold" {...props} />
+                          {message.content.includes("https:") ? (
+                            <div className="w-[200px] md:w-[340px] h-[200px] md:h-[340px]">
+                              <img
+                                src={message.content}
+                                alt="Content Image"
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <ReactMarkdown
+                              components={{
+                                p: ({ node, ...props }) => (
+                                  <p className="mb-2" {...props} />
                                 ),
-                              table: ({ node, ...props }) => (
-                                <div
-                                  className="my-4 overflow-x-auto"
-                                  dangerouslySetInnerHTML={{
-                                    __html: props.children?.toString() || "",
-                                  }}
-                                />
-                              ),
-                            }}
-                            remarkPlugins={[remarkGfm]}
-                            rehypePlugins={[rehypeRaw]}
-                          >
-                            {parseCustomTags(formatTables(message.content))}
-                          </ReactMarkdown>
+                                ul: ({ node, ...props }) => (
+                                  <ul
+                                    className="list-disc pl-4 mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                ol: ({ node, ...props }) => (
+                                  <ol
+                                    className="list-decimal pl-4 mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                li: ({ node, ...props }) =>
+                                  node && <li className="mb-1" {...props} />,
+                                strong: ({ node, ...props }) =>
+                                  node && (
+                                    <strong className="font-bold" {...props} />
+                                  ),
+                                table: ({ node, ...props }) => (
+                                  <div
+                                    className="my-4 overflow-x-auto"
+                                    dangerouslySetInnerHTML={{
+                                      __html: props.children?.toString() || "",
+                                    }}
+                                  />
+                                ),
+                              }}
+                              remarkPlugins={[remarkGfm]}
+                              rehypePlugins={[rehypeRaw]}
+                            >
+                              {parseCustomTags(formatTables(message.content))}
+                            </ReactMarkdown>
+                          )}
                         </div>
+
                         {message.role === "assistant" && (
                           <div className="flex space-x-2">
                             <div className="relative group">
@@ -836,7 +921,17 @@ export default function Page({ params: { chat_id } }: Props) {
                     </div>
                   ))
                 )}
+                {isLoadingImage && (
+                  <div className="flex items-start space-x-4 mt-4">
+                    <div className="flex-shrink-0">
+                      {getAIAvatar(currentExpert)}
+                    </div>
 
+                    <div className="space-y-2 w-[200px] md:w-[340px] h-[200px] md:h-[340px] border-gray-500 rounded-lg p-4 border bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black flex items-center justify-center">
+                      <PercentageLoader />
+                    </div>
+                  </div>
+                )}
                 <div ref={chatEndRef} />
               </div>
             </ScrollArea>
@@ -909,7 +1004,7 @@ export default function Page({ params: { chat_id } }: Props) {
                   className="relative flex items-center w-full"
                 >
                   <Input
-                    className={`flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] rounded-full focus:outline-none pr-28 pl-6 
+                    className={`relative flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] rounded-full focus:outline-none pr-28 pl-6 
               dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
               placeholder:text-gray-500`}
                     placeholder={`Have a ${currentExpert.toLowerCase()} question? Just type it in or use the microphone button on the right to ask!`}
@@ -919,7 +1014,7 @@ export default function Page({ params: { chat_id } }: Props) {
                       fontWeight: 300,
                     }}
                     value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={handleInputChange}
                   />
 
                   <div className={styles.con}>
@@ -934,7 +1029,23 @@ export default function Page({ params: { chat_id } }: Props) {
                       />
                     </button>
                   </div>
+
+                  {showCommandMenu && (
+                    <div className="absolute bottom-30 md:bottom-16 bg-custom-gradient dark:bg-gray-800 rounded-md shadow-lg z-10">
+                      {commandOptions.map((option, index) => (
+                        <button
+                          key={index}
+                          className="flex items-center w-full px-4 py-2 text-sm text-white"
+                          onClick={() => handleCommandSelect(option)}
+                        >
+                          {option.icon}
+                          <p className="ml-2">{option.label}</p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </form>
+
                 <p className="text-xs text-gray-500 mt-3  text-center pb-2">
                   © 2024 AgentCoach.ai. All rights reserved.
                 </p>
