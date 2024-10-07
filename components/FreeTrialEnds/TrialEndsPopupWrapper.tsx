@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import TrialEndPopup from "./TrialEndsPopup";
+import HeaderBar from "../header";
 
 const POPUP_THRESHOLD = 3; // Show popup when 3 days are remaining
 
@@ -67,9 +68,11 @@ export default function TrialEndPopupWrapper() {
   if (!showPopup || remainingDays === null) return null;
 
   return (
-    <TrialEndPopup
-      onClose={() => setShowPopup(false)}
-      remainingDays={remainingDays}
-    />
+    <>
+      <TrialEndPopup
+        onClose={() => setShowPopup(false)}
+        remainingDays={remainingDays}
+      />
+    </>
   );
 }
