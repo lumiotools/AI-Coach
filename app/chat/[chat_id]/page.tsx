@@ -33,6 +33,8 @@ import {
   BookCheck,
   TargetIcon,
   Share,
+  ImageIcon,
+  Loader2,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -55,7 +57,6 @@ import { FaArrowRight } from "react-icons/fa6";
 import styles from "@/components/overall.module.css";
 import avatarlight from "@/components/Assets/avatar.png";
 import avatardark from "@/components/Assets/darkavatar.png";
-// import aiavatar from ""
 import useTheme from "@/app/hooks/useTheme";
 
 type Message = {
@@ -83,24 +84,22 @@ type ExpertType =
 
 function formatTables(content: string): string {
   console.log("loaded main");
-  // Check if the content is already in HTML format
   if (content.includes("<tr>") && content.includes("<td")) {
     const tableHtml = `
       <table class="border-collapse table-auto w-full text-sm my-4">
         <thead>
           <tr class="bg-gray-800">
-            ${
-              content
-                .match(/<td[^>]*>(.*?)<\/td>/g)
-                ?.map(
-                  (cell) =>
-                    `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-left">${cell.replace(
-                      /<\/?td[^>]*>/g,
-                      ""
-                    )}</th>`
-                )
-                .join("") || ""
-            }
+            ${content
+        .match(/<td[^>]*>(.*?)<\/td>/g)
+        ?.map(
+          (cell) =>
+            `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-left">${cell.replace(
+              /<\/?td[^>]*>/g,
+              ""
+            )}</th>`
+        )
+        .join("") || ""
+      }
           </tr>
         </thead>
         <tbody class="bg-gray-700">
@@ -137,17 +136,17 @@ function formatTables(content: string): string {
       <thead>
         <tr class="bg-gray-800">
           ${headers
-            .map(
-              (header, i) =>
-                `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-${alignments[i]} text-left">${header}</th>`
-            )
-            .join("")}
+        .map(
+          (header, i) =>
+            `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-${alignments[i]} text-left">${header}</th>`
+        )
+        .join("")}
         </tr>
       </thead>
       <tbody class="bg-gray-700">
         ${body
-          .map(
-            (row) => `
+        .map(
+          (row) => `
           <tr>
             ${row
               .map(
@@ -157,8 +156,8 @@ function formatTables(content: string): string {
               .join("")}
           </tr>
         `
-          )
-          .join("")}
+        )
+        .join("")}
       </tbody>
     </table>`;
 
@@ -174,6 +173,13 @@ function parseCustomTags(content: string): string {
     }
   );
 }
+
+type CommandOption = {
+  label: string;
+  icon: React.ReactNode;
+  action: () => void;
+};
+
 
 export default function Page({ params: { chat_id } }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -197,6 +203,18 @@ export default function Page({ params: { chat_id } }: Props) {
   );
   const [firstMessageSent, setFirstMessageSent] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [showCommandMenu, setShowCommandMenu] = useState(false);
+  const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
+    {
+      label: "Picture",
+      icon: <ImageIcon className="w-4 h-4" />,
+      action: () => setSelectedCommand("Picture"),
+    },
+  ]);
+  const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
+
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
       if (newRouteRef.current) return;
@@ -238,6 +256,10 @@ export default function Page({ params: { chat_id } }: Props) {
     // if(!isSidebarOpen) handleAskQuestion(message);
     if (isSending) return;
     setIsSending(true);
+
+    if (selectedCommand === "Picture") {
+      setIsLoadingImage(true);
+    }
 
     if (message.trim()) {
       const prevOrder =
@@ -300,9 +322,7 @@ export default function Page({ params: { chat_id } }: Props) {
 
         setMessages((prev) => [...prev, assistantMessage]);
 
-        // Capture index for assistant message
         const assistantMessageIndex = prevLength + 1;
-
         const newMessages = [...messages, userMessage, assistantMessage];
 
         while (!done) {
@@ -356,6 +376,9 @@ export default function Page({ params: { chat_id } }: Props) {
           .from("message")
           .insert([userMessage])
           .select();
+
+        setIsLoadingImage(false);
+
       } finally {
         // Reset sending state
         setIsSending(false);
@@ -364,12 +387,19 @@ export default function Page({ params: { chat_id } }: Props) {
           `Ask me any question about ${currentExpert.toLowerCase()}! Just type or use the microphone.`
         );
         setFirstMessageSent(true);
+        setIsLoadingImage(false);
+        setSelectedCommand(null);
       }
     }
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (selectedCommand === "Picture") {
+      setIsLoadingImage(true);
+    }
+
     handleSendMessage(inputValue);
     setInputValue("");
   };
@@ -627,6 +657,44 @@ export default function Page({ params: { chat_id } }: Props) {
     handleSendMessage(message);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    console.log("value", value);
+    setInputValue(value);
+
+    if (value.includes("/")) {
+      const lastSlashIndex = value.lastIndexOf("/");
+      const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
+
+      setShowCommandMenu(true);
+
+      const filteredOptions = commandOptions.filter(option =>
+        option.label.toLowerCase().startsWith(afterSlash)
+      );
+
+      setCommandOptions(filteredOptions.length > 0 ? filteredOptions : commandOptions);
+    } else {
+      setShowCommandMenu(false);
+      setCommandOptions([
+        {
+          label: "Picture",
+          icon: <ImageIcon className="w-4 h-4" />,
+          action: () => setSelectedCommand("Picture"),
+        }
+      ]);
+    }
+  };
+
+  const handleCommandSelect = (option: CommandOption) => {
+    setInputValue(`${option.label} - `);
+    setSelectedCommand(option.label);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+    setCommandOptions(prevOptions => prevOptions.filter(opt => opt.label !== option.label));
+    setShowCommandMenu(false);
+  };
+
   return (
     <div
       className={`flex flex-col h-screen text-white dark:bg-[rgba(213,227,255,1)] ${styles.mobilebg} bg-gradient-to-t from-[rgba(15, 16, 35, 0.8)] to-[rgba(15, 16, 35, 0.8)] bg-black`}
@@ -677,11 +745,10 @@ export default function Page({ params: { chat_id } }: Props) {
                   messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`flex items-start space-x-4 mt-4 ${
-                        message.role === "user"
-                          ? "flex-row-reverse space-x-reverse"
-                          : ""
-                      }`}
+                      className={`flex items-start space-x-4 mt-4 ${message.role === "user"
+                        ? "flex-row-reverse space-x-reverse"
+                        : ""
+                        }`}
                     >
                       <Avatar className="w-8 h-8 flex-shrink-0">
                         {message.role === "user" ? (
@@ -699,50 +766,58 @@ export default function Page({ params: { chat_id } }: Props) {
                       </Avatar>
                       <div className="space-y-2 max-w-[70%] md:max-w-[80%]">
                         <div
-                          className={`p-3 rounded-lg ${
-                            message.role === "user"
-                              ? "bg-[#1E2A5E] text-white border border-[rgba(47, 118, 255, 1)]"
-                              : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
-                          }`}
+                          className={`p-3 rounded-lg ${message.role === "user"
+                            ? "bg-[#1E2A5E] text-white border border-[rgba(47, 118, 255, 1)]"
+                            : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
+                            }`}
                         >
-                          <ReactMarkdown
-                            components={{
-                              p: ({ node, ...props }) => (
-                                <p className="mb-2" {...props} />
-                              ),
-                              ul: ({ node, ...props }) => (
-                                <ul
-                                  className="list-disc pl-4 mb-2"
-                                  {...props}
-                                />
-                              ),
-                              ol: ({ node, ...props }) => (
-                                <ol
-                                  className="list-decimal pl-4 mb-2"
-                                  {...props}
-                                />
-                              ),
-                              li: ({ node, ...props }) =>
-                                node && <li className="mb-1" {...props} />,
-                              strong: ({ node, ...props }) =>
-                                node && (
-                                  <strong className="font-bold" {...props} />
+
+                          {message.content.includes("https:") ? (
+                            <div className="w-[200px] md:w-[340px] h-[200px] md:h-[340px]">
+                              <img src={message.content} alt="Content Image" className="w-full h-full object-cover" />
+                            </div>
+                          ) :
+                            <ReactMarkdown
+                              components={{
+                                p: ({ node, ...props }) => (
+                                  <p className="mb-2" {...props} />
                                 ),
-                              table: ({ node, ...props }) => (
-                                <div
-                                  className="my-4 overflow-x-auto"
-                                  dangerouslySetInnerHTML={{
-                                    __html: props.children?.toString() || "",
-                                  }}
-                                />
-                              ),
-                            }}
-                            remarkPlugins={[remarkGfm]}
-                            rehypePlugins={[rehypeRaw]}
-                          >
-                            {parseCustomTags(formatTables(message.content))}
-                          </ReactMarkdown>
+                                ul: ({ node, ...props }) => (
+                                  <ul
+                                    className="list-disc pl-4 mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                ol: ({ node, ...props }) => (
+                                  <ol
+                                    className="list-decimal pl-4 mb-2"
+                                    {...props}
+                                  />
+                                ),
+                                li: ({ node, ...props }) =>
+                                  node && <li className="mb-1" {...props} />,
+                                strong: ({ node, ...props }) =>
+                                  node && (
+                                    <strong className="font-bold" {...props} />
+                                  ),
+                                table: ({ node, ...props }) => (
+                                  <div
+                                    className="my-4 overflow-x-auto"
+                                    dangerouslySetInnerHTML={{
+                                      __html: props.children?.toString() || "",
+                                    }}
+                                  />
+                                ),
+                              }}
+                              remarkPlugins={[remarkGfm]}
+                              rehypePlugins={[rehypeRaw]}
+                            >
+                              {(
+                                parseCustomTags(formatTables(message.content))
+                              )}
+                            </ReactMarkdown>}
                         </div>
+
                         {message.role === "assistant" && (
                           <div className="flex space-x-2">
                             <div className="relative group">
@@ -752,11 +827,10 @@ export default function Page({ params: { chat_id } }: Props) {
                                 onClick={() =>
                                   handleLike(message.message_id, 1)
                                 }
-                                className={`${
-                                  message.like === 1
-                                    ? "text-blue-400"
-                                    : "text-gray-400 dark:text-[#001c4f]"
-                                }`}
+                                className={`${message.like === 1
+                                  ? "text-blue-400"
+                                  : "text-gray-400 dark:text-[#001c4f]"
+                                  }`}
                               >
                                 <ThumbsUp className="h-4 w-4 " />
                               </Button>
@@ -771,11 +845,10 @@ export default function Page({ params: { chat_id } }: Props) {
                                 onClick={() =>
                                   handleLike(message.message_id, -1)
                                 }
-                                className={`${
-                                  message.like === -1
-                                    ? "text-red-400"
-                                    : "text-gray-400 dark:text-[#001c4f]"
-                                }`}
+                                className={`${message.like === -1
+                                  ? "text-red-400"
+                                  : "text-gray-400 dark:text-[#001c4f]"
+                                  }`}
                               >
                                 <ThumbsDown className="h-4 w-4" />
                               </Button>
@@ -817,7 +890,18 @@ export default function Page({ params: { chat_id } }: Props) {
                     </div>
                   ))
                 )}
+                {isLoadingImage && (
+                  <div className="flex items-start space-x-4 mt-4">
+                    <div className="flex-shrink-0">
+                      {getAIAvatar(currentExpert)}
+                    </div>
 
+                    <div className="space-y-2 w-[200px] md:w-[340px] h-[200px] md:h-[340px] border-gray-500 rounded-lg p-4 border bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black flex items-center justify-center">
+                      <Loader2 className="max-w-full h-80 text-gray-500 animate-spin " size={30} />
+                    </div>
+
+                  </div>
+                )}
                 <div ref={chatEndRef} />
               </div>
             </ScrollArea>
@@ -890,7 +974,7 @@ export default function Page({ params: { chat_id } }: Props) {
                   className="relative flex items-center w-full"
                 >
                   <Input
-                    className={`flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] rounded-full focus:outline-none pr-28 pl-6 
+                    className={`relative flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] rounded-full focus:outline-none pr-28 pl-6 
               dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
               placeholder:text-gray-500`}
                     placeholder={`Have a ${currentExpert.toLowerCase()} question? Just type it in or use the microphone button on the right to ask!`}
@@ -900,7 +984,7 @@ export default function Page({ params: { chat_id } }: Props) {
                       fontWeight: 300,
                     }}
                     value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={handleInputChange}
                   />
 
                   <div className={styles.con}>
@@ -915,7 +999,25 @@ export default function Page({ params: { chat_id } }: Props) {
                       />
                     </button>
                   </div>
+
+                  {showCommandMenu && (
+                    <div className="absolute bottom-30 md:bottom-16 bg-custom-gradient dark:bg-gray-800 rounded-md shadow-lg z-10">
+                      {commandOptions.map((option, index) => (
+                        <button
+                          key={index}
+                          className="flex items-center w-full px-4 py-2 text-sm text-white"
+                          onClick={() => handleCommandSelect(option)}
+                        >
+                          {option.icon}
+                          <p className="ml-2">{option.label}</p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
                 </form>
+
+
                 <p className="text-xs text-gray-500 mt-3  text-center pb-2">
                   © 2024 AgentCoach.ai. All rights reserved.
                 </p>

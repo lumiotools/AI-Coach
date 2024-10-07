@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import {
   ArrowRight,
   BookCheck,
   TargetIcon,
+  Image as ImageIcon,
 } from "lucide-react";
 
 import { useAuth, useClerk, useUser } from "@clerk/nextjs";
@@ -35,6 +36,12 @@ type ExpertType =
   | "Negotiation"
   | "Motivation";
 
+type CommandOption = {
+  label: string;
+  icon: React.ReactNode;
+  action: () => void;
+};
+
 export function Page() {
   const [inputValue, setInputValue] = useState("");
   const [currentExpert, setCurrentExpert] = useState<ExpertType>("General");
@@ -50,17 +57,27 @@ export function Page() {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
+  const [showCommandMenu, setShowCommandMenu] = useState(false);
+  const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  console.log("User", user);
+  const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
+    {
+      label: "Picture",
+      icon: <ImageIcon className="w-4 h-4" />,
+      action: () => setSelectedCommand("picture"),
+    }
+  ]);
+
+  console.log("commandOptions", commandOptions);
+  console.log("showCommandMenu", showCommandMenu);
+  console.log("inputValue", inputValue);
+  console.log("selectedCommand", selectedCommand);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       setUserEmail(user.primaryEmailAddress?.emailAddress || "");
-
       const hasSeenIntro = user.unsafeMetadata?.hasSeenIntro;
-
-      console.log("hasSeenIntro", hasSeenIntro);
-
       if (!hasSeenIntro) {
         setIsIntroModalOpen(true);
       }
@@ -70,7 +87,6 @@ export function Page() {
   useEffect(() => {
     const expertType = searchParams.get("expertType");
     if (expertType) {
-      console.log(expertType);
       setCurrentExpert(expertType as ExpertType);
     }
   }, [searchParams]);
@@ -112,7 +128,24 @@ export function Page() {
           ])
           .select();
 
+        // if (selectedCommand === "picture") {
+        //   const response = await fetch("/api/generate-image", {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({ prompt: message }),
+        //   });
+
+        //   if (response.ok) {
+        //     const imageData = await response.json();
+        //     setGeneratedImage(imageData.imageUrl);
+        //   } else {
+        //     console.error("Failed to generate image");
+        //   }
+
+        //   setSelectedCommand(null);
+        // } else {
         router.push(`/chat/${chatId}?ques=${message}&new=true`);
+        // }
       } catch (error) {
         console.log("error", error);
       }
@@ -130,36 +163,51 @@ export function Page() {
     setIsSidebarOpen(false);
   };
 
-  const handleAskQuestion = (question: string) => {
-    handleSendMessage(question);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    console.log("value", value);
+    setInputValue(value);
+
+    if (value.includes("/")) {
+      const lastSlashIndex = value.lastIndexOf("/");
+      const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
+
+      setShowCommandMenu(true);
+
+      const filteredOptions = commandOptions.filter(option =>
+        option.label.toLowerCase().startsWith(afterSlash)
+      );
+
+      setCommandOptions(filteredOptions.length > 0 ? filteredOptions : commandOptions);
+    } else {
+      setShowCommandMenu(false);
+      setCommandOptions([
+        {
+          label: "Picture",
+          icon: <ImageIcon className="w-4 h-4" />,
+          action: () => setSelectedCommand("picture"),
+        }
+      ]);
+    }
+  };
+
+
+  const handleCommandSelect = (option: CommandOption) => {
+    setInputValue(`${option.label} - `);
+    setSelectedCommand(option.label);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+    setCommandOptions(prevOptions => prevOptions.filter(opt => opt.label !== option.label));
+    setShowCommandMenu(false);
   };
 
   const handleTranscription = (transcribedText: string) => {
     setInputValue((prev) => `${prev} ${transcribedText}`);
   };
 
-  function handleActionClick(action: string): void {
-    switch (action) {
-      case "examples":
-        // Handle examples action
-        break;
-      case "specific":
-        // Handle specific action
-        break;
-      case "understand":
-        // Handle understand action
-        break;
-      case "continue":
-        // Handle continue action
-        break;
-      default:
-        console.log("Unknown action:", action);
-    }
-  }
-
   const closeIntroModal = () => {
     setIsIntroModalOpen(false);
-
     if (user) {
       user.update({
         unsafeMetadata: {
@@ -170,12 +218,8 @@ export function Page() {
   };
 
   return (
-    <div
-      className={`flex flex-col h-screen text-white dark:bg-[rgba(213,227,255,1)] ${styles.mobilebg} bg-gradient-to-t from-[rgba(15, 16, 35, 0.8)] to-[rgba(15, 16, 35, 0.8)] bg-black`}
-    >
+    <div className={`flex flex-col h-screen text-white dark:bg-[rgba(213,227,255,1)] ${styles.mobilebg} bg-gradient-to-t from-[rgba(15, 16, 35, 0.8)] to-[rgba(15, 16, 35, 0.8)] bg-black`}>
       <div className="absolute top-[-150px] left-[-220px] w-[450px] h-[559px] rotate-[-90deg] rounded-[559px] bg-[radial-gradient(50%_50%_at_50%_50%,rgba(35,66,113,0.6)_0%,rgba(35,66,113,0)_100%)] dark:bg-[radial-gradient(50%_50%_at_50%_50%,rgba(148,184,255,0.60)_0%,rgba(110,151,232,0)_100%)]" />
-
-      {/* <div className={styles.overlay}/> */}
 
       <HeaderBar
         isSidebarOpen={isSidebarOpen}
@@ -183,10 +227,7 @@ export function Page() {
         signOut={signOut}
       />
 
-      {/* <div className="flex flex-1 overflow-hidden pt-16"> */}
-      <div
-        className={`flex flex-1 overflow-hidden ${styles.pt} bg-[linear-gradient(0deg,rgba(15,16,35,0.80)_0%,rgba(15,16,35,0.80)_100%),_#000] dark:bg-[linear-gradient(0deg,rgba(213,227,255,0.74)_0%,rgba(213,227,255,0.74)_100%),_#FFF]`}
-      >
+      <div className={`flex flex-1 overflow-hidden ${styles.pt} bg-[linear-gradient(0deg,rgba(15,16,35,0.80)_0%,rgba(15,16,35,0.80)_100%),_#000] dark:bg-[linear-gradient(0deg,rgba(213,227,255,0.74)_0%,rgba(213,227,255,0.74)_100%),_#FFF]`}>
         <ChatSidebar
           userId={userId}
           userEmail={userEmail}
@@ -195,91 +236,31 @@ export function Page() {
           handleExpertClick={handleExpertClick}
         />
 
-        <div className="flex-1 flex flex-col  w-full bg-gradient-to-t from-[rgba(15, 16, 35, 0.80)] to-[rgba(15, 16, 35, 0.80)]">
-          {/* dark:bg-[rgba(213,227,255,0.74)] */}
+        <div className="flex-1 flex flex-col w-full bg-gradient-to-t from-[rgba(15, 16, 35, 0.80)] to-[rgba(15, 16, 35, 0.80)]">
           <ScrollArea className="flex-1" ref={scrollAreaRef}>
             <div className="p-4 space-y-4 min-h-[calc(100vh-12rem)]">
               <div className="pt-2">
                 <TopicIntroduction
                   topic={currentExpert}
-                  onAskQuestion={handleAskQuestion}
+                  onAskQuestion={handleSendMessage}
                 />
               </div>
+              {/* {generatedImage && (
+                <div className="mt-4">
+                  <img src={generatedImage} alt="Generated" className="max-w-full h-auto rounded-lg" />
+                </div>
+              )} */}
             </div>
           </ScrollArea>
 
-          <div className=" p-4">
-            {/* <div className="action-buttons flex justify-center space-x-4 mb-5">
-              <button 
-                onClick={() => handleActionClick('examples')}
-                className="bg-gray-700 text-gray-200 px-2.5 py-1 rounded-md text-sm hover:bg-gray-600 hover:text-white transition-colors duration-200 flex items-center space-x-1.5 relative group"
-                title="Request specific examples related to the topic"
-              >
-                <BookCheck className="h-3.5 w-3.5" />
-                <span>Give me examples</span>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-2 whitespace-nowrap">
-                  Request specific examples
-                </div>
-              </button>
-              <button 
-                onClick={() => handleActionClick('specific')}
-                className="bg-gray-700 text-gray-200 px-2.5 py-1 rounded-md text-sm hover:bg-gray-600 hover:text-white transition-colors duration-200 flex items-center space-x-1.5 relative group"
-                title="Ask for more detailed information"
-              >
-                <TargetIcon className="h-3.5 w-3.5" />
-                <span>Be more specific</span>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-2 whitespace-nowrap">
-                  Ask for more details
-                </div>
-              </button>
-              <button 
-                onClick={() => handleActionClick('understand')}
-                className="bg-gray-700 text-gray-200 px-2.5 py-1 rounded-md text-sm hover:bg-gray-600 hover:text-white transition-colors duration-200 flex items-center space-x-1.5 relative group"
-                title="Request clarification on the topic"
-              >
-                <HelpCircle className="h-3.5 w-3.5" />
-                <span>I don't understand</span>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-2 whitespace-nowrap">
-                  Request clarification
-                </div>
-              </button>
-              <button 
-                onClick={() => handleActionClick('continue')}
-                className="bg-gray-700 text-gray-200 px-2.5 py-1 rounded-md text-sm hover:bg-gray-600 hover:text-white transition-colors duration-200 flex items-center space-x-1.5 relative group"
-                title="Continue the current conversation"
-              >
-                <ArrowRight className="h-3.5 w-3.5" />
-                <span>Continue</span>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-2 whitespace-nowrap">
-                  Continue conversation
-                </div>
-              </button>
-            </div> */}
-
+          <div className="p-4">
             <form
               onSubmit={handleFormSubmit}
               className="relative flex items-center w-full"
             >
               <div className={styles.main}>
-                {/* <Input
-  className="flex-1 bg-gray-200 text-white border border-[#2F76FF]-700 dark:border-[#000000] placeholder:text-[#C6C6C6] focus:outline-none pr-28 pl-6 dark:bg-gray-800 dark:text-[#6E97E8] dark:placeholder:text-[#6E97E8]" // Use dark: modifier for dark mode
-  placeholder={`Ask me any question about ${currentExpert.toLowerCase()}! Just type or use the microphone.`}
-  
-  style={{
-    borderRadius: '80px',
-    border: '0.5px solid #2F76FF',
-    background: 'linear-gradient(0deg, rgba(121, 166, 255, 0.16) 0%, rgba(47, 118, 255, 0.16) 100%)',
-    WebkitBackdropFilter: 'blur(20px)',
-    backdropFilter: 'blur(20px)',
-    fontSize: '16px',
-    fontStyle: 'normal',
-    fontWeight: 300,
-  }}
-  value={inputValue}
-  onChange={(e) => setInputValue(e.target.value)}
-/> */}
-
                 <Input
+                  ref={inputRef}  // Attach the ref to the Input component
                   className={`flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-white border border-[#2F76FF] rounded-full focus:outline-none pr-28 pl-6 
               dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
               placeholder:text-gray-500`}
@@ -290,7 +271,7 @@ export function Page() {
                     fontWeight: 300,
                   }}
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={handleInputChange}
                 />
 
                 <div className={styles.con}>
@@ -305,6 +286,20 @@ export function Page() {
                 </div>
               </div>
             </form>
+            {showCommandMenu && (
+              <div className="absolute bottom-28 bg-custom-gradient dark:bg-gray-800 rounded-md shadow-lg z-10">
+                {commandOptions.map((option, index) => (
+                  <button
+                    key={index}
+                    className="flex items-center w-full px-4 py-2 text-sm text-white"
+                    onClick={() => handleCommandSelect(option)}
+                  >
+                    {option.icon}
+                    <span className="ml-2">{option.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
             <p className="text-xs text-gray-500 mt-4 text-center">
               © 2024 AgentCoach.ai. All rights reserved.
             </p>
