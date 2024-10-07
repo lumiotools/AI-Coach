@@ -58,6 +58,7 @@ import styles from "@/components/overall.module.css";
 import avatarlight from "@/components/Assets/avatar.png";
 import avatardark from "@/components/Assets/darkavatar.png";
 import useTheme from "@/app/hooks/useTheme";
+import PercentageLoader from "@/components/PercentageLoader";
 
 type Message = {
   role: "user" | "assistant" | "system";
@@ -734,12 +735,16 @@ export default function Page({ params: { chat_id } }: Props) {
             <ScrollArea className="flex-1">
               <div className="p-4 space-y-4 min-h-[calc(100vh-15rem)]">
                 {messages.length === 0 ? (
-                  <div className="pt-2">
-                    <TopicIntroduction
-                      topic={currentExpert}
-                      onAskQuestion={handleAskQuestion}
-                    />
-                  </div>
+
+                  <>
+
+                    <div className="pt-2">
+                      <TopicIntroduction
+                        topic={currentExpert}
+                        onAskQuestion={handleAskQuestion}
+                      />
+                    </div>
+                  </>
                 ) : (
                   user &&
                   messages.map((message, index) => (
@@ -897,7 +902,7 @@ export default function Page({ params: { chat_id } }: Props) {
                     </div>
 
                     <div className="space-y-2 w-[200px] md:w-[340px] h-[200px] md:h-[340px] border-gray-500 rounded-lg p-4 border bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black flex items-center justify-center">
-                      <Loader2 className="max-w-full h-80 text-gray-500 animate-spin " size={30} />
+                      <PercentageLoader />
                     </div>
 
                   </div>
