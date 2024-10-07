@@ -11,16 +11,16 @@ interface SocialLinkProps {
 }
 
 const socialLinks = [
-  { href: "/", icon: <Facebook size={20} />, label: "Facebook" },
-  { href: "/", icon: <Twitter size={20} />, label: "Twitter" },
-  { href: "/", icon: <Instagram size={20} />, label: "Instagram" },
-  { href: "/", icon: <Linkedin size={20} />, label: "LinkedIn" },
+  { href: "https://www.facebook.com/profile.php?id=61565512659552", icon: <Facebook size={20} />, label: "Facebook" },
+  { href: "https://x.com/aiagentcoach", icon: <Twitter size={20} />, label: "Twitter" },
+  { href: "https://www.instagram.com/agentcoach.ai", icon: <Instagram size={20} />, label: "Instagram" },
+  { href: "https://www.linkedin.com/in/jeff-hammer-950118330/", icon: <Linkedin size={20} />, label: "LinkedIn" },
 ];
 
 const quickLinks = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
   { href: "/faqs", label: "FAQ's" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
 ];
 
@@ -31,7 +31,8 @@ interface QuickLinkProps {
 
 function SocialLink({ href, icon, label }: SocialLinkProps) {
   return (
-    <Link href={href} className="hover:text-blue-400 transition-colors" aria-label={label}>
+    <Link href={href} className="hover:text-blue-400 transition-colors" aria-label={label}  target="_blank"
+    rel="noopener noreferrer">
       {icon}
     </Link>
   );
@@ -87,9 +88,9 @@ export function Footer() {
       <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-gray-400">
         <p>© 2024 Agentcoach.ai. All rights reserved.</p>
         <div className="mt-2 space-x-4">
-          <a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-blue-400 transition-colors">Terms of Service</a>
-          <a href="#" className="hover:text-blue-400 transition-colors">Cookie Policy</a>
+          <a href="/privacy-policy.pdf" className="hover:text-blue-400 transition-colors" >Privacy Policy</a>
+          <a href="/terms-of-service.pdf" className="hover:text-blue-400 transition-colors">Terms of Service</a>
+          <a href="/cookie-policy.pdf" className="hover:text-blue-400 transition-colors">Cookie Policy</a>
         </div>
       </div>
     </footer>
