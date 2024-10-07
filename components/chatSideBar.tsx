@@ -313,22 +313,29 @@ export default function Sidebar({
   const router = useRouter();
 
   const { user } = useUser();
-  const userPlanDetails = user?.publicMetadata?.paymentInfo as {
-    planDetails: { name: string };
+  const userMetadata = user?.publicMetadata as {
+    paymentInfo?: { email: string; payment_id: string };
+    planDetails?: {
+      name: string;
+      price: number;
+      description: string;
+      billingPeriod: string;
+    };
+    trialStatus?: { trialEnded: boolean; remainingDays: number };
   };
-  const userPlan = userPlanDetails?.planDetails?.name;
+
+  const hasPaymentInfo = !!userMetadata?.paymentInfo;
+  const hasPlanDetails = !!userMetadata?.planDetails;
+  const isOnFreeTrial =
+    userMetadata?.trialStatus && !userMetadata.trialStatus.trialEnded;
+
+  const canAccessChatExperts = hasPaymentInfo && hasPlanDetails;
+  const canAccessGeneralAI = canAccessChatExperts || isOnFreeTrial;
 
   const handleExpertButtonClick = (expert: string) => {
-    if (
-      !userPlan &&
-      [
-        "Real Estate",
-        "Sales",
-        "Marketing",
-        "Negotiation",
-        "Motivation",
-      ].includes(expert)
-    ) {
+    if (expert === "General" && !canAccessGeneralAI) {
+      setShowPopup(true);
+    } else if (expert !== "General" && !canAccessChatExperts) {
       setShowPopup(true);
     } else {
       setActiveExpert(expert);
@@ -346,10 +353,7 @@ export default function Sidebar({
 
   return (
     <div
-      className={`${
-        isSidebarOpen ? "block" : "hidden"
-        // } ${styles['no-margin-mobile']} md:block fixed md:relative z-20 w-64 h-[calc(100vh-78px)] md:h-[calc(100vh-82px)] bg-gray-900 border-r border-gray-700 transition-all duration-300 ease-in-out overflow-y-auto`}
-      } ${
+      className={`${isSidebarOpen ? "block" : "hidden"} ${
         styles["no-margin-mobile"]
       } md:block fixed md:relative z-20 w-64 h-[calc(100vh-78px)] md:h-[calc(100vh-82px)] bg-gray-900 transition-all duration-300 ease-in-out overflow-y-auto`}
     >
@@ -402,7 +406,13 @@ export default function Sidebar({
           )
         )}
       </div>
-      <ChatHistory userId={userId} supabase={supabase} userEmail={userEmail} />
+      {canAccessChatExperts && (
+        <ChatHistory
+          userId={userId}
+          supabase={supabase}
+          userEmail={userEmail}
+        />
+      )}
       <UnlockAccessDialog
         isOpen={showPopup}
         onClose={handlePopupClose}
