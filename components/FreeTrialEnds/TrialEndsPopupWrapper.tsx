@@ -4,34 +4,49 @@ import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import TrialEndPopup from "./TrialEndsPopup";
 
-const TRIAL_DURATION = 7; // Trial duration in days
 const POPUP_THRESHOLD = 3; // Show popup when 3 days are remaining
+
+interface TrialStatus {
+  remainingDays: number;
+  trialEnded: boolean;
+}
 
 export default function TrialEndPopupWrapper() {
   const [showPopup, setShowPopup] = useState(false);
-  const [remainingDays, setRemainingDays] = useState(TRIAL_DURATION);
+  const [remainingDays, setRemainingDays] = useState<number | null>(null);
   const { user, isLoaded } = useUser();
 
   useEffect(() => {
-    if (isLoaded && user) {
-      const checkTrialEnd = () => {
-        const signUpDate = user.createdAt
-          ? new Date(user.createdAt)
-          : new Date();
-        const now = new Date();
-        const diffTime = now.getTime() - signUpDate.getTime();
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const daysLeft = Math.max(TRIAL_DURATION - diffDays, 0);
+    const checkAndUpdateTrialStatus = async () => {
+      if (isLoaded && user) {
+        let trialStatus = user.publicMetadata.trialStatus as
+          | TrialStatus
+          | undefined;
 
-        setRemainingDays(daysLeft);
-        setShowPopup(daysLeft <= POPUP_THRESHOLD && daysLeft >= 0);
-      };
+        if (!trialStatus) {
+          const response = await fetch("/api/update-trial-status", {
+            method: "POST",
+          });
+          const data = await response.json();
+          if (data.success) {
+            trialStatus = data.trialStatus;
+          } else {
+            console.error("Failed to update trial status:", data.error);
+            return;
+          }
+        }
 
-      checkTrialEnd();
-    }
+        if (trialStatus) {
+          setRemainingDays(trialStatus.remainingDays);
+          setShowPopup(trialStatus.remainingDays <= POPUP_THRESHOLD);
+        }
+      }
+    };
+
+    checkAndUpdateTrialStatus();
   }, [user, isLoaded]);
 
-  if (!showPopup) return null;
+  if (!showPopup || remainingDays === null) return null;
 
   return (
     <TrialEndPopup
