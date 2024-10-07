@@ -19,7 +19,7 @@ const BASE_URLS: { [key: string]: string } = {
 };
 
 const agentCoachFlow = `
-Use the following steps to guide users through the AgentCoach.ai experience when answering questions related to AgentCoach.ai:
+Use the following steps to guide users through the AgentCoach.ai experience ONLY when answering questions related to AgentCoach.ai:
 
 AgentCoach.ai Flow:
   1. Sign Up: Create an account on AgentCoach.ai
