@@ -1,5 +1,7 @@
 import { NextRequest } from "next/server";
 import axios from "axios";
+import OpenAI from "openai";
+import { v2 as cloudinary } from "cloudinary";
 
 const NEXT_PUBLIC_OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
@@ -9,7 +11,6 @@ const MARKETING_BASE_URL = process.env.MARKETING_BASE_URL;
 const MOTIVATION_BASE_URL = process.env.MOTIVATION_BASE_URL;
 const PERPLEXITY_API_KEY = process.env.PERPLEXITY_API_KEY;
 
-// Map of chatbot types to their base URLsss
 const BASE_URLS: { [key: string]: string } = {
   real_estate: REAL_ESTATE_BASE_URL!,
   sales: SALES_BASE_URL!,
@@ -75,7 +76,6 @@ async function getTopKResults(body: Record<string, unknown>, baseUrl: string) {
   }
 }
 
-// Improved semantic router function
 async function determineModel(question: string): Promise<string> {
   const systemPrompt = `You are an AI assistant that determines whether a user's question requires real-time data to answer or if it's related to AgentCoach.ai.
 
@@ -143,6 +143,46 @@ async function determineModel(question: string): Promise<string> {
   }
 }
 
+const openai = new OpenAI({
+  apiKey: NEXT_PUBLIC_OPENAI_API_KEY,
+});
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+async function generateImage(prompt: string): Promise<string> {
+  try {
+    const response = await openai.images.generate({
+      model: "dall-e-2",
+      prompt: prompt,
+      n: 1,
+      size: "512x512",
+    });
+
+    const imageUrl = response.data[0].url;
+    console.log("response", response);
+    console.log("response data", response.data);
+
+    if (!imageUrl) {
+      throw new Error("Image URL not found in the response");
+    }
+
+    const uploadResponse = await cloudinary.uploader.upload(imageUrl, {
+      folder: "generated_images",
+    });
+
+    const cloudinaryUrl = uploadResponse.secure_url;
+
+    return cloudinaryUrl;
+  } catch (error) {
+    console.error("Error generating image:", error);
+    throw error;
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { messages, chatbot, expert, personalizedAIData } = await req.json();
@@ -159,15 +199,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Map 'general' and 'negotiation' to 'real_estate' base URL
+    const question = messages[messages.length - 1].content;
+
+    // Check if the message starts with "Generate Picture - "
+    if (question.startsWith("Picture - ")) {
+      const imagePrompt = question
+        .substring("Generate Picture - ".length)
+        .trim();
+      try {
+        const imageUrl = await generateImage(imagePrompt);
+        return new Response(imageUrl, {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      } catch (error) {
+        console.error("Error generating image:", error);
+        return new Response(
+          JSON.stringify({ error: "Failed to generate image" }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
+    }
+
     let baseUrl = BASE_URLS[chatbot];
     if (!baseUrl) {
       baseUrl = REAL_ESTATE_BASE_URL!;
     }
 
-    const question = messages[messages.length - 1].content;
-
-    // Determine which model to use using the improved semantic router
     const selectedModel = await determineModel(question);
 
     const embeddingResponse = await axios.post(
@@ -227,7 +288,6 @@ export async function POST(req: NextRequest) {
       ...messages,
     ];
 
-    // Create a stream to handle the Perplexity streaming response
     return new Response(
       new ReadableStream({
         async start(controller) {
