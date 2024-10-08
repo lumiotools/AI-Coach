@@ -1,13 +1,14 @@
-"use client";
+'use client'
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
 
 import DemoVideo from "@/components/Assets/video/demo.mp4";
+import PromptCards from "@/components/PromptCards";
 
 interface DemoVideoComponentProps {
   className: string;
@@ -31,53 +32,14 @@ const TEXTS: string[] = [
   "Motivation Guide",
 ];
 
-const prompts: string[] = [
-  "How can AI real estate coaching benefit me?",
-  "What legal documents are required for selling a property?",
-  "What are the best practices for cold calling in real estate?",
-  "How can I improve my property listings?",
-  "What are effective negotiation techniques for real estate?",
-  "How do I create a compelling marketing strategy?",
-  "What are the key factors in pricing a property?",
-  "How can I build a strong real estate network?",
-  "What are the latest trends in real estate technology?",
-  "How do I handle difficult clients in real estate?",
-  "What are the best ways to generate leads in real estate?",
-  "How can I improve my time management as a real estate agent?",
-];
-
 export default function Home() {
-  const scrollRef1 = useRef<HTMLDivElement>(null);
-  const scrollRef2 = useRef<HTMLDivElement>(null);
-  const scrollRef3 = useRef<HTMLDivElement>(null);
-  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-  const scrollAmounts = useRef<number[]>([0, 0, 0]);
-  const speeds = [0.5, 0.7, 0.5]; // Speeds for each row
-
-  const handleScroll = useCallback(() => {
-    const scrollContainers = [scrollRef1.current, scrollRef2.current, scrollRef3.current];
-
-    scrollContainers.forEach((container, index) => {
-      if (container && hoveredRow !== index) {
-        scrollAmounts.current[index] += speeds[index];
-        if (scrollAmounts.current[index] >= container.scrollWidth / 2) {
-          scrollAmounts.current[index] = 0;
-        }
-        container.scrollLeft = index % 2 === 0
-          ? container.scrollWidth / 2 - scrollAmounts.current[index]
-          : scrollAmounts.current[index];
-      }
-    });
-
-    requestAnimationFrame(handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const animationId = requestAnimationFrame(handleScroll);
-    return () => cancelAnimationFrame(animationId);
-  }, [handleScroll]);
-
   const [index, setIndex] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [title1, setTitle1] = useState<string>("");
+  const [title2, setTitle2] = useState<string>("");
+  const [subtitle, setSubtitle] = useState<string>("");
+  const [rotatingTexts, setRotatingTexts] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const intervalId = setInterval(
@@ -147,22 +109,13 @@ export default function Home() {
     },
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   useEffect(() => {
-    console.log(currentIndex);
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
     }, 5000); // Change every 5 seconds
 
     return () => clearInterval(intervalId);
   }, []);
-
-  const [title1, setTitle1] = useState<string>("");
-  const [title2, setTitle2] = useState<string>("");
-  const [subtitle, setSubtitle] = useState<string>("");
-  const [rotatingTexts, setRotatingTexts] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -191,9 +144,7 @@ export default function Home() {
 
   useEffect(() => {
     const rotateText = setInterval(() => {
-      const filteredTexts = rotatingTexts.filter((text) =>
-        console.log("Line 180", text)
-      );
+      const filteredTexts = rotatingTexts.filter((text) => text);
       if (filteredTexts.length > 0) {
         setIndex((prevIndex) => (prevIndex + 1) % filteredTexts.length);
       }
@@ -226,12 +177,6 @@ export default function Home() {
             </span>
           </h1>
 
-          {/* <Link
-            className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-2 px-3 rounded-md mt-8 transition duration-300 ease-in-out transform hover:scale-105"
-            href="/signup"
-          >
-            SIGN UP FOR FREE
-          </Link> */}
           <Link
             className="mt-10 text-center w-[180px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
             href="/signup"
@@ -242,13 +187,13 @@ export default function Home() {
             <div className="flex flex-col md:flex-row md:gap-10">
               <div className="flex flex-row gap-4 items-center">
                 <div className="p-[6px] rounded-full bg-blue-600">
-                  <Check className="text-black h-3 w-3 md:h-5 md:w-5"></Check>
+                  <Check className="text-black h-3 w-3 md:h-5 md:w-5" />
                 </div>
                 <p className="text-sm md:text-base">No credit card required</p>
               </div>
               <div className="flex flex-row gap-4 mt-5 md:mt-0 items-center">
                 <div className="p-[6px] rounded-full bg-blue-600">
-                  <Check className="text-black h-3 w-3 md:h-5 md:w-5"></Check>
+                  <Check className="text-black h-3 w-3 md:h-5 md:w-5" />
                 </div>
                 <p className="text-sm md:text-base">Free general coach included</p>
               </div>
@@ -296,6 +241,7 @@ export default function Home() {
             description="Get comprehensive advice on various aspects of real estate, from legalities to client management, tailored to your needs."
             icon="📊"
           />
+
         </div>
         <div className="text-center mt-12">
           <Link
@@ -307,44 +253,11 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="bg-black py-16 px-4">
-        <h2 className="text-3xl font-bold text-center mb-1 text-white">
-          Explore AgentCoach.ai&apos;s Expertise
-        </h2>
-        <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
-          Scroll through example prompts to see how our AI delivers expert advice on real estate topics.
-        </p>
-        <div className="flex w-full flex-col gap-4">
-          {[scrollRef1, scrollRef2, scrollRef3].map((ref, i) => (
-            <div
-              key={i}
-              className="w-full overflow-hidden"
-              ref={ref}
-              onMouseEnter={() => setHoveredRow(i)}
-              onMouseLeave={() => setHoveredRow(null)}
-            >
-              <div
-                className="flex space-x-4"
-                style={{
-                  width: 'max-content',
-                }}
-              >
-                {[...prompts, ...prompts].map((prompt, index) => (
-                  <PromptCard
-                    key={index}
-                    prompt={prompt}
-                    isRowHovered={hoveredRow === i}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <PromptCards />
 
       <div className="bg-white py-16 px-4">
         <div className="flex justify-center items-center overflow-hidden">
-          <TestimonialSlider></TestimonialSlider>
+          <TestimonialSlider />
         </div>
       </div>
 
@@ -378,7 +291,6 @@ export default function Home() {
               SIGN UP FOR FREE
             </Link>
           </div>
-
         </div>
       </div>
     </div>
@@ -400,32 +312,5 @@ function ChatbotCard({ title, description, icon }: ChatbotCardProps) {
       <h3 className="text-xl font-bold mb-2">{title}</h3>
       <p className="text-sm text-center text-gray-300">{description}</p>
     </div>
-  );
-}
-
-interface PromptCardProps {
-  prompt: string;
-  isRowHovered: boolean;
-}
-
-function PromptCard({ prompt, isRowHovered }: PromptCardProps) {
-  const [isCardHovered, setIsCardHovered] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsCardHovered(true)}
-      onMouseLeave={() => setIsCardHovered(false)}
-      className="w-[300px] flex-shrink-0 bg-gradient-to-r from-blue-900 to-blue-800 text-white p-4 flex items-center justify-between rounded-lg transition-all duration-300 ease-in-out"
-    >
-      <p className={`text-sm flex-grow text-left pr-2 transition-all duration-300 ease-in-out ${isCardHovered ? 'underline' : ''}`}>
-        {prompt}
-      </p>
-      <div className="flex items-center justify-center w-6 h-6 overflow-hidden">
-        <ArrowRight
-          className={`transition-all duration-300 ease-in-out transform ${isCardHovered ? 'translate-x-1' : ''}`}
-          size={20}
-        />
-      </div>
-    </button>
   );
 }
