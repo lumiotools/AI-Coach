@@ -2,7 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, Settings, Menu, BrainCircuit } from "lucide-react";
+import {
+  LogOut,
+  Settings,
+  Menu,
+  BrainCircuit,
+  User,
+  CreditCard,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./overall.module.css";
@@ -13,12 +20,23 @@ import darklogo from "@/components/Assets/dark-logo3.png";
 import useTheme from "@/app/hooks/useTheme";
 import { useClerk, useUser, useAuth } from "@clerk/nextjs";
 import PersonalizedAIForm from "./PersonalizeAIForm";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import CustomerPortalButton from "./Billing/CustomerPortalButton";
 
 export default function HeaderBar({
   isSidebarOpen,
   setIsSidebarOpen,
   signOut,
-}: any) {
+}: {
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (isOpen: boolean) => void;
+  signOut: (options: { redirectUrl: string }) => void;
+}) {
   const { theme, toggleTheme } = useTheme();
   const { openUserProfile } = useClerk();
   const { isLoaded, isSignedIn, userId } = useAuth();
@@ -52,6 +70,18 @@ export default function HeaderBar({
       });
     }
   };
+
+  // const getBillingUrl = () => {
+  //   if (user && user.publicMetadata && user.publicMetadata.paymentInfo) {
+  //     const paymentInfo = user.publicMetadata.paymentInfo as {
+  //       payment_id: string;
+  //     };
+  //     return `https://billing.stripe.com/p/login/test_fZe3da29AaVAeHu288?prefilled_email=${encodeURIComponent(
+  //       user.primaryEmailAddress?.emailAddress || ""
+  //     )}`;
+  //   }
+  //   return "#";
+  // };
 
   return (
     <>
@@ -115,17 +145,32 @@ export default function HeaderBar({
             )}
           </Button>
 
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="navbtn"
+                size="nav"
+                className="font-100 text-white md:hidden"
+              >
+                <Settings
+                  className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
+                />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => openUserProfile()}>
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <CreditCard className="mr-2 h-4 w-4" />
+                <CustomerPortalButton />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Button
-            onClick={() => openUserProfile()}
-            variant="navbtn"
-            size="nav"
-            className="font-100 text-white md:hidden "
-          >
-            <Settings
-              className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
-            />
-          </Button>
-          <Button
+            onClick={() => signOut({ redirectUrl: "/home" })}
             variant="navbtn"
             size="nav"
             className="font-100 text-white md:hidden"
@@ -145,15 +190,34 @@ export default function HeaderBar({
             <p>Personalize AI</p>
           </Button>
 
-          <Button
-            onClick={() => openUserProfile()}
-            variant="gradient"
-            size="sm"
-            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2"
-          >
-            <Settings className="size-5" />
-            <p>Settings</p>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="gradient"
+                size="sm"
+                className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2"
+              >
+                <Settings className="size-5" />
+                <p>Settings</p>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-custom-gradient backdrop-blur-20 text-white"
+            >
+              <DropdownMenuItem
+                className="cursor-pointer hover:bg-gray-700"
+                onClick={() => openUserProfile()}
+              >
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer hover:bg-gray-700">
+                <CreditCard className="mr-2 h-4 w-4" />
+                <CustomerPortalButton />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Button
             onClick={() => signOut({ redirectUrl: "/home" })}
