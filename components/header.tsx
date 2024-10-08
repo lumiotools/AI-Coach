@@ -150,7 +150,7 @@ export default function HeaderBar({
               <Button
                 variant="navbtn"
                 size="nav"
-                className="font-100 text-white md:hidden"
+                className="font-100 text-white md:hidden border-gray-800"
               >
                 <Settings
                   className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
@@ -162,10 +162,14 @@ export default function HeaderBar({
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard className="mr-2 h-4 w-4" />
-                <CustomerPortalButton />
-              </DropdownMenuItem>
+              {user &&
+              user.publicMetadata &&
+              user.publicMetadata.paymentInfo ? (
+                <DropdownMenuItem>
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  <CustomerPortalButton />
+                </DropdownMenuItem>
+              ) : null}
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -203,7 +207,7 @@ export default function HeaderBar({
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="bg-custom-gradient backdrop-blur-20 text-white"
+              className="bg-custom-gradient backdrop-blur-20 text-white border-gray-700"
             >
               <DropdownMenuItem
                 className="cursor-pointer hover:bg-gray-700"
@@ -212,10 +216,14 @@ export default function HeaderBar({
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:bg-gray-700">
-                <CreditCard className="mr-2 h-4 w-4" />
-                <CustomerPortalButton />
-              </DropdownMenuItem>
+              {user &&
+              user.publicMetadata &&
+              user.publicMetadata.paymentInfo ? (
+                <DropdownMenuItem>
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  <CustomerPortalButton />
+                </DropdownMenuItem>
+              ) : null}
             </DropdownMenuContent>
           </DropdownMenu>
 

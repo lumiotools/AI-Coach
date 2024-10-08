@@ -49,7 +49,11 @@ export default function TrialEndPopup({
         className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
         onClick={handleBackdropClick}
       >
-        <HeaderBar signOut={signOut} />
+        <HeaderBar
+          isSidebarOpen={false}
+          setIsSidebarOpen={() => false}
+          signOut={signOut}
+        />
         <Card className="w-full max-w-md bg-custom-gradient backdrop-blur-20 rounded-lg shadow-lg relative text-white border-gray-700">
           <CardHeader className="text-right">
             {!isTrialEnded && (
