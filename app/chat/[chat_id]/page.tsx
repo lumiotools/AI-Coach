@@ -745,7 +745,6 @@ export default function Page({ params: { chat_id } }: Props) {
           {/* Added pt-16 for header height */}
 
           <ChatSidebar
-            userId={userId}
             supabase={supabase}
             isSidebarOpen={isSidebarOpen}
             handleExpertClick={handleExpertClick}

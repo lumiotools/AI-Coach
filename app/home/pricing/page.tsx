@@ -275,7 +275,7 @@ export default function PricingPage() {
               <TabsTrigger
                 value="monthly"
                 onClick={() => setBillingPeriod("monthly")}
-                className="p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
+                className="p-3 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
               >
                 Monthly
               </TabsTrigger>

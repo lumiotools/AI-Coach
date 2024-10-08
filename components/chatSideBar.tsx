@@ -34,6 +34,8 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
   const [showToday, setShowToday] = useState(true);
   const [showYesterday, setShowYesterday] = useState(false);
   const [showOthers, setShowOthers] = useState<{ [key: string]: boolean }>({});
+
+  console.log(userId, userEmail);
   // const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
@@ -69,7 +71,7 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
     };
 
     fetchChatPreviews();
-  }, [userEmail, supabase, userId]);
+  }, [supabase, userId]);
 
   const groupChatsByDate = (chats: ChatPreview[]) => {
     const groupedChats: { [key: string]: ChatPreview[] } = {};
@@ -247,7 +249,6 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
 
 export default function Sidebar({
   isSidebarOpen,
-  userId,
   supabase,
   handleExpertClick,
 }: any) {
@@ -353,13 +354,11 @@ export default function Sidebar({
         )}
       </div>
       <AdminDashboardButton userEmail={userEmail} />
-      {canAccessChatExperts && (
-        <ChatHistory
-          userId={userId}
-          supabase={supabase}
-          userEmail={userEmail}
-        />
-      )}
+      <ChatHistory
+        userId={user?.id}
+        supabase={supabase}
+        userEmail={userEmail}
+      />
       <UnlockAccessDialog
         isOpen={showPopup}
         onClose={handlePopupClose}
