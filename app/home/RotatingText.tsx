@@ -25,8 +25,8 @@ export default function RotatingText({
   }, [texts, interval]);
 
   return (
-    <div className="flex items-center justify-center space-x-2">
-      <div className="relative h-20 overflow-y-hidden">
+    <div className="inline md:flex items-center justify-center space-x-4 mt-2">
+      <div className="h-8 md:h-14 lg:h-[4.8rem] overflow-y-hidden">
         <AnimatePresence initial={false}>
           <motion.div
             key={index}
@@ -36,13 +36,13 @@ export default function RotatingText({
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="flex items-center justify-center"
           >
-            <span className="text-blue-400 text-4xl md:text-5xl lg:text-7xl font-bold">
+            <span className="text-blue-400 text-2xl md:text-5xl lg:text-7xl font-bold">
               {texts[index]}
             </span>
           </motion.div>
         </AnimatePresence>
       </div>
-      <span className="text-white text-4xl md:text-5xl lg:text-7xl font-bold">
+      <span className="text-white text-2xl md:text-5xl lg:text-7xl font-bold">
         {subtitle}
       </span>
     </div>
