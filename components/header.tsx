@@ -165,7 +165,7 @@ export default function HeaderBar({
               {user &&
               user.publicMetadata &&
               user.publicMetadata.paymentInfo ? (
-                <DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <CustomerPortalButton />
                 </DropdownMenuItem>
@@ -219,7 +219,7 @@ export default function HeaderBar({
               {user &&
               user.publicMetadata &&
               user.publicMetadata.paymentInfo ? (
-                <DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <CustomerPortalButton />
                 </DropdownMenuItem>
