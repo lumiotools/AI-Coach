@@ -7,6 +7,7 @@ import axios from "axios";
 import { Check, Loader2 } from "lucide-react";
 import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
+import RotatingText from "./RotatingText";
 
 import DemoVideo from "@/components/Assets/video/demo.mp4";
 
@@ -217,7 +218,7 @@ export default function Home() {
       if (filteredTexts.length > 0) {
         setIndex((prevIndex) => (prevIndex + 1) % filteredTexts.length);
       }
-    }, 3000);
+    }, 1000);
 
     return () => clearInterval(rotateText);
   }, [rotatingTexts]);
@@ -233,18 +234,13 @@ export default function Home() {
           <p className="text-base md:text-xl mb-6 text-gray-400">
             Introducing AI-Powered Coaching for Real Estate Agents
           </p>
-          <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white text-clip">
+          <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white">
             {title1}
             <br className="hidden md:block" />
             {title2}
             <br className="hidden md:block" />
-            {/* <span className="text-clip">{title}</span> */}
-            <span className="text-blue-400 ml-1">
-              {rotatingTexts.filter((text) => text).length > 0
-                ? rotatingTexts.filter((text) => text)[index]
-                : "..."}{" "}
-              <span className="text-white">{subtitle}</span>
-            </span>
+            <RotatingText texts={rotatingTexts.filter((text) => text)} />
+            <span className="text-white">{subtitle}</span>
           </h1>
 
           <Link
