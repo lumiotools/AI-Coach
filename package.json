@@ -26,6 +26,8 @@
     "@react-email/render": "^1.0.1",
     "@stripe/stripe-js": "^4.5.0",
     "@supabase/supabase-js": "^2.45.4",
+    "@types/react-swipe": "^6.0.4",
+    "@types/swiper": "^5.4.3",
     "agentcoachai": "file:",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",

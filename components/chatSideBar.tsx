@@ -300,11 +300,11 @@ export default function Sidebar({
   return (
     <div
       className={`${isSidebarOpen ? "block" : "hidden"} ${
-        styles["no-margin-mobile"]
+        styles["no-margin-sidebar"]
       } md:block fixed md:relative z-20 w-64 h-[calc(100vh-78px)] md:h-[calc(100vh-82px)] bg-gray-900 transition-all duration-300 ease-in-out overflow-y-auto`}
     >
       <Button
-        variant="ghost"
+        variant="ghost" 
         className={`flex items-center dark:hover:bg-[rgba(30,42,94,0.12)] justify-center h-16 w-full dark:text-[#1E2A5E] 
     border-b border-gray-700 dark:border-b-[var(--c1,#2F76FF)] text-white 
     hover:bg-white hover:text-white hover:bg-opacity-10 hover:rounded-t-lg 
@@ -322,7 +322,7 @@ export default function Sidebar({
       </Button>
 
       <div className="p-4 space-y-[8px]">
-        <h3 className="text-sm text-start font-semibold text-gray-400 mb-2 common-text dark:text-[#1E2A5E]">
+        <h3 className="text-sm text-start text-gray-400 mb-2 common-text font-normal dark:text-[#1E2A5E]">
           Chat With An AI Expert
         </h3>
         {["Real Estate", "Sales", "Marketing", "Negotiation", "Motivation"].map(

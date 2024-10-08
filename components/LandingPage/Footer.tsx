@@ -1,7 +1,7 @@
 import React from "react";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import Link from "next/link";
-import logo from "@/components/Assets/logo.png";
+import logo from "@/components/Assets/newlogo.png";
 import Image from 'next/image';
 
 interface SocialLinkProps {
@@ -31,8 +31,8 @@ interface QuickLinkProps {
 
 function SocialLink({ href, icon, label }: SocialLinkProps) {
   return (
-    <Link href={href} className="hover:text-blue-400 transition-colors" aria-label={label}  target="_blank"
-    rel="noopener noreferrer">
+    <Link href={href} className="hover:text-blue-400 transition-colors" aria-label={label} target="_blank"
+      rel="noopener noreferrer">
       {icon}
     </Link>
   );
@@ -50,11 +50,11 @@ function QuickLink({ href, label }: QuickLinkProps) {
 
 export function Footer() {
   return (
-    <footer className="bg-white text-black pt-16 pb-8 px-6">
+    <footer className="bg-white text-black pt-16 pb-5 px-6">
       <div className="max-w-7xl mx-auto gap-12 flex flex-col md:flex-row justify-between">
         <div className="flex space-y-4 flex-col">
           <div className="w-full">
-            <Image src={logo} alt="AgentCoach Logo" className="h-16 w-auto ml-[-10px]" />
+            <Image src={logo} alt="AgentCoach Logo" className="h-10 w-auto" />
           </div>
           <p className="text-sm text-gray-500 flex flex-col">
             <span>Empowering real estate professionals with </span>
@@ -85,12 +85,12 @@ export function Footer() {
           <p>support@agentcoach.ai</p>
         </div>
       </div>
-      <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-gray-400">
+      <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-gray-300">
         <p>© 2024 Agentcoach.ai. All rights reserved.</p>
         <div className="mt-2 space-x-4">
-          <a href="/privacy-policy.pdf" className="hover:text-blue-400 transition-colors" >Privacy Policy</a>
-          <a href="/terms-of-service.pdf" className="hover:text-blue-400 transition-colors">Terms of Service</a>
-          <a href="/cookie-policy.pdf" className="hover:text-blue-400 transition-colors">Cookie Policy</a>
+          <a href="/privacy-policy.pdf" className="transition-colors hover:text-blue-400" >Privacy Policy</a>
+          <a href="/terms-of-service.pdf" className="transition-colors hover:text-blue-400">Terms of Service</a>
+          <a href="/cookie-policy.pdf" className="transition-colors hover:text-blue-400">Cookie Policy</a>
         </div>
       </div>
     </footer>

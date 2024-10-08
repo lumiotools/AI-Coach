@@ -2,9 +2,8 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-// import TestimonialSlider from "@/components/TestimonialSlider"; // Updated import path
 import axios from "axios";
-import { Check, Loader2 } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
 
@@ -48,19 +47,37 @@ const prompts: string[] = [
 ];
 
 export default function Home() {
-  const scrollRef1 = useRef<HTMLDivElement | null>(null);
-  const scrollRef2 = useRef<HTMLDivElement | null>(null);
-  const scrollRef3 = useRef<HTMLDivElement | null>(null);
+  const scrollRef1 = useRef<HTMLDivElement>(null);
+  const scrollRef2 = useRef<HTMLDivElement>(null);
+  const scrollRef3 = useRef<HTMLDivElement>(null);
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+  const scrollAmounts = useRef<number[]>([0, 0, 0]);
+  const speeds = [0.5, 0.7, 0.5]; // Speeds for each row
+
+  const handleScroll = useCallback(() => {
+    const scrollContainers = [scrollRef1.current, scrollRef2.current, scrollRef3.current];
+
+    scrollContainers.forEach((container, index) => {
+      if (container && hoveredRow !== index) {
+        scrollAmounts.current[index] += speeds[index];
+        if (scrollAmounts.current[index] >= container.scrollWidth / 2) {
+          scrollAmounts.current[index] = 0;
+        }
+        container.scrollLeft = index % 2 === 0
+          ? container.scrollWidth / 2 - scrollAmounts.current[index]
+          : scrollAmounts.current[index];
+      }
+    });
+
+    requestAnimationFrame(handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const animationId = requestAnimationFrame(handleScroll);
+    return () => cancelAnimationFrame(animationId);
+  }, [handleScroll]);
+
   const [index, setIndex] = useState<number>(0);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const handleMouseEnter = useCallback((index: number) => {
-    setHoveredIndex(index);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setHoveredIndex(null);
-  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(
@@ -68,41 +85,6 @@ export default function Home() {
       3000
     );
     return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    const scrollContainers = [
-      scrollRef1.current,
-      scrollRef2.current,
-      scrollRef3.current,
-    ];
-    scrollContainers.forEach((scrollContainer, index) => {
-      if (scrollContainer) {
-        let scrollAmount = 0;
-        const step = 0.4; // Increased speed for all containers
-
-        const scroll = () => {
-          scrollAmount += step;
-          if (index === 1) {
-            // Move second container to the right
-            if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-              scrollAmount = 0;
-            }
-            scrollContainer.scrollLeft = scrollAmount;
-          } else {
-            // Move first and third containers to the left
-            if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-              scrollAmount = 0;
-            }
-            scrollContainer.scrollLeft =
-              scrollContainer.scrollWidth / 2 - scrollAmount; // Reverse direction
-          }
-          requestAnimationFrame(scroll);
-        };
-
-        requestAnimationFrame(scroll);
-      }
-    });
   }, []);
 
   const testimonials = [
@@ -180,11 +162,11 @@ export default function Home() {
   const [title2, setTitle2] = useState<string>("");
   const [subtitle, setSubtitle] = useState<string>("");
   const [rotatingTexts, setRotatingTexts] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Added loading state
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Set loading to true before fetching
+      setLoading(true);
       try {
         const response = await axios.get(
           "https://admindashbord-lumio.onrender.com/get-landing-page"
@@ -193,8 +175,6 @@ export default function Home() {
 
         const title1 = title.split("With")[0];
         const title2 = title.split("Career")[1];
-        // const titleWords = title.split(" ");
-        // const midpoint = Math.ceil(titleWords.length / 2.7);
         setTitle1(title1);
         setTitle2(title2);
 
@@ -203,7 +183,7 @@ export default function Home() {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
     fetchData();
@@ -224,13 +204,13 @@ export default function Home() {
 
   return (
     <div className="bg-black text-white">
-      {loading ? ( // Conditional rendering for loader
+      {loading ? (
         <div className="flex justify-center items-center h-screen">
           <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
-          <p className="text-base md:text-xl mb-6 text-gray-400">
+          <p className="text-base md:text-lg mb-6 text-gray-400">
             Introducing AI-Powered Coaching for Real Estate Agents
           </p>
           <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white text-clip">
@@ -238,7 +218,6 @@ export default function Home() {
             <br className="hidden md:block" />
             {title2}
             <br className="hidden md:block" />
-            {/* <span className="text-clip">{title}</span> */}
             <span className="text-blue-400 ml-1">
               {rotatingTexts.filter((text) => text).length > 0
                 ? rotatingTexts.filter((text) => text)[index]
@@ -247,25 +226,31 @@ export default function Home() {
             </span>
           </h1>
 
+          {/* <Link
+            className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-2 px-3 rounded-md mt-8 transition duration-300 ease-in-out transform hover:scale-105"
+            href="/signup"
+          >
+            SIGN UP FOR FREE
+          </Link> */}
           <Link
-            className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
+            className="mt-10 text-center w-[180px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
             href="/signup"
           >
             SIGN UP FOR FREE
           </Link>
-          <div className="flex flex-col">
-            <div className="flex flex-row gap-10 mt-5">
-              <div className="flex flex-row gap-4 mt-5 items-center">
+          <div className="flex flex-col mt-12">
+            <div className="flex flex-col md:flex-row md:gap-10">
+              <div className="flex flex-row gap-4 items-center">
                 <div className="p-[6px] rounded-full bg-blue-600">
-                  <Check className="text-black"></Check>
+                  <Check className="text-black h-3 w-3 md:h-5 md:w-5"></Check>
                 </div>
-                <p className="">No credit card required</p>
+                <p className="text-sm md:text-base">No credit card required</p>
               </div>
-              <div className="flex flex-row gap-4 mt-5 items-center">
+              <div className="flex flex-row gap-4 mt-5 md:mt-0 items-center">
                 <div className="p-[6px] rounded-full bg-blue-600">
-                  <Check className="text-black"></Check>
+                  <Check className="text-black h-3 w-3 md:h-5 md:w-5"></Check>
                 </div>
-                <p className="">Free general coach included</p>
+                <p className="text-sm md:text-base">Free general coach included</p>
               </div>
             </div>
           </div>
@@ -273,10 +258,10 @@ export default function Home() {
       )}
 
       <div className="py-16 px-4 bg-white text-black">
-        <h2 className="text-3xl font-bold text-center mb-8">
+        <h2 className="text-3xl font-bold text-center mb-1">
           Explore AI Chatbots
         </h2>
-        <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+        <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
           Engage with our AI chatbots to receive expert guidance tailored to
           your needs in Sales, Negotiation, Marketing, and more.
         </p>
@@ -313,11 +298,8 @@ export default function Home() {
           />
         </div>
         <div className="text-center mt-12">
-          {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            TRY IT NOW
-          </Button> */}
           <Link
-            className="bg-blue-600 hover:bg-blue-700 text-white text-base py-3 px-8 rounded-xl mt-8"
+            className="bg-blue-600 hover:bg-blue-700 text-white text-sm py-3 px-5 rounded-md mt-8"
             href="/signup"
           >
             TRY IT NOW
@@ -326,150 +308,77 @@ export default function Home() {
       </div>
 
       <div className="bg-black py-16 px-4">
-        <h2 className="text-3xl font-bold text-center mb-8 text-white">
+        <h2 className="text-3xl font-bold text-center mb-1 text-white">
           Explore AgentCoach.ai&apos;s Expertise
         </h2>
         <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
-          Scroll through example prompts to see how our AI delivers expert
-          advice on real estate topics.
+          Scroll through example prompts to see how our AI delivers expert advice on real estate topics.
         </p>
-        <div className="flex w-full flex-col gap-6">
-          <div className="max-w-full mx-auto overflow-hidden" ref={scrollRef1}>
+        <div className="flex w-full flex-col gap-4">
+          {[scrollRef1, scrollRef2, scrollRef3].map((ref, i) => (
             <div
-              className="flex gap-4"
-              style={{
-                display: "flex",
-                gap: "3rem",
-                width: "max-content",
-              }}
+              key={i}
+              className="w-full overflow-hidden"
+              ref={ref}
+              onMouseEnter={() => setHoveredRow(i)}
+              onMouseLeave={() => setHoveredRow(null)}
             >
-              {[...prompts, ...prompts].map((prompt, index) => (
-                <PromptCard
-                  key={index}
-                  prompt={prompt}
-                  onMouseEnter={() => handleMouseEnter(index)}
-                  onMouseLeave={handleMouseLeave}
-                />
-              ))}
+              <div
+                className="flex space-x-4"
+                style={{
+                  width: 'max-content',
+                }}
+              >
+                {[...prompts, ...prompts].map((prompt, index) => (
+                  <PromptCard
+                    key={index}
+                    prompt={prompt}
+                    isRowHovered={hoveredRow === i}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="max-w-full mx-auto overflow-hidden" ref={scrollRef2}>
-            <div
-              className="flex gap-4 ml-20"
-              style={{
-                display: "flex",
-                gap: "3rem",
-                width: "max-content",
-              }}
-            >
-              {[...prompts, ...prompts].map((prompt, index) => (
-                <PromptCard
-                  key={index}
-                  prompt={prompt}
-                  onMouseEnter={() => handleMouseEnter(index)}
-                  onMouseLeave={handleMouseLeave}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="max-w-full mx-auto overflow-hidden" ref={scrollRef3}>
-            <div
-              className="flex gap-4"
-              style={{
-                display: "flex",
-                gap: "3rem",
-                width: "max-content",
-              }}
-            >
-              {[...prompts, ...prompts].map((prompt, index) => (
-                <PromptCard
-                  key={index}
-                  prompt={prompt}
-                  onMouseEnter={() => handleMouseEnter(index)}
-                  onMouseLeave={handleMouseLeave}
-                />
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
       <div className="bg-white py-16 px-4">
-        {/* <h2 className="text-3xl font-bold text-center mb-8 text-black">
-            What Users Say About Agent Coach.ai
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-            Hear from real estate professionals who have transformed their careers with our AI Coach.
-          </p> */}
         <div className="flex justify-center items-center overflow-hidden">
-          {/* <div className="flex transition-transform duration-500">
-              <Carousel
-                opts={{
-                  align: "start",
-                  loop: true, // Enable looping
-                }}
-                className="relative w-full" // Ensure the carousel is positioned correctly
-              >
-                <CarouselContent>
-                  {testimonials.slice(0, 3).map((testimonial, index) => (
-                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                      <div className="p-1">
-                        <TestimonialCard {...testimonial} />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
-                  <CarouselPrevious onClick={() => setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)} />
-                </div>
-                <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
-                  <CarouselNext onClick={() => setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length)} />
-                </div>
-              </Carousel>
-            </div> */}
-
           <TestimonialSlider></TestimonialSlider>
         </div>
       </div>
 
       <div className="py-16 px-4" id="home-page-bottom-section">
-        <h2 className="text-3xl font-bold text-center mb-4">
+        <h2 className="text-3xl font-bold text-center mb-1">
           Start Transforming Your Real Estate Career Today - For Free!
         </h2>
-        <p className="text-center mb-10 max-w-4xl mx-auto">
+        <p className="text-center mb-10 max-w-4xl mx-auto text-gray-400">
           Unlock expert AI-driven advice for real estate, sales, negotiation.
           Get started for free and elevate your career today!
         </p>
         <div className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-5xl mx-auto">
+          <div className="md:w-1/2 border-gray-100 rounded-lg">
+            <DemoVideoComponent className="w-full object-cover h-auto" />
+          </div>
           <div className="md:w-1/2 flex flex-col justify-center">
-            <p className="mb-4 text-justify">
-              Get instant access to AgentCoach.ai and start experiencing expert
-              advice tailored just for you in Real Estate, Sales, Negotiation,
-              Marketing, and Motivation.
+            <p className="mb-4 text-justify text-lg text-gray-400">
+              Get instant access to <span className="text-white text-lg">AgentCoach.ai</span> and start experiencing expert
+              advice tailored just for you in <span className="text-white text-lg"> Real Estate, Sales, Negotiation,
+                Marketing, and Motivation.</span>
             </p>
-            <p className="mb-4 text-justify">
+            <p className="mb-4 text-justify text-gray-500">
               Best of all, you can get started right now, completely free! Take
               advantage of this opportunity to boost your career and see the
               difference AI-powered coaching can make.
             </p>
-            {/* <p
-              className="text-base text-white p-2 rounded-lg border text-center"
-            >
-              SIGN UP FOR FREE &amp; UNLOCK YOUR POTENTIAL TODAY!
-            </p> */}
-            {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xl py-6 px-8 w-1/2 mt-5">
-              SIGN UP FOR FREE
-            </Button> */}
             <Link
-              className="text-center md:w-1/2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-base py-4 px-10 rounded-xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
+              className="text-center w-[180px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-2 px-3 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
               href="/signup"
             >
               SIGN UP FOR FREE
             </Link>
           </div>
-          <div className="md:w-1/2 border-gray-100 rounded-lg">
-            <DemoVideoComponent className="w-full object-cover h-auto" />
-          </div>
+
         </div>
       </div>
     </div>
@@ -484,33 +393,39 @@ type ChatbotCardProps = {
 
 function ChatbotCard({ title, description, icon }: ChatbotCardProps) {
   return (
-    <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-6 rounded-lg">
-      <div className="text-4xl mb-4 bg-blue-600 w-16 h-16 flex items-center justify-center rounded-full mx-auto">
+    <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-6 rounded-lg flex flex-col items-center justify-center cursor-pointer">
+      <div className="text-4xl mb-4 bg-blue-600 w-16 h-16 flex items-center justify-center rounded-full">
         {icon}
       </div>
       <h3 className="text-xl font-bold mb-2">{title}</h3>
-      <p className="text-sm">{description}</p>
+      <p className="text-sm text-center text-gray-300">{description}</p>
     </div>
   );
 }
 
-type PromptCardProps = {
-  readonly prompt: string;
-  readonly onMouseEnter: () => void;
-  readonly onMouseLeave: () => void;
-};
+interface PromptCardProps {
+  prompt: string;
+  isRowHovered: boolean;
+}
 
-function PromptCard({ prompt, onMouseEnter, onMouseLeave }: PromptCardProps) {
+function PromptCard({ prompt, isRowHovered }: PromptCardProps) {
+  const [isCardHovered, setIsCardHovered] = useState(false);
+
   return (
     <button
-      tabIndex={0} // Added tabIndex for keyboard navigation
-      style={{ width: "300px", flexShrink: 0 }}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-4 rounded-lg flex items-center justify-between transition-all duration-300"
+      onMouseEnter={() => setIsCardHovered(true)}
+      onMouseLeave={() => setIsCardHovered(false)}
+      className="w-[300px] flex-shrink-0 bg-gradient-to-r from-blue-900 to-blue-800 text-white p-4 flex items-center justify-between rounded-lg transition-all duration-300 ease-in-out"
     >
-      <p className="text-sm">{prompt}</p>
-      <span className="ml-2">→</span>
+      <p className={`text-sm flex-grow text-left pr-2 transition-all duration-300 ease-in-out ${isCardHovered ? 'underline' : ''}`}>
+        {prompt}
+      </p>
+      <div className="flex items-center justify-center w-6 h-6 overflow-hidden">
+        <ArrowRight
+          className={`transition-all duration-300 ease-in-out transform ${isCardHovered ? 'translate-x-1' : ''}`}
+          size={20}
+        />
+      </div>
     </button>
   );
 }
