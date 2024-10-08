@@ -6,11 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 interface RotatingTextProps {
   texts: string[];
   interval?: number;
+  subtitle: string;
 }
 
 export default function RotatingText({
   texts,
   interval = 2000,
+  subtitle,
 }: RotatingTextProps) {
   const [index, setIndex] = useState(0);
 
@@ -23,21 +25,26 @@ export default function RotatingText({
   }, [texts, interval]);
 
   return (
-    <div className="relative h-20 overflow-hidden">
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="absolute inset-0 flex items-center justify-center"
-        >
-          <span className="text-blue-400 text-4xl md:text-5xl lg:text-7xl font-bold">
-            {texts[index]}
-          </span>
-        </motion.div>
-      </AnimatePresence>
+    <div className="flex items-center justify-center space-x-2">
+      <div className="relative h-20 overflow-y-hidden">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="flex items-center justify-center"
+          >
+            <span className="text-blue-400 text-4xl md:text-5xl lg:text-7xl font-bold">
+              {texts[index]}
+            </span>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <span className="text-white text-4xl md:text-5xl lg:text-7xl font-bold">
+        {subtitle}
+      </span>
     </div>
   );
 }

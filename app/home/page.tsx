@@ -52,7 +52,6 @@ export default function Home() {
   const scrollRef1 = useRef<HTMLDivElement | null>(null);
   const scrollRef2 = useRef<HTMLDivElement | null>(null);
   const scrollRef3 = useRef<HTMLDivElement | null>(null);
-  const [index, setIndex] = useState<number>(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const handleMouseEnter = useCallback((index: number) => {
@@ -61,14 +60,6 @@ export default function Home() {
 
   const handleMouseLeave = useCallback(() => {
     setHoveredIndex(null);
-  }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(
-      () => setIndex((index) => (index + 1) % TEXTS.length),
-      3000
-    );
-    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -210,19 +201,6 @@ export default function Home() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const rotateText = setInterval(() => {
-      const filteredTexts = rotatingTexts.filter((text) =>
-        console.log("Line 180", text)
-      );
-      if (filteredTexts.length > 0) {
-        setIndex((prevIndex) => (prevIndex + 1) % filteredTexts.length);
-      }
-    }, 1000);
-
-    return () => clearInterval(rotateText);
-  }, [rotatingTexts]);
-
   return (
     <div className="bg-black text-white">
       {loading ? ( // Conditional rendering for loader
@@ -239,8 +217,10 @@ export default function Home() {
             <br className="hidden md:block" />
             {title2}
             <br className="hidden md:block" />
-            <RotatingText texts={rotatingTexts.filter((text) => text)} />
-            <span className="text-white">{subtitle}</span>
+            <RotatingText
+              texts={rotatingTexts.filter((text) => text)}
+              subtitle={subtitle}
+            />
           </h1>
 
           <Link
