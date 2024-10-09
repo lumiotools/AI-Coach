@@ -19,9 +19,10 @@ const socialLinks = [
 
 const quickLinks = [
   { href: "/", label: "Home" },
-  { href: "/faqs", label: "FAQ's" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/blog", label: "Blog" },
+  { href: "/home/about", label: "About" },
+  { href: "/home/faqs", label: "FAQ's" },
+  { href: "/home/pricing", label: "Pricing" },
+  { href: "https://agentcoachblogteamlumio.wordpress.com", label: "Blog" },
 ];
 
 interface QuickLinkProps {
