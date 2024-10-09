@@ -6,10 +6,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import icon12 from "@/components/Assets/icon12.svg";
-import pp1 from "@/components/Assets/images/kathy.png";
-import pp2 from "@/components/Assets/images/jeff.png";
-import pp3 from "@/components/Assets/images/merlin.png";
-import pp4 from "@/components/Assets/images/james.png";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Swiper as SwiperType } from "swiper/types";
@@ -17,7 +13,7 @@ import { Swiper as SwiperType } from "swiper/types";
 export const testimonials = [
   {
     id: 1,
-    image: pp1,
+    image: "/images/kathy.png",
     icon: icon12,
     text: '"The real-time feedback is invaluable. It\'s like having a mentor in my pocket."',
     name: "Kathy Welsh",
@@ -25,7 +21,7 @@ export const testimonials = [
   },
   {
     id: 2,
-    image: pp2,
+    image: "/images/jeff.png",
     icon: icon12,
     text: '"AgentCoach.ai has revolutionized my approach to negotiations. I feel more confident than ever!"',
     name: "Jeff Hammerberg",
@@ -33,7 +29,7 @@ export const testimonials = [
   },
   {
     id: 3,
-    image: pp3,
+    image: "/images/merlin.png",
     icon: icon12,
     text: '"The interactive scenarios have empowered me to negotiate confidently and overcome objections with ease."',
     name: "Merlin Parker",
@@ -41,7 +37,7 @@ export const testimonials = [
   },
   {
     id: 4,
-    image: pp4,
+    image: "/images/james.png",
     icon: icon12,
     text: '"I love how convenient it is to access my AI coach 24/7!"',
     name: "James Alonso",
@@ -114,10 +110,13 @@ const TestimonialSlider: React.FC = () => {
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-black">
-            What Users Say <br className="block md:hidden" /> About AgentCoach.ai
+            What Users Say <br className="block md:hidden" /> About
+            AgentCoach.ai
           </h2>
           <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
-            Hear from real estate professionals who have <br className="block md:hidden" /> transformed their careers with our AI Coach.
+            Hear from real estate professionals who have{" "}
+            <br className="block md:hidden" /> transformed their careers with
+            our AI Coach.
           </p>
         </div>
         <div className="relative">
@@ -149,10 +148,7 @@ const TestimonialSlider: React.FC = () => {
           >
             {testimonials.map((testimonial) => (
               <SwiperSlide key={testimonial.id} className="p-2 rounded-md">
-                <TestimonialCard
-                  {...testimonial}
-                  image={testimonial.image.src}
-                />
+                <TestimonialCard {...testimonial} image={testimonial.image} />
               </SwiperSlide>
             ))}
           </Swiper>
