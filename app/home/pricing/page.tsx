@@ -431,9 +431,9 @@ function PricingCard({
 }: PricingCardProps) {
   return (
     <Card
-      className={`rounded-[20px] bg-gradient-to-t bg-[#131F40] from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] flex flex-col text-white shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 border-opacity-50 ${tier.plan === "free" ? "border-[#5F6C87]" : "border-[#2F76FF]"} ${
-        tier.popular && "border-[2px] border-opacity-100"
-      } h-full`}
+      className={`rounded-[20px] bg-gradient-to-t bg-[#131F40] from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] flex flex-col text-white shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 border-opacity-50 ${
+        tier.plan === "free" ? "border-[#5F6C87]" : "border-[#2F76FF]"
+      } ${tier.popular && "border-[2px] border-opacity-100"} h-full`}
     >
       <CardHeader className="flex-grow-0">
         {tier.popular && (
@@ -442,13 +442,13 @@ function PricingCard({
           </div>
         )}
         <CardTitle
-          className={`flex items-start text-2xl font-bold  ${
+          className={`text-left text-2xl font-bold  ${
             tier.plan === "free" ? "text-gray-400" : "text-[#2F76FF]"
           }`}
         >
           <span>{tier.name}</span>
         </CardTitle>
-        <CardDescription className="flex items-start text-gray-400">
+        <CardDescription className="text-left text-gray-400">
           {tier.description}
         </CardDescription>
       </CardHeader>

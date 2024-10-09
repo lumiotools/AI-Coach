@@ -11,28 +11,6 @@ import RotatingText from "./RotatingText";
 import DemoVideo from "@/components/Assets/video/demo.mp4";
 import PromptCards from "@/components/PromptCards";
 
-interface DemoVideoComponentProps {
-  className: string;
-}
-
-export const DemoVideoComponent: React.FC<DemoVideoComponentProps> = ({
-  className,
-}) => {
-  return (
-    <video className={className} preload="auto" autoPlay loop muted>
-      <source src={DemoVideo} type="video/mp4" />
-    </video>
-  );
-};
-
-const TEXTS: string[] = [
-  "General Advisor",
-  "Negotiation Expert",
-  "Sales Advisor",
-  "Marketing Guru",
-  "Motivation Guide",
-];
-
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [title1, setTitle1] = useState<string>("");
@@ -251,7 +229,15 @@ export default function Home() {
         </p>
         <div className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-5xl mx-auto">
           <div className="md:w-1/2 border-gray-100 rounded-lg">
-            <DemoVideoComponent className="w-full object-cover h-auto" />
+            <video
+              className="w-full object-cover h-auto"
+              preload="auto"
+              autoPlay
+              loop
+              muted
+            >
+              <source src={DemoVideo} type="video/mp4" />
+            </video>
           </div>
           <div className="md:w-1/2 flex flex-col justify-center">
             <p className="mb-4 text-justify text-lg text-gray-400">
