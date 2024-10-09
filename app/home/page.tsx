@@ -1,165 +1,72 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { Check, Loader2 } from "lucide-react";
-import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
+import { Check } from "lucide-react";
+import TestimonialSlider, {
+  testimonials,
+} from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
 import RotatingText from "./RotatingText";
-
 import DemoVideo from "@/components/Assets/video/newDemo.mp4";
 import PromptCards from "@/components/PromptCards";
 
-export default function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [title1, setTitle1] = useState<string>("");
-  const [title2, setTitle2] = useState<string>("");
-  const [subtitle, setSubtitle] = useState<string>("");
-  const [rotatingTexts, setRotatingTexts] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+async function getLandingPageData() {
+  const response = await fetch(
+    "https://admindashbord-lumio.onrender.com/get-landing-page",
+    { cache: "no-store" }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch landing page data");
+  }
+  return response.json();
+}
 
-  const testimonials = [
-    {
-      name: "Lisa Kim",
-      role: "Broker Associate",
-      quote:
-        "I love how convenient it is to access coaching resources at any time!",
-      avatarUrl: "https://picsum.photos/seed/lisa/200/200",
-    },
-    {
-      name: "Mike Rodriguez",
-      role: "Realtor",
-      quote:
-        "The real-time feedback is invaluable. It's like having a mentor in my pocket.",
-      avatarUrl: "https://picsum.photos/seed/mike/200/200",
-    },
-    {
-      name: "Jan Stiedemann",
-      role: "Global Applications Representative",
-      quote:
-        "AgentCoach.ai has revolutionized my approach to negotiations. I feel more confident than ever!",
-      avatarUrl: "https://picsum.photos/seed/jan/200/200",
-    },
-    {
-      name: "Alice Johnson",
-      role: "Real Estate Agent",
-      quote: "This platform has changed the way I approach my clients!",
-      avatarUrl: "https://picsum.photos/seed/alice/200/200",
-    },
-    {
-      name: "Bob Smith",
-      role: "Property Manager",
-      quote: "The insights I gain are invaluable for my business.",
-      avatarUrl: "https://picsum.photos/seed/bob/200/200",
-    },
-    {
-      name: "Charlie Brown",
-      role: "Real Estate Investor",
-      quote: "I can't imagine my career without this AI coaching.",
-      avatarUrl: "https://picsum.photos/seed/charlie/200/200",
-    },
-    {
-      name: "Diana Prince",
-      role: "Realtor",
-      quote: "The coaching has helped me close more deals than ever!",
-      avatarUrl: "https://picsum.photos/seed/diana/200/200",
-    },
-    {
-      name: "Ethan Hunt",
-      role: "Real Estate Consultant",
-      quote: "A must-have tool for any serious real estate professional.",
-      avatarUrl: "https://picsum.photos/seed/ethan/200/200",
-    },
-    {
-      name: "Fiona Green",
-      role: "Real Estate Broker",
-      quote: "I love the personalized advice I receive!",
-      avatarUrl: "https://picsum.photos/seed/fiona/200/200",
-    },
-  ];
+export default async function Home() {
+  const { title, subtitle, rotatingTexts } = await getLandingPageData();
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-    }, 5000); // Change every 5 seconds
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          "https://admindashbord-lumio.onrender.com/get-landing-page"
-        );
-        const { title, subtitle, rotatingTexts } = response.data;
-
-        const title1 = title.split("With")[0];
-        const title2 = title.split("Career")[1];
-        setTitle1(title1);
-        setTitle2(title2);
-
-        setSubtitle(subtitle);
-        setRotatingTexts(rotatingTexts);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  const title1 = title.split("With")[0];
+  const title2 = title.split("Career")[1];
 
   return (
     <div className="bg-black text-white">
-      {loading ? (
-        <div className="flex justify-center items-center h-screen">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
-          <p className="text-base md:text-lg mb-6 text-gray-400">
-            Introducing AI-Powered Coaching for Real Estate Agents
-          </p>
-          <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white">
-            {title1}
-            <br className="hidden md:block" />
-            {title2}
-            <br className="hidden md:block" />
-            <RotatingText
-              texts={rotatingTexts.filter((text) => text)}
-              subtitle={subtitle}
-            />
-          </h1>
+      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
+        <p className="text-base md:text-lg mb-6 text-gray-400">
+          Introducing AI-Powered Coaching for Real Estate Agents
+        </p>
+        <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white">
+          {title1}
+          <br className="hidden md:block" />
+          {title2}
+          <br className="hidden md:block" />
+          <RotatingText
+            texts={rotatingTexts.filter((text: any) => text)}
+            subtitle={subtitle}
+          />
+        </h1>
 
-          <Link
-            className="mt-10 text-center w-[180px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
-            href="/signup"
-          >
-            SIGN UP FOR FREE
-          </Link>
-          <div className="flex flex-col mt-12">
-            <div className="flex flex-col md:flex-row md:gap-10">
-              <div className="flex flex-row gap-4 items-center">
-                <div className="p-[6px] rounded-full bg-blue-600">
-                  <Check className="text-black h-3 w-3 md:h-5 md:w-5" />
-                </div>
-                <p className="text-sm md:text-base">No credit card required</p>
+        <Link
+          className="mt-10 text-center w-[180px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+          href="/signup"
+        >
+          SIGN UP FOR FREE
+        </Link>
+        <div className="flex flex-col mt-12">
+          <div className="flex flex-col md:flex-row md:gap-10">
+            <div className="flex flex-row gap-4 items-center">
+              <div className="p-[6px] rounded-full bg-blue-600">
+                <Check className="text-black h-3 w-3 md:h-5 md:w-5" />
               </div>
-              <div className="flex flex-row gap-4 mt-5 md:mt-0 items-center">
-                <div className="p-[6px] rounded-full bg-blue-600">
-                  <Check className="text-black h-3 w-3 md:h-5 md:w-5" />
-                </div>
-                <p className="text-sm md:text-base">
-                  Free general coach included
-                </p>
+              <p className="text-sm md:text-base">No credit card required</p>
+            </div>
+            <div className="flex flex-row gap-4 mt-5 md:mt-0 items-center">
+              <div className="p-[6px] rounded-full bg-blue-600">
+                <Check className="text-black h-3 w-3 md:h-5 md:w-5" />
               </div>
+              <p className="text-sm md:text-base">
+                Free general coach included
+              </p>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       <div className="py-16 px-4 bg-white text-black">
         <h2 className="text-3xl font-bold text-center mb-1">
@@ -175,13 +82,11 @@ export default function Home() {
             description="Boost your property sales with expert tips and proven strategies tailored for real estate professionals."
             icon="💬"
           />
-
           <ChatbotCard
             title="Negotiation Expert"
             description="Master the art of negotiation with advice on closing deals, overcoming objections, and maximizing value."
             icon="🤝"
           />
-
           <ChatbotCard
             title="Marketing Guru"
             description="Elevate your marketing game with creative campaigns, branding insights, and social media strategies that attract clients."
@@ -194,7 +99,6 @@ export default function Home() {
             description="Stay inspired and focused with personalized tips, affirmations, and goal-setting strategies from the Motivation Mentor bot."
             icon="🎯"
           />
-
           <ChatbotCard
             title="Real Estate Coach"
             description="Get comprehensive advice on various aspects of real estate, from legalities to client management, tailored to your needs."
