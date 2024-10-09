@@ -1,16 +1,12 @@
-import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import TestimonialSlider, {
-  testimonials,
-} from "@/components/LandingPage/TestimonialSlider";
+import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
 import RotatingText from "./RotatingText";
-import DemoVideo from "@/components/Assets/video/newDemo.mp4";
 import PromptCards from "@/components/PromptCards";
 
 async function getLandingPageData() {
   const response = await fetch(
-    "https://admindashbord-lumio.onrender.com/get-landing-page",
+    "https://admindashbord-lumio-7qzv.vercel.app/get-landing-page",
     { cache: "no-store" }
   );
   if (!response.ok) {
@@ -140,7 +136,7 @@ export default async function Home() {
               loop
               muted
             >
-              <source src={DemoVideo} type="video/mp4" />
+              <source src="/video/newDemo.mp4" type="video/mp4" />
             </video>
           </div>
           <div className="md:w-1/2 flex flex-col justify-center">
