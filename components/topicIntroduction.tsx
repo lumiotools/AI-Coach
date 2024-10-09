@@ -196,7 +196,7 @@ const TopicIntroduction: React.FC<{
         {data.questions.map((question, index) => (
           <Card
             key={index}
-            className="cursor-pointer bg-[rgba(0, 0, 0, 0.4)] border border-[1.038px] border-[#79A6FF] group transition-colors duration-300 ease-in-out hover:bg-[rgba(255,255,255,0.12)]  dark:hover:bg-[rgba(255,255,255,1)] dark:bg-[rgb(214, 225, 245)] bg-[linear-gradient(0deg, rgba(213, 227, 255, 0.74) 0%, rgba(213, 227, 255, 0.74) 100%), #FFF]"
+            className="cursor-pointer bg-[rgba(0, 0, 0, 0.4)] border border-[1.038px] border-[#79A6FF] group transition-colors duration-300 ease-in-out hover:bg-[rgba(255,255,255,0.12)] dark:hover:bg-[rgba(30,42,94,0.12)] dark:bg-[rgb(214, 225, 245)] bg-[linear-gradient(0deg, rgba(213, 227, 255, 0.74) 0%, rgba(213, 227, 255, 0.74) 100%), #FFF]"
             onClick={() => onAskQuestion(question.text)}
           >
             <CardContent className="flex items-center p-4">

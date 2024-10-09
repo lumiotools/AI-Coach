@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 import icon12 from "@/components/Assets/icon12.svg";
 import pp1 from "@/components/Assets/images/kathy.png";
 import pp2 from "@/components/Assets/images/jeff.png";
 import pp3 from "@/components/Assets/images/merlin.png";
 import pp4 from "@/components/Assets/images/james.png";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Swiper as SwiperType } from "swiper/types";
 
 export const testimonials = [
   {
@@ -60,75 +64,115 @@ const TestimonialCard: React.FC<Testimonial> = ({
   text,
   image,
 }) => (
-  <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-4 md:p-8 rounded-lg flex flex-col items-center w-full h-full">
-    <div className="relative mb-2">
+  <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-6 rounded-lg flex flex-col items-center w-full h-full min-h-[350px]">
+    <div className="relative mb-4">
       <img
         src={image}
         alt={name}
-        className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white"
+        className="w-32 h-32 rounded-full border-4 border-white"
       />
     </div>
-    <p className="text-sm md:text-base italic mb-2 text-center h-20 leading-tight max-w-xs">
-      {text}
-    </p>
-    <h3 className="font-bold text-lg mb-1">{name}</h3>
-    <p className="text-xs md:text-sm text-blue-200">{position}</p>
+    <div className="flex-grow flex flex-col justify-between items-center">
+      <p className="text-base italic mb-4 text-center leading-tight max-w-80 md:max-w-96">
+        {text}
+      </p>
+      <div>
+        <h3 className="font-bold text-lg mb-1 text-center">{name}</h3>
+        <p className="text-base text-blue-200 text-center">{position}</p>
+      </div>
+    </div>
   </div>
 );
 
 const TestimonialSlider: React.FC = () => {
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const handlePrev = () => {
+    if (swiperRef.current) {
+      swiperRef.current.slidePrev();
+    }
+  };
+
+  const handleNext = () => {
+    if (swiperRef.current) {
+      swiperRef.current.slideNext();
+    }
+  };
+
   return (
-    <section className="py-5 cursor-pointer">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-8 text-black">
-            What Users Say <br className="block md:hidden" /> About
-            AgentCoach.ai
+    <section className="py-12 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-black">
+            What Users Say <br className="block md:hidden" /> About AgentCoach.ai
           </h2>
-          <p className="text-sm sm:text-base text-center text-gray-600 mb-8 max-w-3xl mx-auto">
-            Hear from real estate professionals who{" "}
-            <br className="block md:hidden" /> have transformed their careers
-            with our AI Coach.
+          <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
+            Hear from real estate professionals who have <br className="block md:hidden" /> transformed their careers with our AI Coach.
           </p>
         </div>
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={32}
-          loop={true}
-          centeredSlides={true}
-          pagination={false}
-          autoplay={{
-            delay: 4000,
-            disableOnInteraction: false,
-          }}
-          breakpoints={{
-            640: {
-              slidesPerView: 1,
-            },
-            768: {
-              slidesPerView: 1,
-            },
-            1024: {
-              slidesPerView: 2,
-            },
-            1280: {
-              slidesPerView: 3,
-            },
-          }}
-          modules={[Pagination, Autoplay]}
-          className="mySwiper"
-        >
-          {testimonials.map((testimonial, index) => (
-            <SwiperSlide key={index} className="p-2">
-              <TestimonialCard
-                {...testimonial}
-                position={testimonial.position}
-                text={testimonial.text}
-                image={testimonial.image.src}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div className="relative">
+          <Swiper
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            slidesPerView={1}
+            spaceBetween={24}
+            loop={true}
+            centeredSlides={true}
+            autoplay={{
+              delay: isMobile ? 6000 : 4000,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+            }}
+            modules={[Pagination, Autoplay, Navigation]}
+            className="mySwiper rounded-lg overflow-visible"
+          >
+            {testimonials.map((testimonial) => (
+              <SwiperSlide key={testimonial.id} className="p-2 rounded-md">
+                <TestimonialCard
+                  {...testimonial}
+                  image={testimonial.image.src}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <div className="flex justify-center mt-8 space-x-4">
+            <Button
+              onClick={handlePrev}
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-3 py-2 sm:px-4 sm:py-2"
+            >
+              <ArrowLeft className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Previous</span>
+            </Button>
+            <Button
+              onClick={handleNext}
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-3 py-2 sm:px-4 sm:py-2"
+            >
+              <span className="hidden sm:inline">Next</span>
+              <ArrowRight className="h-4 w-4 sm:ml-2" />
+            </Button>
+          </div>
+        </div>
       </div>
     </section>
   );

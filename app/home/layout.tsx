@@ -8,7 +8,7 @@ const layout = ({
     children: React.ReactNode;
   }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-black text-white">
+    <div className="flex flex-col bg-black text-white min-h-screen scroll-smooth overflow-y-auto">
           <Header />
           <main className="flex-grow">
             {children}
