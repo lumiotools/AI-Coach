@@ -93,7 +93,7 @@ export default function HeaderBar({
             className="md:hidden mr-2"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
-            <Menu className="h-5 w-5 text-[#ffffff] dark:text-[#001c4f]" />
+            <Menu className="h-5 w-5 text-[#ffffff] dark:text-[#001c4f] hover:text-gray-400 dark:hover:text-blue-800" />
           </Button>
 
           <Link href="/home">
@@ -117,7 +117,7 @@ export default function HeaderBar({
             onClick={() => handleOpenForm()}
             variant="navbtn"
             size="nav"
-            className="font-100 text-white md:hidden"
+            className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
           >
             <BrainCircuit
               className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
@@ -150,7 +150,7 @@ export default function HeaderBar({
               <Button
                 variant="navbtn"
                 size="nav"
-                className="font-100 text-white md:hidden border-gray-800"
+                className="font-100 text-white md:hidden border-gray-800 hover:text-gray-400 dark:hover:text-blue-800"
               >
                 <Settings
                   className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
@@ -163,8 +163,8 @@ export default function HeaderBar({
                 <span>Profile</span>
               </DropdownMenuItem>
               {user &&
-              user.publicMetadata &&
-              user.publicMetadata.paymentInfo ? (
+                user.publicMetadata &&
+                user.publicMetadata.paymentInfo ? (
                 <DropdownMenuItem className="cursor-pointer">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <CustomerPortalButton />
@@ -177,7 +177,7 @@ export default function HeaderBar({
             onClick={() => signOut({ redirectUrl: "/home" })}
             variant="navbtn"
             size="nav"
-            className="font-100 text-white md:hidden"
+            className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
           >
             <LogOut
               className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f] ${styles.pad}`}
@@ -188,7 +188,7 @@ export default function HeaderBar({
             onClick={() => handleOpenForm()}
             variant="gradient"
             size="sm"
-            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2"
+            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
           >
             <BrainCircuit className="size-5" />
             <p>Personalize AI</p>
@@ -199,7 +199,7 @@ export default function HeaderBar({
               <Button
                 variant="gradient"
                 size="sm"
-                className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2"
+                className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
               >
                 <Settings className="size-5" />
                 <p>Settings</p>
@@ -207,7 +207,7 @@ export default function HeaderBar({
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="bg-custom-gradient backdrop-blur-20 text-white border-gray-700"
+              className="bg-custom-gradient backdrop-blur-20 text-white border-gray-700 hover:text-gray-400 dark:hover:text-blue-800"
             >
               <DropdownMenuItem
                 className="cursor-pointer hover:bg-gray-700"
@@ -217,8 +217,8 @@ export default function HeaderBar({
                 <span>Profile</span>
               </DropdownMenuItem>
               {user &&
-              user.publicMetadata &&
-              user.publicMetadata.paymentInfo ? (
+                user.publicMetadata &&
+                user.publicMetadata.paymentInfo ? (
                 <DropdownMenuItem className="cursor-pointer">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <CustomerPortalButton />
@@ -231,7 +231,7 @@ export default function HeaderBar({
             onClick={() => signOut({ redirectUrl: "/home" })}
             variant="gradient"
             size="sm"
-            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2"
+            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
           >
             <LogOut className="size-5" />
             <p>Logout</p>

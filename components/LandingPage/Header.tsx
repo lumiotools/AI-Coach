@@ -78,7 +78,7 @@ export function Header() {
               </li>
               <li className="md:hidden">
                 <Link href="/home#home-page-bottom-section">
-                  <Button className="text-blue-500 w-full rounded-md border-blue-500 border-2 bg-white">
+                  <Button className="text-blue-500 w-full rounded-md border-blue-500 border-[1px] bg-white hover:bg-blue-100">
                     See Demo
                   </Button>
                 </Link>
@@ -123,7 +123,7 @@ export function Header() {
               </Button>
             </Link>
             <Link href="/home#home-page-bottom-section">
-              <Button className="text-white w-full rounded-md">See Demo</Button>
+              <Button className="text-blue-500 w-full rounded-md border-blue-500 border-[1px] bg-white hover:bg-blue-100">See Demo</Button>
             </Link>
           </>
         ) : (

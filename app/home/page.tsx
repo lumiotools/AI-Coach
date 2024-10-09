@@ -8,16 +8,16 @@ import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
 import RotatingText from "./RotatingText";
 
-import DemoVideo from "@/components/Assets/video/demo.mp4";
+import DemoVideo from "@/components/Assets/video/newDemo.mp4";
 import PromptCards from "@/components/PromptCards";
 
 interface DemoVideoComponentProps {
   className: string;
 }
 
-export const DemoVideoComponent: React.FC<DemoVideoComponentProps> = ({
+export const DemoVideoComponent = ({
   className,
-}) => {
+}: DemoVideoComponentProps) => {
   return (
     <video className={className} preload="auto" autoPlay loop muted>
       <source src={DemoVideo} type="video/mp4" />
@@ -218,9 +218,9 @@ export default function Home() {
           />
 
           <ChatbotCard
-            title="General Advisor"
+            title="Real Estate Coach"
             description="Get comprehensive advice on various aspects of real estate, from legalities to client management, tailored to your needs."
-            icon="📊"
+            icon="🏢"
           />
         </div>
         <div className="text-center mt-12">
