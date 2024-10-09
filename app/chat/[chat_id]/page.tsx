@@ -237,7 +237,7 @@ export default function Page({ params: { chat_id } }: Props) {
         });
 
         setMessages(sortedMessages);
-        // handleSendMessage(searchParam.get("ques") || "");
+        // handleSendMessage(searchParam.get("ques") || ""); 
       }
     };
 
@@ -250,7 +250,7 @@ export default function Page({ params: { chat_id } }: Props) {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  //Personalized AI Data
+  //Personalized AI Data  aaa
   useEffect(() => {
     const fetchPersonalizedData = async () => {
       if (user) {
