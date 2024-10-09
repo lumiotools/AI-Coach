@@ -76,18 +76,17 @@ function formatTables(content: string): string {
       <table class="border-collapse table-auto w-full text-sm my-4">
         <thead>
           <tr class="bg-gray-800">
-            ${
-              content
-                .match(/<td[^>]*>(.*?)<\/td>/g)
-                ?.map(
-                  (cell) =>
-                    `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-left">${cell.replace(
-                      /<\/?td[^>]*>/g,
-                      ""
-                    )}</th>`
-                )
-                .join("") || ""
-            }
+            ${content
+        .match(/<td[^>]*>(.*?)<\/td>/g)
+        ?.map(
+          (cell) =>
+            `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-left">${cell.replace(
+              /<\/?td[^>]*>/g,
+              ""
+            )}</th>`
+        )
+        .join("") || ""
+      }
           </tr>
         </thead>
         <tbody class="bg-gray-700">
@@ -124,17 +123,17 @@ function formatTables(content: string): string {
       <thead>
         <tr class="bg-gray-800">
           ${headers
-            .map(
-              (header, i) =>
-                `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-${alignments[i]} text-left">${header}</th>`
-            )
-            .join("")}
+        .map(
+          (header, i) =>
+            `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-${alignments[i]} text-left">${header}</th>`
+        )
+        .join("")}
         </tr>
       </thead>
       <tbody class="bg-gray-700">
         ${body
-          .map(
-            (row) => `
+        .map(
+          (row) => `
           <tr>
             ${row
               .map(
@@ -144,8 +143,8 @@ function formatTables(content: string): string {
               .join("")}
           </tr>
         `
-          )
-          .join("")}
+        )
+        .join("")}
       </tbody>
     </table>`;
 
@@ -212,6 +211,8 @@ export default function Page({ params: { chat_id } }: Props) {
   const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isLoadingImage, setIsLoadingImage] = useState(false);
+  const [isFirstMessage, setIsFirstMessage] = useState(true);
+  const [imageReady, setImageReady] = useState(false);
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -237,7 +238,7 @@ export default function Page({ params: { chat_id } }: Props) {
         });
 
         setMessages(sortedMessages);
-        // handleSendMessage(searchParam.get("ques") || ""); 
+        setIsFirstMessage(sortedMessages.length === 0);
       }
     };
 
@@ -250,7 +251,7 @@ export default function Page({ params: { chat_id } }: Props) {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  //Personalized AI Data  yyyyhhhh
+  //Personalized AI Data
   useEffect(() => {
     const fetchPersonalizedData = async () => {
       if (user) {
@@ -272,12 +273,16 @@ export default function Page({ params: { chat_id } }: Props) {
   }, [user]);
 
   const handleSendMessage = async (message: string) => {
-    // if(!isSidebarOpen) handleAskQuestion(message);
     if (isSending) return;
     setIsSending(true);
 
+    if (message.trim().toLowerCase().startsWith("picture")) {
+      setIsLoadingImage(true);
+    }
+
     if (selectedCommand === "Picture") {
       setIsLoadingImage(true);
+      setImageReady(false);
     }
 
     if (message.trim()) {
@@ -350,6 +355,11 @@ export default function Page({ params: { chat_id } }: Props) {
           done = doneReading;
           const chunkValue = decoder.decode(value, { stream: true }); // Ensure streaming is handled correctly
 
+          if (chunkValue.includes("https://")) {
+            setImageReady(true);
+            setIsLoadingImage(false);
+          }
+
           // Update assistant message content progressively
           newMessages[assistantMessageIndex].content += chunkValue;
 
@@ -408,6 +418,7 @@ export default function Page({ params: { chat_id } }: Props) {
         setFirstMessageSent(true);
         setIsLoadingImage(false);
         setSelectedCommand(null);
+        setIsFirstMessage(false);
       }
     }
   };
@@ -745,6 +756,7 @@ export default function Page({ params: { chat_id } }: Props) {
           {/* Added pt-16 for header height */}
 
           <ChatSidebar
+            userId={userId}
             supabase={supabase}
             isSidebarOpen={isSidebarOpen}
             handleExpertClick={handleExpertClick}
@@ -769,11 +781,10 @@ export default function Page({ params: { chat_id } }: Props) {
                   messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`flex items-start space-x-4 mt-4 ${
-                        message.role === "user"
-                          ? "flex-row-reverse space-x-reverse"
-                          : ""
-                      }`}
+                      className={`flex items-start space-x-4 mt-4 ${message.role === "user"
+                        ? "flex-row-reverse space-x-reverse"
+                        : ""
+                        }`}
                     >
                       <Avatar className="w-8 h-8 flex-shrink-0">
                         {message.role === "user" ? (
@@ -791,11 +802,10 @@ export default function Page({ params: { chat_id } }: Props) {
                       </Avatar>
                       <div className="space-y-2 max-w-[70%] md:max-w-[80%]">
                         <div
-                          className={`p-3 rounded-lg ${
-                            message.role === "user"
-                              ? "bg-[#1E2A5E] text-white border border-[rgba(47, 118, 255, 1)]"
-                              : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
-                          }`}
+                          className={`p-3 rounded-lg ${message.role === "user"
+                            ? "bg-[#1E2A5E] text-white border border-[rgba(47, 118, 255, 1)]"
+                            : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
+                            }`}
                         >
                           {message.content.includes("https:") ? (
                             <div className="w-[200px] md:w-[340px] h-[200px] md:h-[340px]">
@@ -855,11 +865,10 @@ export default function Page({ params: { chat_id } }: Props) {
                                 onClick={() =>
                                   handleLike(message.message_id, 1)
                                 }
-                                className={`${
-                                  message.like === 1
-                                    ? "text-blue-400"
-                                    : "text-gray-400 dark:text-[#001c4f]"
-                                }`}
+                                className={`${message.like === 1
+                                  ? "text-blue-400"
+                                  : "text-gray-400 dark:text-[#001c4f]"
+                                  }`}
                               >
                                 <ThumbsUp className="h-4 w-4 " />
                               </Button>
@@ -874,11 +883,10 @@ export default function Page({ params: { chat_id } }: Props) {
                                 onClick={() =>
                                   handleLike(message.message_id, -1)
                                 }
-                                className={`${
-                                  message.like === -1
-                                    ? "text-red-400"
-                                    : "text-gray-400 dark:text-[#001c4f]"
-                                }`}
+                                className={`${message.like === -1
+                                  ? "text-red-400"
+                                  : "text-gray-400 dark:text-[#001c4f]"
+                                  }`}
                               >
                                 <ThumbsDown className="h-4 w-4" />
                               </Button>
@@ -920,17 +928,21 @@ export default function Page({ params: { chat_id } }: Props) {
                     </div>
                   ))
                 )}
-                {isLoadingImage && (
-                  <div className="flex items-start space-x-4 mt-4">
-                    <div className="flex-shrink-0">
-                      {getAIAvatar(currentExpert)}
-                    </div>
 
-                    <div className="space-y-2 w-[200px] md:w-[340px] h-[200px] md:h-[340px] border-gray-500 rounded-lg p-4 border bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black flex items-center justify-center">
-                      <PercentageLoader />
+                {
+                  !imageReady && (isLoadingImage || (isFirstMessage && isSending && selectedCommand === "Picture")) && (
+                    <div className="flex items-start space-x-4 mt-4">
+                      <div className="flex-shrink-0">
+                        {getAIAvatar(currentExpert)}
+                      </div>
+                      <div className="space-y-2 w-[200px] md:w-[340px] h-[200px] md:h-[340px] border-gray-500 rounded-lg p-4 border bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black flex items-center justify-center">
+                        <PercentageLoader />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )
+                }
+
+
                 <div ref={chatEndRef} />
               </div>
             </ScrollArea>

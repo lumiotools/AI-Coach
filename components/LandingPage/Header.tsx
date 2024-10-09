@@ -41,7 +41,7 @@ export function Header() {
           } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-50`}
       >
         <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0">
-          {["home", "pricing", "faqs", "blog"].map((page) => {
+          {["home", "about", "pricing", "faqs", "blog"].map((page) => {
             const href =
               page === "home"
                 ? "/home"

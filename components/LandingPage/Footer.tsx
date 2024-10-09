@@ -19,9 +19,10 @@ const socialLinks = [
 
 const quickLinks = [
   { href: "/", label: "Home" },
-  { href: "/faqs", label: "FAQ's" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/blog", label: "Blog" },
+  { href: "/home/about", label: "About" },
+  { href: "/home/faqs", label: "FAQ's" },
+  { href: "/home/pricing", label: "Pricing" },
+  { href: "https://agentcoachblogteamlumio.wordpress.com", label: "Blog" },
 ];
 
 interface QuickLinkProps {
@@ -50,7 +51,7 @@ function QuickLink({ href, label }: QuickLinkProps) {
 
 export function Footer() {
   return (
-    <footer className="bg-white text-black pt-16 pb-5 px-6">
+    <footer className="bg-white text-black pt-16 pb-5 px-6 drop-shadow shadow-md">
       <div className="max-w-7xl mx-auto gap-12 flex flex-col md:flex-row justify-between">
         <div className="flex space-y-4 flex-col">
           <div className="w-full">
