@@ -250,7 +250,7 @@ export default function Page({ params: { chat_id } }: Props) {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  //Personalized AI Data  aaa
+  //Personalized AI Data  yyyy
   useEffect(() => {
     const fetchPersonalizedData = async () => {
       if (user) {
