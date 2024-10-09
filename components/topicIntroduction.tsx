@@ -186,7 +186,7 @@ const TopicIntroduction: React.FC<{
         <p className="text-center text-[var(--Foundation-White-white-50)] dark:text-[var(--c2,#1E2A5E)] font-satoshi text-[18px] font-normal leading-normal tracking-[0.32px]">
           {data.description}
         </p>
-        <p className="text-center text-[#B5B5B5] dark:text-[var(--c1,#2F76FF)] font-satoshi text-[16px] font-normal leading-normal tracking-[0.32px]">
+        <p className="text-center text-[#B5B5B5] dark:text-gray-600 font-satoshi text-[16px] font-normal leading-normal tracking-[0.32px]">
           Click a sample question below, type your own, or tap the microphone
           button to speak your question!
         </p>

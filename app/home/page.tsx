@@ -8,7 +8,7 @@ import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";
 import RotatingText from "./RotatingText";
 
-import DemoVideo from "@/components/Assets/video/demo.mp4";
+import DemoVideo from "@/components/Assets/video/newDemo.mp4";
 import PromptCards from "@/components/PromptCards";
 
 export default function Home() {
@@ -196,9 +196,9 @@ export default function Home() {
           />
 
           <ChatbotCard
-            title="General Advisor"
+            title="Real Estate Coach"
             description="Get comprehensive advice on various aspects of real estate, from legalities to client management, tailored to your needs."
-            icon="📊"
+            icon="🏢"
           />
         </div>
         <div className="text-center mt-12">
