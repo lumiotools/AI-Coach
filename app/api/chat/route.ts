@@ -273,7 +273,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Use the 'expert' parameter to select the appropriate prompt
+    // Use the 'expert' parameter to select the appropriate promptgg
     const promptKey = expert
       .toLowerCase()
       .replace(/\s+/g, "_") as keyof typeof systemPrompt;
