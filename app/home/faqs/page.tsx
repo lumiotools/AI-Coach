@@ -1,56 +1,51 @@
-"use client";
-
-import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import React from "react";
 import styles from "./faq.module.css";
-import downicon from "@/components/Assets/faqdownicon.svg";
-import axios from "axios";
 import { Loader2 } from "lucide-react";
+import ClientFaqItem from "./ClientFaqItem";
 
 interface FaqItem {
   question: string;
   answer: string;
 }
 
-const Faq: React.FC = () => {
-  const [faqData, setFaqData] = useState<FaqItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const answerRef = useRef<(HTMLDivElement | null)[]>([]);
+async function getFaqs(): Promise<FaqItem[]> {
+  const response = await fetch(
+    "https://admindashbord-lumio.onrender.com/faqs",
+    { next: { revalidate: 3600 } }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch FAQs");
+  }
+  const data = await response.json();
+  return data.faqs;
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://admindashbord-lumio.onrender.com/faqs"
-        );
-        const { faqs } = response.data;
-        setFaqData(faqs);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+export default async function Faq() {
+  let faqData: FaqItem[];
+  try {
+    faqData = await getFaqs();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>Error loading FAQs. Please try again later.</p>
+      </div>
+    );
+  }
 
-  if (loading)
+  if (!faqData || faqData.length === 0) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
       </div>
     );
-
-  const toggleAnswer = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
+  }
 
   return (
     <div className={styles.main}>
       <div className={styles.box}>
         <h1 className="text-3xl font-normal text-white mb-2">
-          Frequently Asked Questions AboutAgent Coach.ai
+          Frequently Asked Questions About AgentCoach.ai
         </h1>
         <p className="text-lg text-gray-400 text-center w-11/12">
           Get the Answers You Need About AgentCoach.ai's Powerful Features and
@@ -59,49 +54,9 @@ const Faq: React.FC = () => {
       </div>
       <div className={styles.faqContainer}>
         {faqData.map((item: FaqItem, index: number) => (
-          <div key={index} className={styles.faqItem}>
-            <div
-              className={`${styles.questionBox} ${
-                activeIndex === index ? styles.active : ""
-              } cursor-pointer`}
-              onClick={() => toggleAnswer(index)}
-            >
-              {item.question}
-              <div className={styles.icon}>
-                <Image
-                  src={downicon}
-                  className={`${styles.arr} ${
-                    activeIndex === index ? "transform rotate-180" : ""
-                  } transition-transform duration-300`}
-                  alt="Toggle answer"
-                  width={20}
-                  height={20}
-                />
-              </div>
-            </div>
-            <div
-              ref={(el) => {
-                answerRef.current[index] = el;
-                return;
-              }}
-              className={`${styles.answerBox} ${
-                activeIndex === index ? styles.visible : ""
-              }`}
-              style={{
-                height:
-                  activeIndex === index
-                    ? `${(answerRef.current[index]?.scrollHeight || 0) + 40}px`
-                    : "0px",
-                opacity: activeIndex === index ? 1 : 0,
-              }}
-            >
-              {item.answer}
-            </div>
-          </div>
+          <ClientFaqItem key={index} item={item} index={index} />
         ))}
       </div>
     </div>
   );
-};
-
-export default Faq;
+}
