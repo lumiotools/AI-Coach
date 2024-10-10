@@ -1,12 +1,13 @@
 import React from "react";
-import Jeff from "@/public/images/newjeff.jpeg";
+
+import jeff from "@/public/images/agent.png";
 
 export default function AboutUs() {
     return (
         <div
-            className="bg-white text-[#001D5B] py-16 px-4 shadow-md"
+            className="bg-white text-[#001D5B] py-16 px-4"
         >
-            <div className="max-w-6xl mx-auto py-14">
+            <div className="max-w-6xl mx-auto py-20">
                 <h1
                     className="text-4xl font-bold text-center mb-12"
                 >
@@ -21,15 +22,16 @@ export default function AboutUs() {
                     35 years to redefining the residential real estate landscape.
                 </p>
                 <div
-                    className="flex flex-col md:flex-row mb-12"
+                    className="flex flex-col md:flex-row gap-8 mb-12"
                 >
                     <div
                         className="md:w-[400px] flex-shrink-0"
                     >
                         <img
-                            src={Jeff.src}
+                            // src="https://picsum.photos/seed/agentcoach/600/400"
+                            src={jeff.src}
                             alt="AgentCoach.ai Team"
-                            className="rounded-lg shadow-lg w-[350px] h-[200px] md:h-[250px] object-cover"
+                            className="rounded-lg shadow-lg w-full h-full object-cover"
                         />
                     </div>
                     <div className="md:flex-grow">
