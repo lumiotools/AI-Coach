@@ -56,8 +56,6 @@ export default function ClientFaqItem({ item, index }: FaqItemProps) {
         style={{
           maxHeight: "0",
           opacity: isOpen ? 1 : 0,
-          overflow: "hidden",
-          transition: "max-height 0.3s ease-out, opacity 0.3s ease-out",
         }}
       >
         {item.answer}
