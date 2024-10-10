@@ -200,19 +200,21 @@ export default function Page({ params: { chat_id } }: Props) {
   const [personalizedData, setPersonalizedData] =
     useState<PersonalizedData | null>(null);
 
-  const [showCommandMenu, setShowCommandMenu] = useState(false);
-  const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
-    {
-      label: "Picture",
-      icon: <ImageIcon className="w-4 h-4" />,
-      action: () => setSelectedCommand("Picture"),
-    },
-  ]);
-  const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
+  // const [showCommandMenu, setShowCommandMenu] = useState(false);
+  // const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
+  //   {
+  //     label: "Picture",
+  //     icon: <ImageIcon className="w-4 h-4" />,
+  //     action: () => setSelectedCommand("Picture"),
+  //   },
+  // ]);
+
+  // const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isLoadingImage, setIsLoadingImage] = useState(false);
-  const [isFirstMessage, setIsFirstMessage] = useState(true);
-  const [imageReady, setImageReady] = useState(false);
+  // const [isLoadingImage, setIsLoadingImage] = useState(false);
+  // const [isFirstMessage, setIsFirstMessage] = useState(true);
+  // const [imageReady, setImageReady] = useState(false);
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -238,7 +240,7 @@ export default function Page({ params: { chat_id } }: Props) {
         });
 
         setMessages(sortedMessages);
-        setIsFirstMessage(sortedMessages.length === 0);
+        // setIsFirstMessage(sortedMessages.length === 0);
       }
     };
 
@@ -276,14 +278,14 @@ export default function Page({ params: { chat_id } }: Props) {
     if (isSending) return;
     setIsSending(true);
 
-    if (message.trim().toLowerCase().startsWith("picture")) {
-      setIsLoadingImage(true);
-    }
+    // if (message.trim().toLowerCase().startsWith("picture")) {
+    //   setIsLoadingImage(true);
+    // }
 
-    if (selectedCommand === "Picture") {
-      setIsLoadingImage(true);
-      setImageReady(false);
-    }
+    // if (selectedCommand === "Picture") {
+    //   setIsLoadingImage(true);
+    //   setImageReady(false);
+    // }
 
     if (message.trim()) {
       const prevOrder =
@@ -355,10 +357,10 @@ export default function Page({ params: { chat_id } }: Props) {
           done = doneReading;
           const chunkValue = decoder.decode(value, { stream: true }); // Ensure streaming is handled correctly
 
-          if (chunkValue.includes("https://")) {
-            setImageReady(true);
-            setIsLoadingImage(false);
-          }
+          // if (chunkValue.includes("https://")) {
+          //   setImageReady(true);
+          //   setIsLoadingImage(false);
+          // }
 
           // Update assistant message content progressively
           newMessages[assistantMessageIndex].content += chunkValue;
@@ -407,7 +409,7 @@ export default function Page({ params: { chat_id } }: Props) {
           .insert([userMessage])
           .select();
 
-        setIsLoadingImage(false);
+        // setIsLoadingImage(false);
       } finally {
         // Reset sending state
         setIsSending(false);
@@ -416,9 +418,9 @@ export default function Page({ params: { chat_id } }: Props) {
           `Ask me any question about ${currentExpert.toLowerCase()}! Just type or use the microphone.`
         );
         setFirstMessageSent(true);
-        setIsLoadingImage(false);
-        setSelectedCommand(null);
-        setIsFirstMessage(false);
+        // setIsLoadingImage(false);
+        // setIsFirstMessage(false);
+        // setSelectedCommand(null);
       }
     }
   };
@@ -426,9 +428,9 @@ export default function Page({ params: { chat_id } }: Props) {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (selectedCommand === "Picture") {
-      setIsLoadingImage(true);
-    }
+    // if (selectedCommand === "Picture") {
+    //   setIsLoadingImage(true);
+    // }
 
     handleSendMessage(inputValue);
     setInputValue("");
@@ -692,42 +694,42 @@ export default function Page({ params: { chat_id } }: Props) {
     console.log("value", value);
     setInputValue(value);
 
-    if (value.includes("/")) {
-      const lastSlashIndex = value.lastIndexOf("/");
-      const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
+    // if (value.includes("/")) {
+    //   const lastSlashIndex = value.lastIndexOf("/");
+    //   const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
 
-      setShowCommandMenu(true);
+    //   setShowCommandMenu(true);
 
-      const filteredOptions = commandOptions.filter((option) =>
-        option.label.toLowerCase().startsWith(afterSlash)
-      );
+    //   const filteredOptions = commandOptions.filter((option) =>
+    //     option.label.toLowerCase().startsWith(afterSlash)
+    //   );
 
-      setCommandOptions(
-        filteredOptions.length > 0 ? filteredOptions : commandOptions
-      );
-    } else {
-      setShowCommandMenu(false);
-      setCommandOptions([
-        {
-          label: "Picture",
-          icon: <ImageIcon className="w-4 h-4" />,
-          action: () => setSelectedCommand("Picture"),
-        },
-      ]);
-    }
+    //   setCommandOptions(
+    //     filteredOptions.length > 0 ? filteredOptions : commandOptions
+    //   );
+    // } else {
+    //   setShowCommandMenu(false);
+    //   setCommandOptions([
+    //     {
+    //       label: "Picture",
+    //       icon: <ImageIcon className="w-4 h-4" />,
+    //       action: () => setSelectedCommand("Picture"),
+    //     },
+    //   ]);
+    // }
   };
 
-  const handleCommandSelect = (option: CommandOption) => {
-    setInputValue(`${option.label} - `);
-    setSelectedCommand(option.label);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-    setCommandOptions((prevOptions) =>
-      prevOptions.filter((opt) => opt.label !== option.label)
-    );
-    setShowCommandMenu(false);
-  };
+  // const handleCommandSelect = (option: CommandOption) => {
+  //   setInputValue(`${option.label} - `);
+  //   setSelectedCommand(option.label);
+  //   if (inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  //   setCommandOptions((prevOptions) =>
+  //     prevOptions.filter((opt) => opt.label !== option.label)
+  //   );
+  //   setShowCommandMenu(false);
+  // };
 
   return (
     <div
@@ -929,7 +931,7 @@ export default function Page({ params: { chat_id } }: Props) {
                   ))
                 )}
 
-                {
+                {/* {
                   !imageReady && (isLoadingImage || (isFirstMessage && isSending && selectedCommand === "Picture")) && (
                     <div className="flex items-start space-x-4 mt-4">
                       <div className="flex-shrink-0">
@@ -940,7 +942,7 @@ export default function Page({ params: { chat_id } }: Props) {
                       </div>
                     </div>
                   )
-                }
+                } */}
 
 
                 <div ref={chatEndRef} />
@@ -1041,7 +1043,7 @@ export default function Page({ params: { chat_id } }: Props) {
                     </button>
                   </div>
 
-                  {showCommandMenu && (
+                  {/* {showCommandMenu && (
                     <div className="absolute bottom-30 md:bottom-16 bg-custom-gradient dark:bg-gray-800 rounded-md shadow-lg z-10">
                       {commandOptions.map((option, index) => (
                         <button
@@ -1054,7 +1056,7 @@ export default function Page({ params: { chat_id } }: Props) {
                         </button>
                       ))}
                     </div>
-                  )}
+                  )} */}
                 </form>
 
                 <p className="text-xs text-gray-500 mt-3  text-center pb-2">

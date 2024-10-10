@@ -144,41 +144,41 @@ const openai = new OpenAI({
   apiKey: NEXT_PUBLIC_OPENAI_API_KEY,
 });
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
 
-async function generateImage(prompt: string): Promise<string> {
-  try {
-    const response = await openai.images.generate({
-      model: "dall-e-2",
-      prompt: prompt,
-      n: 1,
-      size: "512x512",
-    });
+// async function generateImage(prompt: string): Promise<string> {
+//   try {
+//     const response = await openai.images.generate({
+//       model: "dall-e-2",
+//       prompt: prompt,
+//       n: 1,
+//       size: "512x512",
+//     });
 
-    const imageUrl = response.data[0].url;
-    console.log("response", response);
-    console.log("response data", response.data);
+//     const imageUrl = response.data[0].url;
+//     console.log("response", response);
+//     console.log("response data", response.data);
 
-    if (!imageUrl) {
-      throw new Error("Image URL not found in the response");
-    }
+//     if (!imageUrl) {
+//       throw new Error("Image URL not found in the response");
+//     }
 
-    const uploadResponse = await cloudinary.uploader.upload(imageUrl, {
-      folder: "generated_images",
-    });
+//     const uploadResponse = await cloudinary.uploader.upload(imageUrl, {
+//       folder: "generated_images",
+//     });
 
-    const cloudinaryUrl = uploadResponse.secure_url;
+//     const cloudinaryUrl = uploadResponse.secure_url;
 
-    return cloudinaryUrl;
-  } catch (error) {
-    console.error("Error generating image:", error);
-    throw error;
-  }
-}
+//     return cloudinaryUrl;
+//   } catch (error) {
+//     console.error("Error generating image:", error);
+//     throw error;
+//   }
+// }
 
 export async function POST(req: NextRequest) {
   try {
@@ -199,27 +199,27 @@ export async function POST(req: NextRequest) {
     const question = messages[messages.length - 1].content;
 
     // Check if the message starts with "Generate Picture - "
-    if (question.startsWith("Picture - ")) {
-      const imagePrompt = question
-        .substring("Generate Picture - ".length)
-        .trim();
-      try {
-        const imageUrl = await generateImage(imagePrompt);
-        return new Response(imageUrl, {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
-        });
-      } catch (error) {
-        console.error("Error generating image:", error);
-        return new Response(
-          JSON.stringify({ error: "Failed to generate image" }),
-          {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-      }
-    }
+    // if (question.startsWith("Picture - ")) {
+    //   const imagePrompt = question
+    //     .substring("Generate Picture - ".length)
+    //     .trim();
+    //   try {
+    //     const imageUrl = await generateImage(imagePrompt);
+    //     return new Response(imageUrl, {
+    //       status: 200,
+    //       headers: { "Content-Type": "application/json" },
+    //     });
+    //   } catch (error) {
+    //     console.error("Error generating image:", error);
+    //     return new Response(
+    //       JSON.stringify({ error: "Failed to generate image" }),
+    //       {
+    //         status: 500,
+    //         headers: { "Content-Type": "application/json" },
+    //       }
+    //     );
+    //   }
+    // }
 
     let baseUrl = BASE_URLS[chatbot];
     if (!baseUrl) {
