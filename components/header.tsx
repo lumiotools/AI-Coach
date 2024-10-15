@@ -9,6 +9,7 @@ import {
   BrainCircuit,
   User,
   CreditCard,
+  ListTodo,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -96,7 +97,7 @@ export default function HeaderBar({
             <Menu className="h-5 w-5 text-[#ffffff] dark:text-[#001c4f] hover:text-gray-400 dark:hover:text-blue-800" />
           </Button>
 
-          <Link href="/home">
+          <Link href="/home" className="hidden md:flex">
             {theme === "light" ? (
               <Image
                 src={lightlogo}
@@ -113,17 +114,6 @@ export default function HeaderBar({
           </Link>
         </div>
         <div className="flex items-center md:space-x-4 space-x-0">
-          <Button
-            onClick={() => handleOpenForm()}
-            variant="navbtn"
-            size="nav"
-            className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
-          >
-            <BrainCircuit
-              className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
-            />
-          </Button>
-
           <Button
             onClick={toggleTheme}
             variant="navbtn"
@@ -145,6 +135,30 @@ export default function HeaderBar({
             )}
           </Button>
 
+          <Button
+            onClick={() => handleOpenForm()}
+            variant="navbtn"
+            size="nav"
+            className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
+          >
+            <BrainCircuit
+              className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
+            />
+          </Button>
+
+          <Button
+            onClick={() =>
+              window.open("https://brochure-pro.vercel.app/", "_blank")
+            }
+            variant="navbtn"
+            size="nav"
+            className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
+          >
+            <ListTodo
+              className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
+            />
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -163,8 +177,8 @@ export default function HeaderBar({
                 <span>Profile</span>
               </DropdownMenuItem>
               {user &&
-                user.publicMetadata &&
-                user.publicMetadata.paymentInfo ? (
+              user.publicMetadata &&
+              user.publicMetadata.paymentInfo ? (
                 <DropdownMenuItem className="cursor-pointer">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <CustomerPortalButton />
@@ -194,6 +208,15 @@ export default function HeaderBar({
             <p>Personalize AI</p>
           </Button>
 
+          <Link
+            href="https://brochure-pro.vercel.app/"
+            target="_blank"
+            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
+          >
+            <ListTodo className="size-5" />
+            <p>BrochureProAI</p>
+          </Link>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -217,8 +240,8 @@ export default function HeaderBar({
                 <span>Profile</span>
               </DropdownMenuItem>
               {user &&
-                user.publicMetadata &&
-                user.publicMetadata.paymentInfo ? (
+              user.publicMetadata &&
+              user.publicMetadata.paymentInfo ? (
                 <DropdownMenuItem className="cursor-pointer">
                   <CreditCard className="mr-2 h-4 w-4" />
                   <CustomerPortalButton />

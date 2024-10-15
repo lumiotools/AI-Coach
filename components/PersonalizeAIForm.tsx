@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,11 +26,12 @@ export default function PersonalizedAIForm({
 
   const [formData, setFormData] = useState({
     name: "",
-    age: "",
-    occupation: "",
+    yearsInRealEstate: "",
+    currentRole: "",
+    businessGoals: "",
     learningStyle: "",
-    goals: "",
-    background: "",
+    personalDevelopment: "",
+    financialAspirations: "",
   });
 
   const handleInputChange = (
@@ -111,16 +111,18 @@ export default function PersonalizedAIForm({
               exit={{ scale: 0.9, opacity: 0 }}
               className="bg-custom-gradient backdrop-blur-[20px] dark:bg-white dark:text-black rounded-lg shadow-xl p-6 w-full max-w-2xl relative overflow-y-auto max-h-[90vh]"
             >
-              <Button
-                onClick={onClose}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                variant="ghost"
-                size="icon"
-              >
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </Button>
-
+              <div className="flex flex-col items-end mb-4 md:mb-0">
+                <Button
+                  onClick={onClose}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  variant="ghost"
+                  size="icon"
+                >
+                  <p className="text-white bg-[#2f76ff] hover:bg-[#1e63e6] flex justify-center items-center font-bold rounded-md px-2 py-1 border border-none">
+                    Skip
+                  </p>
+                </Button>
+              </div>
               <h2 className="text-3xl font-bold mb-6 text-center text-white dark:text-black bg-clip-text">
                 Personalize Your AI Experience
               </h2>
@@ -132,14 +134,14 @@ export default function PersonalizedAIForm({
                       htmlFor="name"
                       className="text-sm font-medium text-white dark:text-black"
                     >
-                      Name
+                      First Name
                     </Label>
                     <Input
                       id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Enter your name"
+                      placeholder="Enter your first name"
                       className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] rounded-[8px] focus:outline-none 
                       dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
                       placeholder:text-gray-100 dark:placeholder:text-gray-600"
@@ -153,74 +155,66 @@ export default function PersonalizedAIForm({
 
                   <div className="space-y-2">
                     <Label
-                      htmlFor="age"
+                      htmlFor="yearsInRealEstate"
                       className="text-sm font-medium text-white dark:text-black"
                     >
-                      Age
+                      Number of Years in Real Estate
                     </Label>
                     <Input
-                      id="age"
-                      name="age"
+                      id="yearsInRealEstate"
+                      name="yearsInRealEstate"
                       type="number"
-                      placeholder="Enter your age"
-                      value={formData.age}
+                      placeholder="Enter number of years"
+                      value={formData.yearsInRealEstate}
                       onChange={handleInputChange}
-                      min="18"
-                      max="100"
-                      className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0]  border border-[#2F76FF]  rounded-[8px] focus:outline-none  
+                      min="0"
+                      className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] rounded-[8px] focus:outline-none 
                       dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
                       placeholder:text-gray-100 dark:placeholder:text-gray-600"
-                      style={{
-                        fontSize: "16px",
-                        fontStyle: "normal",
-                        fontWeight: 300,
-                      }}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label
-                    htmlFor="occupation"
+                    htmlFor="currentRole"
                     className="text-sm font-medium text-white dark:text-black"
                   >
-                    Occupation
+                    What is Your Current Role?
                   </Label>
-                  <div className="rounded-full">
-                    <Input
-                      id="occupation"
-                      name="occupation"
-                      value={formData.occupation}
-                      onChange={handleInputChange}
-                      placeholder="Your current job"
-                      className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF]  rounded-[8px] focus:outline-none 
-                      dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                      placeholder:text-gray-100 dark:placeholder:text-gray-600"
-                      style={{
-                        fontSize: "16px",
-                        fontStyle: "normal",
-                        fontWeight: 300,
-                      }}
-                    />
-                  </div>
+                  <Input
+                    id="currentRole"
+                    name="currentRole"
+                    value={formData.currentRole}
+                    onChange={handleInputChange}
+                    placeholder="Your current role (e.g., agent, broker)"
+                    className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF]  rounded-[8px] focus:outline-none 
+                    dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
+                    placeholder:text-gray-100 dark:placeholder:text-gray-600"
+                    style={{
+                      fontSize: "16px",
+                      fontStyle: "normal",
+                      fontWeight: 300,
+                    }}
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <Label
-                    htmlFor="background"
+                    htmlFor="businessGoals"
                     className="text-sm font-medium text-white dark:text-black"
                   >
-                    Your Background
+                    Business Goals and Objectives
                   </Label>
                   <Textarea
-                    id="background"
-                    name="background"
-                    value={formData.background}
+                    id="businessGoals"
+                    name="businessGoals"
+                    value={formData.businessGoals}
                     onChange={handleInputChange}
-                    placeholder="Tell us about your background..."
-                    className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] rounded-[8px]focus:outline-none 
+                    placeholder="Describe your business goals..."
+                    className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] focus:outline-none rounded-[8px] 
                     dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
-                    placeholder:text-gray-100 dark:placeholder:text-gray-600 "
+                    placeholder:text-gray-100 dark:placeholder:text-gray-600"
                     style={{
                       fontSize: "16px",
                       fontStyle: "normal",
@@ -266,17 +260,17 @@ export default function PersonalizedAIForm({
 
                 <div className="space-y-2">
                   <Label
-                    htmlFor="goals"
+                    htmlFor="personalDevelopment"
                     className="text-sm font-medium text-white dark:text-black"
                   >
-                    Your Goals
+                    Personal Development and Wellbeing
                   </Label>
                   <Textarea
-                    id="goals"
-                    name="goals"
-                    value={formData.goals}
+                    id="personalDevelopment"
+                    name="personalDevelopment"
+                    value={formData.personalDevelopment}
                     onChange={handleInputChange}
-                    placeholder="What are your learning or professional goals?"
+                    placeholder="Areas of personal growth..."
                     className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] focus:outline-none rounded-[8px] 
                     dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
                     placeholder:text-gray-100 dark:placeholder:text-gray-600"
@@ -287,6 +281,54 @@ export default function PersonalizedAIForm({
                     }}
                   />
                 </div>
+
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="financialAspirations"
+                    className="text-sm font-medium text-white dark:text-black"
+                  >
+                    Financial and Career Aspirations
+                  </Label>
+                  <Textarea
+                    id="financialAspirations"
+                    name="financialAspirations"
+                    value={formData.financialAspirations}
+                    onChange={handleInputChange}
+                    placeholder="Your financial goals..."
+                    className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] focus:outline-none rounded-[8px] 
+                    dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
+                    placeholder:text-gray-100 dark:placeholder:text-gray-600"
+                    style={{
+                      fontSize: "16px",
+                      fontStyle: "normal",
+                      fontWeight: 300,
+                    }}
+                  />
+                </div>
+
+                {/* <div className="space-y-2">
+                  <Label
+                    htmlFor="background"
+                    className="text-sm font-medium text-white dark:text-black"
+                  >
+                    Your Background
+                  </Label>
+                  <Textarea
+                    id="background"
+                    name="background"
+                    value={formData.background}
+                    onChange={handleInputChange}
+                    placeholder="Tell us about your background..."
+                    className="w-full min-h-[100px] flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF] rounded-[8px]focus:outline-none 
+                    dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
+                    placeholder:text-gray-100 dark:placeholder:text-gray-600 "
+                    style={{
+                      fontSize: "16px",
+                      fontStyle: "normal",
+                      fontWeight: 300,
+                    }}
+                  />
+                </div> */}
 
                 <div className="flex justify-center items-center">
                   <Button
