@@ -49,17 +49,21 @@ export function Page() {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
-  // const [showCommandMenu, setShowCommandMenu] = useState(false);
-  // const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
+  const [showCommandMenu, setShowCommandMenu] = useState(false);
+  const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
-  //   {
-  //     label: "Picture",
-  //     icon: <ImageIcon className="w-4 h-4" />,
-  //     action: () => setSelectedCommand("picture"),
-  //   },
-  // ]);
+  const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
+    {
+      label: "Picture",
+      icon: <ImageIcon className="w-4 h-4" />,
+      action: () => setSelectedCommand("picture"),
+    },
+  ]);
+  console.log("commandOptions", commandOptions);
+  console.log("showCommandMenu", showCommandMenu);
+  console.log("inputValue", inputValue);
+  console.log("selectedCommand", selectedCommand);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
@@ -157,51 +161,39 @@ export function Page() {
     const value = e.target.value;
     console.log("value", value);
     setInputValue(value);
+    if (value.includes("/")) {
+      const lastSlashIndex = value.lastIndexOf("/");
+      const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
+      setShowCommandMenu(true);
+      const filteredOptions = commandOptions.filter((option) =>
+        option.label.toLowerCase().startsWith(afterSlash)
+      );
+      setCommandOptions(
+        filteredOptions.length > 0 ? filteredOptions : commandOptions
+      );
+    } else {
+      setShowCommandMenu(false);
+      setCommandOptions([
+        {
+          label: "Picture",
+          icon: <ImageIcon className="w-4 h-4" />,
+          action: () => setSelectedCommand("picture"),
+        },
+      ]);
+    }
   };
 
-  /*This is the code for the create image using / command */
-
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   console.log("value", value);
-  //   setInputValue(value);
-
-  //   if (value.includes("/")) {
-  //     const lastSlashIndex = value.lastIndexOf("/");
-  //     const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
-
-  //     setShowCommandMenu(true);
-
-  //     const filteredOptions = commandOptions.filter((option) =>
-  //       option.label.toLowerCase().startsWith(afterSlash)
-  //     );
-
-  //     setCommandOptions(
-  //       filteredOptions.length > 0 ? filteredOptions : commandOptions
-  //     );
-  //   } else {
-  //     setShowCommandMenu(false);
-  //     setCommandOptions([
-  //       {
-  //         label: "Picture",
-  //         icon: <ImageIcon className="w-4 h-4" />,
-  //         action: () => setSelectedCommand("picture"),
-  //       },
-  //     ]);
-  //   }
-  // }
-
-  // const handleCommandSelect = (option: CommandOption) => {
-  //   setInputValue(`${option.label} - `);
-  //   setSelectedCommand(option.label);
-  //   if (inputRef.current) {
-  //     inputRef.current.focus();
-  //   }
-  //   setCommandOptions((prevOptions) =>
-  //     prevOptions.filter((opt) => opt.label !== option.label)
-  //   );
-  //   setShowCommandMenu(false);
-  // };
+  const handleCommandSelect = (option: CommandOption) => {
+    setInputValue(`${option.label} - `);
+    setSelectedCommand(option.label);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+    setCommandOptions((prevOptions) =>
+      prevOptions.filter((opt) => opt.label !== option.label)
+    );
+    setShowCommandMenu(false);
+  };
 
   const handleTranscription = (transcribedText: string) => {
     setInputValue((prev) => `${prev} ${transcribedText}`);
@@ -291,10 +283,7 @@ export function Page() {
                 </div>
               </div>
             </form>
-
-            {/* This is the /image ui part */}
-
-            {/* {showCommandMenu && (
+            {showCommandMenu && (
               <div className="absolute bottom-28 bg-custom-gradient dark:bg-gray-800 rounded-md shadow-lg z-10">
                 {commandOptions.map((option, index) => (
                   <button
@@ -307,8 +296,7 @@ export function Page() {
                   </button>
                 ))}
               </div>
-            )} */}
-
+            )}
             <p className="text-xs text-gray-500 mt-4 text-center">
               © 2024 AgentCoach.ai. All rights reserved.
             </p>

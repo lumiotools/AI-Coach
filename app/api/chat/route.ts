@@ -20,13 +20,10 @@ const BASE_URLS: { [key: string]: string } = {
 
 const agentCoachFlow = `
 Use the following agent coach details only when user asks questions related to AgentCoach.ai:
-
   What is AgentCoach.ai?
   AgentCoach.ai is an AI-powered coaching platform designed specifically for real estate agents. It provides personalized advice, strategies, and insights to help agents improve their skills and grow their business.
-
   How does AgentCoach.ai work?
   AgentCoach.ai delivers expert sales and negotiation tips with precise responses to your specific queries, providing you with tailored objection-handling tactics and strategies. Elevate your marketing game with instant custom-written articles, email campaigns, and eye-catching ads for Facebook and Instagram. Create compelling branding, taglines and more - your imagination is the only limit! Get specialized advice on any real estate, sales, marketing, negotiation or motivation topic, all backed by the latest in AI technology. With AgentCoach.ai, you’re never alone in your real estate journey!
-
   How to get started with AgentCoach.ai:
   1. Sign Up: Create an account on AgentCoach.ai
   2. Personalization: Complete the onboarding questionnaire to tailor your experience
@@ -35,8 +32,6 @@ Use the following agent coach details only when user asks questions related to A
   5. Switch between different AI agents from the sidebar to get advice on real estate, sales, marketing, negotiation, and motivation topics
   6. Type "/" to see all available commands and features
   7. Enjoy the experience and grow your real estate business with AgentCoach.ai!
-
-
   `;
 
 const systemPrompt = {
@@ -75,9 +70,7 @@ async function getTopKResults(body: Record<string, unknown>, baseUrl: string) {
 
 async function determineModel(question: string): Promise<string> {
   const systemPrompt = `You are an AI assistant that determines whether a user's question requires real-time data to answer or if it's related to AgentCoach.ai.
-
   Instructions:
-
   - Analyze the user's question below and decide whether it requires real-time data (like current market trends, live prices, or up-to-date statistics), can be answered with general knowledge, or is specifically about AgentCoach.ai.
   
   - If the question involves current prices, market trends, availability, or any information that changes over time and requires real-time data, respond with "requires real-time data".
@@ -144,41 +137,35 @@ const openai = new OpenAI({
   apiKey: NEXT_PUBLIC_OPENAI_API_KEY,
 });
 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
-
-// async function generateImage(prompt: string): Promise<string> {
-//   try {
-//     const response = await openai.images.generate({
-//       model: "dall-e-2",
-//       prompt: prompt,
-//       n: 1,
-//       size: "512x512",
-//     });
-
-//     const imageUrl = response.data[0].url;
-//     console.log("response", response);
-//     console.log("response data", response.data);
-
-//     if (!imageUrl) {
-//       throw new Error("Image URL not found in the response");
-//     }
-
-//     const uploadResponse = await cloudinary.uploader.upload(imageUrl, {
-//       folder: "generated_images",
-//     });
-
-//     const cloudinaryUrl = uploadResponse.secure_url;
-
-//     return cloudinaryUrl;
-//   } catch (error) {
-//     console.error("Error generating image:", error);
-//     throw error;
-//   }
-// }
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+async function generateImage(prompt: string): Promise<string> {
+  try {
+    const response = await openai.images.generate({
+      model: "dall-e-2",
+      prompt: prompt,
+      n: 1,
+      size: "512x512",
+    });
+    const imageUrl = response.data[0].url;
+    console.log("response", response);
+    console.log("response data", response.data);
+    if (!imageUrl) {
+      throw new Error("Image URL not found in the response");
+    }
+    const uploadResponse = await cloudinary.uploader.upload(imageUrl, {
+      folder: "generated_images",
+    });
+    const cloudinaryUrl = uploadResponse.secure_url;
+    return cloudinaryUrl;
+  } catch (error) {
+    console.error("Error generating image:", error);
+    throw error;
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -199,27 +186,27 @@ export async function POST(req: NextRequest) {
     const question = messages[messages.length - 1].content;
 
     // Check if the message starts with "Generate Picture - "
-    // if (question.startsWith("Picture - ")) {
-    //   const imagePrompt = question
-    //     .substring("Generate Picture - ".length)
-    //     .trim();
-    //   try {
-    //     const imageUrl = await generateImage(imagePrompt);
-    //     return new Response(imageUrl, {
-    //       status: 200,
-    //       headers: { "Content-Type": "application/json" },
-    //     });
-    //   } catch (error) {
-    //     console.error("Error generating image:", error);
-    //     return new Response(
-    //       JSON.stringify({ error: "Failed to generate image" }),
-    //       {
-    //         status: 500,
-    //         headers: { "Content-Type": "application/json" },
-    //       }
-    //     );
-    //   }
-    // }
+    if (question.startsWith("Picture - ")) {
+      const imagePrompt = question
+        .substring("Generate Picture - ".length)
+        .trim();
+      try {
+        const imageUrl = await generateImage(imagePrompt);
+        return new Response(imageUrl, {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      } catch (error) {
+        console.error("Error generating image:", error);
+        return new Response(
+          JSON.stringify({ error: "Failed to generate image" }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
+    }
 
     let baseUrl = BASE_URLS[chatbot];
     if (!baseUrl) {
