@@ -36,7 +36,7 @@ export default function RotatingText({
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="flex items-center justify-center"
           >
-            <span className="text-blue-400 text-2xl md:text-5xl lg:text-7xl font-bold">
+            <span className="text-blue-500 hover:text-blue-700 text-2xl md:text-5xl lg:text-7xl font-bold">
               {texts[index]}
             </span>
           </motion.div>
