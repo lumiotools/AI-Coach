@@ -124,7 +124,7 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
                   <>
                     {groupedChats[today].map((chat) => (
                       <Link key={chat.chat_id} href={`/chat/${chat.chat_id}`}>
-                        <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-2 dark:hover:bg-white rounded-lg cursor-pointer">
+                        <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-2 bg-opacity-10 dark:hover:bg-[rgba(30,42,94,0.12)] rounded-lg cursor-pointer">
                           <div>
                             <p className="text-sm text-gray-300 dark:text-[#435B8C] line-clamp-1 text-ellipsis">
                               {chat.firstMessage}
@@ -166,7 +166,7 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
                   <>
                     {groupedChats[yesterday].map((chat) => (
                       <Link key={chat.chat_id} href={`/chat/${chat.chat_id}`}>
-                        <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-1 dark:hover:bg-white rounded-lg cursor-pointer">
+                        <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-1 bg-opacity-10 dark:hover:bg-[rgba(30,42,94,0.12)] rounded-lg cursor-pointer">
                           <div>
                             <p className="text-sm text-gray-300 dark:text-[#435B8C] line-clamp-1 text-ellipsis">
                               {chat.firstMessage}
@@ -218,7 +218,7 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
                     <>
                       {groupedChats[date].map((chat) => (
                         <Link key={chat.chat_id} href={`/chat/${chat.chat_id}`}>
-                          <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-2 dark:hover:bg-white rounded-lg cursor-pointer">
+                          <div className="ml-[12px] m-[2px] pl-[10px] flex items-center hover:bg-black space-x-2 p-2 bg-opacity-10 dark:hover:bg-[rgba(30,42,94,0.12)] rounded-lg cursor-pointer">
                             <div>
                               <p className="text-sm text-gray-300 dark:text-[#435B8C] line-clamp-1 text-ellipsis">
                                 {chat.firstMessage}

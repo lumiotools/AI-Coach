@@ -76,17 +76,18 @@ function formatTables(content: string): string {
       <table class="border-collapse table-auto w-full text-sm my-4">
         <thead>
           <tr class="bg-gray-800">
-            ${content
-        .match(/<td[^>]*>(.*?)<\/td>/g)
-        ?.map(
-          (cell) =>
-            `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-left">${cell.replace(
-              /<\/?td[^>]*>/g,
-              ""
-            )}</th>`
-        )
-        .join("") || ""
-      }
+            ${
+              content
+                .match(/<td[^>]*>(.*?)<\/td>/g)
+                ?.map(
+                  (cell) =>
+                    `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-left">${cell.replace(
+                      /<\/?td[^>]*>/g,
+                      ""
+                    )}</th>`
+                )
+                .join("") || ""
+            }
           </tr>
         </thead>
         <tbody class="bg-gray-700">
@@ -123,17 +124,17 @@ function formatTables(content: string): string {
       <thead>
         <tr class="bg-gray-800">
           ${headers
-        .map(
-          (header, i) =>
-            `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-${alignments[i]} text-left">${header}</th>`
-        )
-        .join("")}
+            .map(
+              (header, i) =>
+                `<th class="border-b border-gray-700 font-medium p-4 pl-8 pt-0 pb-3 text-gray-300 text-${alignments[i]} text-left">${header}</th>`
+            )
+            .join("")}
         </tr>
       </thead>
       <tbody class="bg-gray-700">
         ${body
-        .map(
-          (row) => `
+          .map(
+            (row) => `
           <tr>
             ${row
               .map(
@@ -143,8 +144,8 @@ function formatTables(content: string): string {
               .join("")}
           </tr>
         `
-        )
-        .join("")}
+          )
+          .join("")}
       </tbody>
     </table>`;
 
@@ -200,21 +201,19 @@ export default function Page({ params: { chat_id } }: Props) {
   const [personalizedData, setPersonalizedData] =
     useState<PersonalizedData | null>(null);
 
-  // const [showCommandMenu, setShowCommandMenu] = useState(false);
-  // const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
-  //   {
-  //     label: "Picture",
-  //     icon: <ImageIcon className="w-4 h-4" />,
-  //     action: () => setSelectedCommand("Picture"),
-  //   },
-  // ]);
-
-  // const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
-
+  const [showCommandMenu, setShowCommandMenu] = useState(false);
+  const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
+    {
+      label: "Picture",
+      icon: <ImageIcon className="w-4 h-4" />,
+      action: () => setSelectedCommand("Picture"),
+    },
+  ]);
+  const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  // const [isLoadingImage, setIsLoadingImage] = useState(false);
-  // const [isFirstMessage, setIsFirstMessage] = useState(true);
-  // const [imageReady, setImageReady] = useState(false);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
+  const [isFirstMessage, setIsFirstMessage] = useState(true);
+  const [imageReady, setImageReady] = useState(false);
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -240,7 +239,7 @@ export default function Page({ params: { chat_id } }: Props) {
         });
 
         setMessages(sortedMessages);
-        // setIsFirstMessage(sortedMessages.length === 0);
+        setIsFirstMessage(sortedMessages.length === 0);
       }
     };
 
@@ -278,14 +277,14 @@ export default function Page({ params: { chat_id } }: Props) {
     if (isSending) return;
     setIsSending(true);
 
-    // if (message.trim().toLowerCase().startsWith("picture")) {
-    //   setIsLoadingImage(true);
-    // }
+    if (message.trim().toLowerCase().startsWith("picture")) {
+      setIsLoadingImage(true);
+    }
 
-    // if (selectedCommand === "Picture") {
-    //   setIsLoadingImage(true);
-    //   setImageReady(false);
-    // }
+    if (selectedCommand === "Picture") {
+      setIsLoadingImage(true);
+      setImageReady(false);
+    }
 
     if (message.trim()) {
       const prevOrder =
@@ -357,10 +356,10 @@ export default function Page({ params: { chat_id } }: Props) {
           done = doneReading;
           const chunkValue = decoder.decode(value, { stream: true }); // Ensure streaming is handled correctly
 
-          // if (chunkValue.includes("https://")) {
-          //   setImageReady(true);
-          //   setIsLoadingImage(false);
-          // }
+          if (chunkValue.includes("https://")) {
+            setImageReady(true);
+            setIsLoadingImage(false);
+          }
 
           // Update assistant message content progressively
           newMessages[assistantMessageIndex].content += chunkValue;
@@ -409,7 +408,7 @@ export default function Page({ params: { chat_id } }: Props) {
           .insert([userMessage])
           .select();
 
-        // setIsLoadingImage(false);
+        setIsLoadingImage(false);
       } finally {
         // Reset sending state
         setIsSending(false);
@@ -418,9 +417,9 @@ export default function Page({ params: { chat_id } }: Props) {
           `Ask me any question about ${currentExpert.toLowerCase()}! Just type or use the microphone.`
         );
         setFirstMessageSent(true);
-        // setIsLoadingImage(false);
-        // setIsFirstMessage(false);
-        // setSelectedCommand(null);
+        setIsLoadingImage(false);
+        setSelectedCommand(null);
+        setIsFirstMessage(false);
       }
     }
   };
@@ -428,9 +427,9 @@ export default function Page({ params: { chat_id } }: Props) {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // if (selectedCommand === "Picture") {
-    //   setIsLoadingImage(true);
-    // }
+    if (selectedCommand === "Picture") {
+      setIsLoadingImage(true);
+    }
 
     handleSendMessage(inputValue);
     setInputValue("");
@@ -694,42 +693,39 @@ export default function Page({ params: { chat_id } }: Props) {
     console.log("value", value);
     setInputValue(value);
 
-    // if (value.includes("/")) {
-    //   const lastSlashIndex = value.lastIndexOf("/");
-    //   const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
-
-    //   setShowCommandMenu(true);
-
-    //   const filteredOptions = commandOptions.filter((option) =>
-    //     option.label.toLowerCase().startsWith(afterSlash)
-    //   );
-
-    //   setCommandOptions(
-    //     filteredOptions.length > 0 ? filteredOptions : commandOptions
-    //   );
-    // } else {
-    //   setShowCommandMenu(false);
-    //   setCommandOptions([
-    //     {
-    //       label: "Picture",
-    //       icon: <ImageIcon className="w-4 h-4" />,
-    //       action: () => setSelectedCommand("Picture"),
-    //     },
-    //   ]);
-    // }
+    if (value.includes("/")) {
+      const lastSlashIndex = value.lastIndexOf("/");
+      const afterSlash = value.slice(lastSlashIndex + 1).toLowerCase();
+      setShowCommandMenu(true);
+      const filteredOptions = commandOptions.filter((option) =>
+        option.label.toLowerCase().startsWith(afterSlash)
+      );
+      setCommandOptions(
+        filteredOptions.length > 0 ? filteredOptions : commandOptions
+      );
+    } else {
+      setShowCommandMenu(false);
+      setCommandOptions([
+        {
+          label: "Picture",
+          icon: <ImageIcon className="w-4 h-4" />,
+          action: () => setSelectedCommand("Picture"),
+        },
+      ]);
+    }
   };
 
-  // const handleCommandSelect = (option: CommandOption) => {
-  //   setInputValue(`${option.label} - `);
-  //   setSelectedCommand(option.label);
-  //   if (inputRef.current) {
-  //     inputRef.current.focus();
-  //   }
-  //   setCommandOptions((prevOptions) =>
-  //     prevOptions.filter((opt) => opt.label !== option.label)
-  //   );
-  //   setShowCommandMenu(false);
-  // };
+  const handleCommandSelect = (option: CommandOption) => {
+    setInputValue(`${option.label} - `);
+    setSelectedCommand(option.label);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+    setCommandOptions((prevOptions) =>
+      prevOptions.filter((opt) => opt.label !== option.label)
+    );
+    setShowCommandMenu(false);
+  };
 
   return (
     <div
@@ -783,10 +779,11 @@ export default function Page({ params: { chat_id } }: Props) {
                   messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`flex items-start space-x-4 mt-4 ${message.role === "user"
-                        ? "flex-row-reverse space-x-reverse"
-                        : ""
-                        }`}
+                      className={`flex items-start space-x-4 mt-4 ${
+                        message.role === "user"
+                          ? "flex-row-reverse space-x-reverse"
+                          : ""
+                      }`}
                     >
                       <Avatar className="w-8 h-8 flex-shrink-0">
                         {message.role === "user" ? (
@@ -804,10 +801,11 @@ export default function Page({ params: { chat_id } }: Props) {
                       </Avatar>
                       <div className="space-y-2 max-w-[70%] md:max-w-[80%]">
                         <div
-                          className={`p-3 rounded-lg ${message.role === "user"
-                            ? "bg-[#1E2A5E] text-white border border-[rgba(47, 118, 255, 1)]"
-                            : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
-                            }`}
+                          className={`p-3 rounded-lg ${
+                            message.role === "user"
+                              ? "bg-[#1E2A5E] text-white border border-[rgba(47, 118, 255, 1)]"
+                              : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
+                          }`}
                         >
                           {message.content.includes("https:") ? (
                             <div className="w-[200px] md:w-[340px] h-[200px] md:h-[340px]">
@@ -867,10 +865,11 @@ export default function Page({ params: { chat_id } }: Props) {
                                 onClick={() =>
                                   handleLike(message.message_id, 1)
                                 }
-                                className={`${message.like === 1
-                                  ? "text-blue-400"
-                                  : "text-gray-400 dark:text-[#001c4f]"
-                                  }`}
+                                className={`${
+                                  message.like === 1
+                                    ? "text-blue-400"
+                                    : "text-gray-400 dark:text-[#001c4f]"
+                                }`}
                               >
                                 <ThumbsUp className="h-4 w-4 " />
                               </Button>
@@ -885,10 +884,11 @@ export default function Page({ params: { chat_id } }: Props) {
                                 onClick={() =>
                                   handleLike(message.message_id, -1)
                                 }
-                                className={`${message.like === -1
-                                  ? "text-red-400"
-                                  : "text-gray-400 dark:text-[#001c4f]"
-                                  }`}
+                                className={`${
+                                  message.like === -1
+                                    ? "text-red-400"
+                                    : "text-gray-400 dark:text-[#001c4f]"
+                                }`}
                               >
                                 <ThumbsDown className="h-4 w-4" />
                               </Button>
@@ -931,8 +931,11 @@ export default function Page({ params: { chat_id } }: Props) {
                   ))
                 )}
 
-                {/* {
-                  !imageReady && (isLoadingImage || (isFirstMessage && isSending && selectedCommand === "Picture")) && (
+                {!imageReady &&
+                  (isLoadingImage ||
+                    (isFirstMessage &&
+                      isSending &&
+                      selectedCommand === "Picture")) && (
                     <div className="flex items-start space-x-4 mt-4">
                       <div className="flex-shrink-0">
                         {getAIAvatar(currentExpert)}
@@ -941,9 +944,7 @@ export default function Page({ params: { chat_id } }: Props) {
                         <PercentageLoader />
                       </div>
                     </div>
-                  )
-                } */}
-
+                  )}
 
                 <div ref={chatEndRef} />
               </div>
@@ -1043,7 +1044,7 @@ export default function Page({ params: { chat_id } }: Props) {
                     </button>
                   </div>
 
-                  {/* {showCommandMenu && (
+                  {showCommandMenu && (
                     <div className="absolute bottom-30 md:bottom-16 bg-custom-gradient dark:bg-gray-800 rounded-md shadow-lg z-10">
                       {commandOptions.map((option, index) => (
                         <button
@@ -1056,7 +1057,7 @@ export default function Page({ params: { chat_id } }: Props) {
                         </button>
                       ))}
                     </div>
-                  )} */}
+                  )}
                 </form>
 
                 <p className="text-xs text-gray-500 mt-3  text-center pb-2">

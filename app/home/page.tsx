@@ -39,10 +39,10 @@ export default async function Home() {
         </h1>
 
         <Link
-          className="mt-10 text-center w-[180px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+          className="mt-10 text-center w-[200px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
           href="/signup"
         >
-          SIGN UP FOR FREE
+          Start 7 Day Free Trial
         </Link>
         <div className="flex flex-col mt-12">
           <div className="flex flex-col md:flex-row md:gap-10">
@@ -135,8 +135,9 @@ export default async function Home() {
               autoPlay
               loop
               muted
+              controls
             >
-              <source src="/video/newDemo.mp4" type="video/mp4" />
+              <source src="/video/demo.mp4" type="video/mp4" />
             </video>
           </div>
           <div className="md:w-1/2 flex flex-col justify-center">
