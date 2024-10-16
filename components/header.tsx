@@ -214,7 +214,7 @@ export default function HeaderBar({
             className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
           >
             <ListTodo className="size-5" />
-            <p>BrochureProAI</p>
+            <p>PropertyPitch</p>
           </Link>
 
           <DropdownMenu>

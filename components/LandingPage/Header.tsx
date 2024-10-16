@@ -38,15 +38,15 @@ export function Header() {
       </button>
       <nav
         className={`${isMenuOpen ? "block" : "hidden"
-          } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-50`}
+          } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-50 items-center`}
       >
-        <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0">
+        <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0 md:justify-center">
           {["home", "about", "pricing", "faqs", "blog"].map((page) => {
             const href =
               page === "home"
                 ? "/home"
                 : page === "blog"
-                  ? "https://agentcoachblogteamlumio.wordpress.com/"
+                  ? "https://blog.agentcoach.ai/"
                   : `/home/${page}`;
             const isActive = pathname === href;
 
