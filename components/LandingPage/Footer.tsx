@@ -22,7 +22,7 @@ const quickLinks = [
   { href: "/home/about", label: "About" },
   { href: "/home/faqs", label: "FAQ's" },
   { href: "/home/pricing", label: "Pricing" },
-  { href: "https://agentcoachblogteamlumio.wordpress.com", label: "Blog" },
+  { href: "https://blog.agentcoach.ai/", label: "Blog" },
 ];
 
 interface QuickLinkProps {
