@@ -132,6 +132,12 @@ export default function BrochureProComponent() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -537,7 +543,7 @@ ${brochureContent.callToAction}
                     name="locationAmenities"
                     value={formData.locationAmenities}
                     onChange={handleInputChange}
-                    placeholder="e.g. Located in the Cherry Creek Neighborhood of Denver, CO near the Botanic Gardens and Cherry Creek Mall"
+                    placeholder="e.g. Located in the Cherry Creek Neighborhood of Denver"
                     rows={3}
                     className="bg-[#1E2738] border-[#2A3652] text-white"
                   />
