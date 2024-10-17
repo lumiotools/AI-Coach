@@ -147,9 +147,7 @@ export default function HeaderBar({
           </Button>
 
           <Button
-            onClick={() =>
-              window.open("https://brochure-pro.vercel.app/", "_blank")
-            }
+            onClick={() => window.open("/property-pitch")}
             variant="navbtn"
             size="nav"
             className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
@@ -209,8 +207,7 @@ export default function HeaderBar({
           </Button>
 
           <Link
-            href="https://brochure-pro.vercel.app/"
-            target="_blank"
+            href="/property-pitch"
             className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
           >
             <ListTodo className="size-5" />
