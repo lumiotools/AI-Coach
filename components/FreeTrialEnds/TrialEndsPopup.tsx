@@ -93,7 +93,7 @@ export default function TrialEndPopup({
             <p className="text-gray-400 mb-6">
               {isTrialEnded
                 ? "Your free trial period has come to an end. Upgrade now to continue enjoying our premium features."
-                : "Are you making use of your trial as best as possible? Don't forget to try out custom branding and blurring out sensitive information."}
+                : "Upgrade now to continue enjoying our premium features."}
             </p>
           </CardContent>
           <CardFooter className="flex justify-center space-x-4 p-6">

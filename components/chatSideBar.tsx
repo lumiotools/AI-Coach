@@ -35,9 +35,6 @@ function ChatHistory({ userId, supabase, userEmail }: any) {
   const [showYesterday, setShowYesterday] = useState(false);
   const [showOthers, setShowOthers] = useState<{ [key: string]: boolean }>({});
 
-  console.log(userId, userEmail);
-  // const [isSubscribed, setIsSubscribed] = useState(false);
-
   useEffect(() => {
     const fetchChatPreviews = async () => {
       const { data: chats, error } = await supabase
