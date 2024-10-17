@@ -272,18 +272,14 @@ export default function Sidebar({
     userMetadata?.trialStatus && !userMetadata.trialStatus.trialEnded;
 
   const canAccessChatExperts = hasPaymentInfo && hasPlanDetails;
-  const canAccessGeneralAI = canAccessChatExperts || isOnFreeTrial;
 
   const handleExpertButtonClick = (expert: string) => {
-    if (expert === "General" && canAccessGeneralAI) {
+    if (canAccessChatExperts || isOnFreeTrial) {
       setShowPopup(false);
       setActiveExpert(expert);
       handleExpertClick(expert);
-    } else if (expert !== "General" && !canAccessChatExperts) {
-      setShowPopup(true);
     } else {
-      setActiveExpert(expert);
-      handleExpertClick(expert);
+      setShowPopup(true);
     }
   };
 

@@ -45,6 +45,9 @@ export default function TrialEndPopupWrapper() {
         if (data.success) {
           setRemainingDays(data.trialStatus.remainingDays);
           setShowPopup(data.trialStatus.remainingDays == 0 && !planDetails);
+
+          setRemainingDays(0);
+          setShowPopup(true);
         } else {
           console.error("Failed to update trial status:", data.error);
         }
