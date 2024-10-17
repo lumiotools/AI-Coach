@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Brain, Copy, Mail, RefreshCcw } from "lucide-react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HeaderBar from "@/components/header";
 import { useClerk } from "@clerk/nextjs";
@@ -320,7 +320,6 @@ ${brochureContent.callToAction}
 
     return (
       <div className="space-y-6">
-        <ToastContainer />
         <div className="text-center">
           <h3 className="text-3xl font-bold  text-blue-500 opacity-80 mb-2 text-center transition-colors">
             {headline}
@@ -387,7 +386,6 @@ ${brochureContent.callToAction}
         signOut={signOut}
       />
       <div className="min-h-screen bg-[#0A0E17] text-white pb-8 pt-24">
-        <ToastContainer />
         <div className="container mx-auto px-4">
           <header className="text-center mb-12">
             <h1 className="text-2xl font-semibold mb-2">Property Pitch</h1>
