@@ -28,6 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import CustomerPortalButton from "./Billing/CustomerPortalButton";
+import { usePathname } from "next/navigation";
 
 export default function HeaderBar({
   isSidebarOpen,
@@ -42,6 +43,7 @@ export default function HeaderBar({
   const { openUserProfile } = useClerk();
   const { isLoaded, isSignedIn, userId } = useAuth();
   const { user } = useUser();
+  const pathname = usePathname();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -114,27 +116,28 @@ export default function HeaderBar({
           </Link>
         </div>
         <div className="flex items-center md:space-x-4 space-x-0">
-          <Button
-            onClick={toggleTheme}
-            variant="navbtn"
-            size="nav"
-            className={styles.pad}
-          >
-            {theme === "light" ? (
-              <Image
-                src={sun}
-                className={`${styles.mode} !size-6`}
-                alt="Sun Icon"
-              />
-            ) : (
-              <Image
-                src={moon}
-                className={`${styles.mode} !size-6`}
-                alt="Moon Icon"
-              />
-            )}
-          </Button>
-
+          {pathname !== "/property-pitch" && (
+            <Button
+              onClick={toggleTheme}
+              variant="navbtn"
+              size="nav"
+              className={styles.pad}
+            >
+              {theme === "light" ? (
+                <Image
+                  src={sun}
+                  className={`${styles.mode} !size-6`}
+                  alt="Sun Icon"
+                />
+              ) : (
+                <Image
+                  src={moon}
+                  className={`${styles.mode} !size-6`}
+                  alt="Moon Icon"
+                />
+              )}
+            </Button>
+          )}
           <Button
             onClick={() => handleOpenForm()}
             variant="navbtn"
