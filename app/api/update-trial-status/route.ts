@@ -13,7 +13,7 @@ export async function POST() {
     const now = new Date();
     const diffTime = now.getTime() - signUpDate.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const trialDuration = 0;
+    const trialDuration = 7;
 
     const remainingDays = Math.max(trialDuration - diffDays, 0);
 
