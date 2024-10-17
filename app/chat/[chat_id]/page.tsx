@@ -430,8 +430,11 @@ export default function Page({ params: { chat_id } }: Props) {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    //@ts-ignore
-    if (user?.publicMetadata?.trialStatus?.trialEnded) {
+    if (
+      //@ts-ignore
+      user?.publicMetadata?.trialStatus?.trialEnded &&
+      !user?.publicMetadata?.paymentInfo
+    ) {
       setShowUnlockPopup(true);
       return;
     }
