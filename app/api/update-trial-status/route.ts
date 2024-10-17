@@ -20,6 +20,7 @@ export async function POST() {
     const trialStatus = {
       remainingDays,
       trialEnded: remainingDays === 0,
+      showPopup: remainingDays === 0,
     };
 
     // Preserve existing publicMetadata

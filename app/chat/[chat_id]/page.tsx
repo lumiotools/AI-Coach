@@ -45,6 +45,7 @@ import avatardark from "@/components/Assets/darkavatar.png";
 import useTheme from "@/app/hooks/useTheme";
 import TrialEndPopupWrapper from "@/components/FreeTrialEnds/TrialEndsPopupWrapper";
 import PercentageLoader from "@/components/PercentageLoader";
+import UnlockAccessDialog from "@/components/UnlockAccessPopup";
 
 type Message = {
   role: "user" | "assistant" | "system";
@@ -214,6 +215,8 @@ export default function Page({ params: { chat_id } }: Props) {
   const [isLoadingImage, setIsLoadingImage] = useState(false);
   const [isFirstMessage, setIsFirstMessage] = useState(true);
   const [imageReady, setImageReady] = useState(false);
+
+  const [showUnlockPopup, setShowUnlockPopup] = useState(false);
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -426,6 +429,12 @@ export default function Page({ params: { chat_id } }: Props) {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    //@ts-ignore
+    if (user?.publicMetadata?.trialStatus?.trialEnded) {
+      setShowUnlockPopup(true);
+      return;
+    }
 
     if (selectedCommand === "Picture") {
       setIsLoadingImage(true);
@@ -1070,6 +1079,15 @@ export default function Page({ params: { chat_id } }: Props) {
       </SignedIn>
       <ToastContainer />
       <TrialEndPopupWrapper />
+      <UnlockAccessDialog
+        isOpen={showUnlockPopup}
+        onClose={() => {
+          setShowUnlockPopup(false);
+        }}
+        onUnlock={() => {
+          router.push("/home/pricing");
+        }}
+      />
     </div>
   );
 }

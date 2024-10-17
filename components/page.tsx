@@ -19,6 +19,7 @@ import IntroductionModal from "@/components/IntroductionModal";
 import TrialEndPopup from "./FreeTrialEnds/TrialEndsPopup";
 import TrialEndPopupWrapper from "./FreeTrialEnds/TrialEndsPopupWrapper";
 import { ImageIcon } from "lucide-react";
+import UnlockAccessDialog from "./UnlockAccessPopup";
 
 type ExpertType =
   | "General"
@@ -52,6 +53,7 @@ export function Page() {
   const [showCommandMenu, setShowCommandMenu] = useState(false);
   const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [showUnlockPopup, setShowUnlockPopup] = useState(false);
 
   const [commandOptions, setCommandOptions] = useState<CommandOption[]>([
     {
@@ -148,6 +150,11 @@ export function Page() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    //@ts-ignore
+    if (user?.publicMetadata?.trialStatus?.trialEnded) {
+      setShowUnlockPopup(true);
+      return;
+    }
     handleSendMessage(inputValue);
     setInputValue("");
   };
@@ -308,6 +315,15 @@ export function Page() {
       )}
       <IntroductionModal isOpen={isIntroModalOpen} onClose={closeIntroModal} />
       <TrialEndPopupWrapper />
+      <UnlockAccessDialog
+        isOpen={showUnlockPopup}
+        onClose={() => {
+          setShowUnlockPopup(false);
+        }}
+        onUnlock={() => {
+          router.push("/home/pricing");
+        }}
+      />
     </div>
   );
 }

@@ -198,11 +198,6 @@ export default function PricingPage() {
       return;
     }
 
-    if (plan === "free") {
-      alert("Please sign up for the free plan directly from the app.");
-      return;
-    }
-
     if (plan === "organization") {
       alert("Please contact us to subscribe to the Organization plan.");
       return;
@@ -337,7 +332,8 @@ export default function PricingPage() {
                       strikethrough={tier.annualPrice.strikethrough}
                       isCurrentPlan={
                         currentPlan === tier.plan.toLowerCase() &&
-                        currentBillingPeriod === "year"
+                        (currentBillingPeriod === "year" ||
+                          currentPlan === "free")
                       }
                       currentPlan={currentPlan}
                     />

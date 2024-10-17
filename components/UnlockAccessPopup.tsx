@@ -33,13 +33,6 @@ export default function UnlockAccessDialog({
         </DialogHeader>
         <DialogFooter>
           <Button
-            variant="outline"
-            onClick={onClose}
-            className="hover:bg-transparent hover:text-white rounded-md mt-4 sm:mt-0"
-          >
-            Skip for now
-          </Button>
-          <Button
             className="bg-[#2F76FF] dark:bg-white rounded-md"
             onClick={onUnlock}
           >

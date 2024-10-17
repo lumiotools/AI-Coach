@@ -35,8 +35,9 @@ export async function POST(request: Request) {
           currentPeriodEnd: null,
           cancelAtPeriodEnd: null,
           trialStatus: {
-            trialEnded: false,
-            remainingDays: 7,
+            trialEnded: true,
+            remainingDays: 0,
+            showPopup: false,
           },
         },
       });
@@ -62,6 +63,7 @@ export async function POST(request: Request) {
         trialStatus: {
           trialEnded: true,
           remainingDays: 0,
+          showPopup: false,
         },
       },
     });
