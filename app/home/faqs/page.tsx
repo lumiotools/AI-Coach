@@ -10,7 +10,7 @@ interface FaqItem {
 
 async function getFaqs(): Promise<FaqItem[]> {
   const response = await fetch(
-    "https://admindashbord-lumio.onrender.com/faqs",
+    "https://lumioadmin.ritesh.live/faqs",
     { next: { revalidate: 3600 } }
   );
   if (!response.ok) {
