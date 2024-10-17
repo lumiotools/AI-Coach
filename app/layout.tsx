@@ -11,7 +11,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { ToastContainer } from "react-toastify";
-// import { ThemeProvider } from "@/components/theme-provider";;;
+// import { ThemeProvider } from "@/components/theme-provider";;;k
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
