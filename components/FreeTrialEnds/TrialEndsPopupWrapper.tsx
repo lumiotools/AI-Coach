@@ -38,36 +38,33 @@ export default function TrialEndPopupWrapper() {
       if (isLoaded && user) {
         const metadata = user.publicMetadata as UserMetadata;
         const planDetails = metadata.planDetails;
-        const trialStatus = metadata.trialStatus;
 
-        if (!trialStatus) {
-          const response = await fetch("/api/update-trial-status", {
-            method: "POST",
-          });
-          const data = await response.json();
-          if (data.success) {
-            setRemainingDays(data.trialStatus.remainingDays);
-            setShowPopup(
-              data.trialStatus.remainingDays == 0 &&
-                !planDetails &&
-                data.trialStatus.showPopup
-            );
-          } else {
-            console.error("Failed to update trial status:", data.error);
-          }
-        } else {
-          setRemainingDays(trialStatus.remainingDays);
+        if (planDetails) {
+          setShowPopup(false);
+          return;
+        }
+
+        const response = await fetch("/api/update-trial-status", {
+          method: "POST",
+        });
+        const data = await response.json();
+        if (data.success) {
+          setRemainingDays(data.trialStatus.remainingDays);
           setShowPopup(
-            trialStatus.remainingDays == 0 &&
+            data.trialStatus.remainingDays == 0 &&
               !planDetails &&
-              trialStatus.showPopup
+              data.trialStatus.showPopup
           );
+        } else {
+          console.error("Failed to update trial status:", data.error);
         }
       }
     };
 
     checkAndUpdateTrialStatus();
   }, [user, isLoaded, router]);
+
+  console.log("showPopup", showPopup);
 
   if (!showPopup || remainingDays === null) return null;
 
