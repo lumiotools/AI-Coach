@@ -12,15 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Brain, Copy, Mail, RefreshCcw, Share2 } from "lucide-react";
+import { Brain, Copy, Mail, RefreshCcw } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import "react-toastify/dist/ReactToastify.css";
 
 interface Description {
@@ -77,8 +70,6 @@ export default function BrochureProComponent() {
   });
   const [brochureContent, setBrochureContent] =
     useState<BrochureContent | null>(null);
-  const [emailAddress, setEmailAddress] = useState("");
-  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
   const [isEmailSending, setIsEmailSending] = useState(false);
   const toastIdRef = useRef<string | number | null>(null);
 
@@ -147,23 +138,23 @@ export default function BrochureProComponent() {
       exteriorFeatures: formData.exteriorFeatures,
     };
 
+    console.log("data", data);
+
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_PROPERTY_PITCH_API_URL}/generate-description`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`/api/property-pitch`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to generate description");
       }
       setLoadingStep(1);
       const result = await response.json();
+      console.log("result", result);
       setBrochureContent({
         headline: result.headline,
         tagline: result.tagline,
@@ -224,41 +215,32 @@ ${brochureContent.callToAction}
     }
   };
 
-  const handleEmailContent = () => {
-    setIsEmailDialogOpen(true);
-  };
-
-  const sendEmail = async () => {
-    if (brochureContent && emailAddress && !isEmailSending) {
-      setIsEmailSending(true);
+  const handleEmailContent = async () => {
+    if (brochureContent) {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_PROPERTY_PITCH_API_URL}/send-email`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              to: emailAddress,
-              subject: brochureContent.headline,
-              brochureContent: JSON.stringify(brochureContent),
-            }),
-          }
-        );
+        const response = await fetch("/api/share", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: brochureContent,
+            type: "property",
+          }),
+        });
 
-        if (response.ok) {
-          setIsEmailDialogOpen(false);
-          setEmailAddress("");
-        } else {
-          const errorText = await response.text();
-          throw new Error(`Failed to send email: ${errorText}`);
+        if (!response.ok) {
+          throw new Error("Failed to send email");
         }
+
+        const result = await response.json();
+        toast.success(`Email sent successfully to ${result.email}`);
       } catch (error) {
         console.error("Error sending email:", error);
-      } finally {
-        setIsEmailSending(false);
+        toast.error("An error occurred while sending the email.");
       }
+    } else {
+      toast.error("No content to send.");
     }
   };
 
@@ -278,7 +260,7 @@ ${brochureContent.callToAction}
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_PROPERTY_PITCH_API_URL}/generate-description`,
+        `/api/property-pitch`, // Updated to use the new route
         {
           method: "POST",
           headers: {
@@ -371,49 +353,14 @@ ${brochureContent.callToAction}
             <Copy className="w-4 h-4" />
             <span>Copy</span>
           </Button>
-          <Dialog
-            open={isEmailDialogOpen}
-            onOpenChange={(open) => {
-              if (!isEmailSending) {
-                setIsEmailDialogOpen(open);
-              }
-            }}
+          <Button
+            onClick={handleEmailContent}
+            className="flex items-center space-x-2"
+            disabled={isEmailSending}
           >
-            <DialogTrigger asChild>
-              <Button
-                onClick={handleEmailContent}
-                className="flex items-center space-x-2"
-                disabled={isEmailSending}
-              >
-                <Mail className="w-4 h-4" />
-                <span>{isEmailSending ? "Sending..." : "Email"}</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-[#1E2738] border-[#2A3652] text-white sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle className="text-white">
-                  Enter Email Address
-                </DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid items-center w-full gap-4">
-                  <Input
-                    id="email"
-                    value={emailAddress}
-                    onChange={(e) => setEmailAddress(e.target.value)}
-                    className="col-span-3 bg-[#1E2738] border-[#2A3652] text-white w-full"
-                  />
-                </div>
-              </div>
-              <Button
-                onClick={sendEmail}
-                disabled={isEmailSending}
-                className="bg-blue-600 hover:bg-blue-700 transition-colors text-white"
-              >
-                {isEmailSending ? "Sending..." : "Send Email"}
-              </Button>
-            </DialogContent>
-          </Dialog>
+            <Mail className="w-4 h-4" />
+            <span>{isEmailSending ? "Sending..." : "Email"}</span>
+          </Button>
           <Button
             onClick={handleRegenerate}
             className="flex items-center space-x-2 transition-colors text-white"
