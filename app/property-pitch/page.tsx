@@ -22,6 +22,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import "react-toastify/dist/ReactToastify.css";
+import HeaderBar from "@/components/header";
+import { useClerk } from "@clerk/nextjs";
 
 interface Description {
   title: string;
@@ -54,17 +56,13 @@ export default function BrochureProComponent() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
   const [formData, setFormData] = useState({
-    type: "sale",
-    propertyAddress: "1234 Maple Street, Denver, CO 80205",
-    propertyType: "Single Family Home",
-    locationAmenities:
-      "Located in the heart of Denver's historic district, close to restaurants, parks, and shopping centers.",
-    propertyDescription:
-      "This stunning 4-bedroom, 3-bath mid-century modern home boasts a spacious open floor plan, hardwood floors, and a gourmet kitchen with stainless steel appliances. The living room features a cozy fireplace and large windows that bring in natural light.",
-    interiorFeatures:
-      "Custom kitchen with granite countertops, large island, energy-efficient appliances, hardwood floors throughout, a spacious master suite with walk-in closet and ensuite bath, and a finished basement with a home theater.", // Sample data
-    exteriorFeatures:
-      "Large backyard with a custom stone patio, outdoor kitchen, and in-ground pool. The property also includes a 2-car garage, professionally landscaped yard, and a private driveway.", // Sample data
+    type: "",
+    propertyAddress: "",
+    propertyType: "",
+    locationAmenities: "",
+    propertyDescription: "",
+    interiorFeatures: "", // Sample data
+    exteriorFeatures: "", // Sample data
   });
   const [errors, setErrors] = useState({
     type: "",
@@ -81,6 +79,8 @@ export default function BrochureProComponent() {
   const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
   const [isEmailSending, setIsEmailSending] = useState(false);
   const toastIdRef = useRef<string | number | null>(null);
+
+  const { signOut } = useClerk();
 
   const loadingSteps = [
     "Analyzing property details...",
@@ -427,222 +427,230 @@ ${brochureContent.callToAction}
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0E17] text-white py-8">
-      <ToastContainer />
-      <div className="container mx-auto px-4">
-        <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">PropertyPitch</h1>
-          <p className="text-xl text-gray-300 mb-4">
-            Turn Key Features into Standout Descriptions
-          </p>
-          <div className="max-w-3xl mx-auto text-gray-400 text-lg">
-            <p className="mb-4 text-gray-400 text-base text-justify">
-              PropertyPitch transforms property details into well-crafted
-              descriptions that help sell. With smart text generation tailored
-              for real estate listings, this tool provides a seamless way to
-              copy, download, or share impactful property copy with your
-              audience. Whether you&apos;re highlighting key features or
-              creating an entire listing, PropertyPitch ensures your content is
-              polished, professional, and optimized to attract potential buyers.
+    <>
+      <HeaderBar
+        isSidebarOpen={false}
+        setIsSidebarOpen={() => false}
+        signOut={signOut}
+      />
+      <div className="min-h-screen bg-[#0A0E17] text-white pb-8 pt-24">
+        <ToastContainer />
+        <div className="container mx-auto px-4">
+          <header className="text-center mb-12">
+            <h1 className="text-2xl font-semibold mb-2">Property Pitch</h1>
+            <p className="text-lg text-gray-300 mb-2">
+              Turn Key Features into Standout Descriptions
             </p>
-          </div>
-        </header>
-
-        <main className="grid md:grid-cols-2 gap-8">
-          <div className="bg-[#131A2B] p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-semibold mb-6">
-              Create Property Pitch
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <Label htmlFor="type">Listing Type</Label>
-                <Select
-                  name="type"
-                  onValueChange={handleSelectChange}
-                  value={formData.type}
-                >
-                  <SelectTrigger
-                    id="type"
-                    className="bg-[#1E2738] border-[#2A3652] text-white"
-                  >
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#1E2738] border-[#2A3652]">
-                    <SelectItem
-                      value="sale"
-                      className="text-gray-200 focus:bg-[#2A3652] focus:text-white"
-                    >
-                      For Sale
-                    </SelectItem>
-                    <SelectItem
-                      value="rent"
-                      className="text-gray-200 focus:bg-[#2A3652] focus:text-white"
-                    >
-                      For Rent
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.type && (
-                  <p className="text-red-400 text-sm mt-1">{errors.type}</p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="propertyAddress">Property Address</Label>
-                <Input
-                  id="propertyAddress"
-                  name="propertyAddress"
-                  value={formData.propertyAddress}
-                  onChange={handleInputChange}
-                  placeholder="e.g. 550 Milwaukee Street Denver, CO 80202"
-                  className="bg-[#1E2738] border-[#2A3652] text-white"
-                />
-                {errors.propertyAddress && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.propertyAddress}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="propertyType">Property Type</Label>
-                <Input
-                  id="propertyType"
-                  name="propertyType"
-                  value={formData.propertyType}
-                  onChange={handleInputChange}
-                  placeholder="e.g. Single Family Ranch Style Home, Hi-Rise Condominium"
-                  className="bg-[#1E2738] border-[#2A3652] text-white"
-                />
-                {errors.propertyType && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.propertyType}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="locationAmenities">
-                  Property Location and Nearby Amenities
-                </Label>
-                <Textarea
-                  id="locationAmenities"
-                  name="locationAmenities"
-                  value={formData.locationAmenities}
-                  onChange={handleInputChange}
-                  placeholder="e.g. Located in the Cherry Creek Neighborhood of Denver, CO near the Botanic Gardens and Cherry Creek Mall"
-                  rows={3}
-                  className="bg-[#1E2738] border-[#2A3652] text-white"
-                />
-                {errors.locationAmenities && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.locationAmenities}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="propertyDescription">
-                  Describe the Property
-                </Label>
-                <Textarea
-                  id="propertyDescription"
-                  name="propertyDescription"
-                  value={formData.propertyDescription}
-                  onChange={handleInputChange}
-                  placeholder="e.g. 4 Bedroom, 3 Bath brick mid-century ranch with a 2 car garage on a quiet cul de sac"
-                  rows={3}
-                  className="bg-[#1E2738] border-[#2A3652] text-white"
-                />
-                {errors.propertyDescription && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.propertyDescription}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="interiorFeatures">Interior Features</Label>
-                <Textarea
-                  id="interiorFeatures"
-                  name="interiorFeatures"
-                  value={formData.interiorFeatures}
-                  onChange={handleInputChange}
-                  placeholder="e.g. Updated Viking appliances, library with wall-to-wall custom bookcases, two fireplaces"
-                  rows={3}
-                  className="bg-[#1E2738] border-[#2A3652] text-white"
-                />
-                {errors.interiorFeatures && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.interiorFeatures}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="exteriorFeatures">Exterior Features</Label>
-                <Textarea
-                  id="exteriorFeatures"
-                  name="exteriorFeatures"
-                  value={formData.exteriorFeatures}
-                  onChange={handleInputChange}
-                  placeholder="e.g. Large private patio and lush landscaping, in-ground swimming pool with guest casita"
-                  rows={3}
-                  className="bg-[#1E2738] border-[#2A3652] text-white"
-                />
-                {errors.exteriorFeatures && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.exteriorFeatures}
-                  </p>
-                )}
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 transition-colors   text-white"
-                disabled={isLoading}
-              >
-                {isLoading ? "Generating..." : "Create Brochure"}
-              </Button>
-            </form>
-          </div>
-
-          <div className="bg-[#131A2B] p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-semibold mb-6">
-              Generated Property Pitch
-            </h2>
-            <div
-              className="bg-[#1E2738] p-6 rounded-lg overflow-y-auto max-h-[90rem]"
-              style={{
-                scrollbarWidth: "thin",
-                scrollbarColor: "#4B5563 #1F2937",
-              }}
-            >
-              {isLoading ? (
-                <div className="flex flex-col items-center justify-center h-full space-y-4">
-                  <Brain className="w-16 h-16 text-[#2463EB] animate-pulse" />
-                  <p className="text-center text-gray-300 text-lg">
-                    {loadingSteps[loadingStep]}
-                  </p>
-                </div>
-              ) : brochureContent ? (
-                <div className="space-y-6 text-gray-200">
-                  {renderBrochureContent()}
-                </div>
-              ) : (
-                <p className="text-gray-400 text-center">
-                  {error ||
-                    "Your professional property brochure content will appear here after you generate the listing."}
-                </p>
-              )}
+            <div className="max-w-3xl mx-auto text-gray-400 text-base">
+              <p className="mb-4 text-gray-400 text-base text-balance">
+                PropertyPitch transforms property details into well-crafted
+                descriptions that help sell. With smart text generation tailored
+                for real estate listings, this tool provides a seamless way to
+                copy, download, or share impactful property copy with your
+                audience. Whether you&apos;re highlighting key features or
+                creating an entire listing, PropertyPitch ensures your content
+                is polished, professional, and optimized to attract potential
+                buyers.
+              </p>
             </div>
-          </div>
-        </main>
+          </header>
 
-        <footer className="mt-12 text-center text-sm text-gray-400">
-          © 2024 PropertyPitch. All rights reserved.
-        </footer>
+          <main className="grid md:grid-cols-2 gap-8">
+            <div className="bg-[#131A2B] p-6 rounded-lg shadow-lg">
+              <h2 className="text-xl font-semibold mb-6">
+                Create Property Pitch
+              </h2>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <Label htmlFor="type">Listing Type</Label>
+                  <Select
+                    name="type"
+                    onValueChange={handleSelectChange}
+                    value={formData.type}
+                  >
+                    <SelectTrigger
+                      id="type"
+                      className="bg-[#1E2738] border-[#2A3652] text-white"
+                    >
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#1E2738] border-[#2A3652]">
+                      <SelectItem
+                        value="sale"
+                        className="text-gray-200 focus:bg-[#2A3652] focus:text-white"
+                      >
+                        For Sale
+                      </SelectItem>
+                      <SelectItem
+                        value="rent"
+                        className="text-gray-200 focus:bg-[#2A3652] focus:text-white"
+                      >
+                        For Rent
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {errors.type && (
+                    <p className="text-red-400 text-sm mt-1">{errors.type}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="propertyAddress">Property Address</Label>
+                  <Input
+                    id="propertyAddress"
+                    name="propertyAddress"
+                    value={formData.propertyAddress}
+                    onChange={handleInputChange}
+                    placeholder="e.g. 550 Milwaukee Street Denver, CO 80202"
+                    className="bg-[#1E2738] border-[#2A3652] text-white"
+                  />
+                  {errors.propertyAddress && (
+                    <p className="text-red-400 text-sm mt-1">
+                      {errors.propertyAddress}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="propertyType">Property Type</Label>
+                  <Input
+                    id="propertyType"
+                    name="propertyType"
+                    value={formData.propertyType}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Single Family Ranch Style Home, Hi-Rise Condominium"
+                    className="bg-[#1E2738] border-[#2A3652] text-white"
+                  />
+                  {errors.propertyType && (
+                    <p className="text-red-400 text-sm mt-1">
+                      {errors.propertyType}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="locationAmenities">
+                    Property Location and Nearby Amenities
+                  </Label>
+                  <Textarea
+                    id="locationAmenities"
+                    name="locationAmenities"
+                    value={formData.locationAmenities}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Located in the Cherry Creek Neighborhood of Denver, CO near the Botanic Gardens and Cherry Creek Mall"
+                    rows={3}
+                    className="bg-[#1E2738] border-[#2A3652] text-white"
+                  />
+                  {errors.locationAmenities && (
+                    <p className="text-red-400 text-sm mt-1">
+                      {errors.locationAmenities}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="propertyDescription">
+                    Describe the Property
+                  </Label>
+                  <Textarea
+                    id="propertyDescription"
+                    name="propertyDescription"
+                    value={formData.propertyDescription}
+                    onChange={handleInputChange}
+                    placeholder="e.g. 4 Bedroom, 3 Bath brick mid-century ranch with a 2 car garage on a quiet cul de sac"
+                    rows={3}
+                    className="bg-[#1E2738] border-[#2A3652] text-white"
+                  />
+                  {errors.propertyDescription && (
+                    <p className="text-red-400 text-sm mt-1">
+                      {errors.propertyDescription}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="interiorFeatures">Interior Features</Label>
+                  <Textarea
+                    id="interiorFeatures"
+                    name="interiorFeatures"
+                    value={formData.interiorFeatures}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Updated Viking appliances, library with wall-to-wall custom bookcases, two fireplaces"
+                    rows={3}
+                    className="bg-[#1E2738] border-[#2A3652] text-white"
+                  />
+                  {errors.interiorFeatures && (
+                    <p className="text-red-400 text-sm mt-1">
+                      {errors.interiorFeatures}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="exteriorFeatures">Exterior Features</Label>
+                  <Textarea
+                    id="exteriorFeatures"
+                    name="exteriorFeatures"
+                    value={formData.exteriorFeatures}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Large private patio and lush landscaping, in-ground swimming pool with guest casita"
+                    rows={3}
+                    className="bg-[#1E2738] border-[#2A3652] text-white"
+                  />
+                  {errors.exteriorFeatures && (
+                    <p className="text-red-400 text-sm mt-1">
+                      {errors.exteriorFeatures}
+                    </p>
+                  )}
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 transition-colors   text-white"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Generating..." : "Create Brochure"}
+                </Button>
+              </form>
+            </div>
+
+            <div className="bg-[#131A2B] p-6 rounded-lg shadow-lg">
+              <h2 className="text-xl font-semibold mb-6">
+                Generated Property Pitch
+              </h2>
+              <div
+                className="bg-[#1E2738] p-6 rounded-lg overflow-y-auto max-h-[90rem]"
+                style={{
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#4B5563 #1F2937",
+                }}
+              >
+                {isLoading ? (
+                  <div className="flex flex-col items-center justify-center h-full space-y-4">
+                    <Brain className="w-16 h-16 text-[#2463EB] animate-pulse" />
+                    <p className="text-center text-gray-300 text-lg">
+                      {loadingSteps[loadingStep]}
+                    </p>
+                  </div>
+                ) : brochureContent ? (
+                  <div className="space-y-6 text-gray-200">
+                    {renderBrochureContent()}
+                  </div>
+                ) : (
+                  <p className="text-gray-400 text-center">
+                    {error ||
+                      "Your professional property brochure content will appear here after you generate the listing."}
+                  </p>
+                )}
+              </div>
+            </div>
+          </main>
+
+          <footer className="mt-12 text-center text-sm text-gray-400">
+            © 2024 PropertyPitch. All rights reserved.
+          </footer>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
