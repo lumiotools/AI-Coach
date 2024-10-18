@@ -19,9 +19,11 @@ export default function ClientFaqItem({ item, index }: FaqItemProps) {
 
   useEffect(() => {
     if (answerRef.current) {
-      answerRef.current.style.maxHeight = isOpen
-        ? `${answerRef.current.scrollHeight}px`
-        : "0";
+      if (isOpen) {
+        answerRef.current.style.height = `${answerRef.current.scrollHeight}px`;
+      } else {
+        answerRef.current.style.height = "0";
+      }
     }
   }, [isOpen]);
 
@@ -52,13 +54,21 @@ export default function ClientFaqItem({ item, index }: FaqItemProps) {
       </div>
       <div
         ref={answerRef}
-        className={`${styles.answerBox} ${isOpen ? styles.visible : ""}`}
+        className={`${styles.answerBox}`}
         style={{
-          maxHeight: "0",
+          height: "0",
+          overflow: "hidden",
+          transition: "height 0.3s ease-out, opacity 0.3s ease-out",
           opacity: isOpen ? 1 : 0,
         }}
       >
-        {item.answer}
+        <p
+          style={{
+            padding: "1rem 0",
+          }}
+        >
+          {item.answer}
+        </p>
       </div>
     </div>
   );
