@@ -148,7 +148,7 @@ async function generateImage(prompt: string): Promise<string> {
       model: "dall-e-3",
       prompt: prompt,
       n: 1,
-      size: "512x512",
+      size: "1024x1024",
     });
     const imageUrl = response.data[0].url;
     console.log("response", response);
