@@ -28,7 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import CustomerPortalButton from "./Billing/CustomerPortalButton";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function HeaderBar({
   isSidebarOpen,
@@ -39,6 +39,7 @@ export default function HeaderBar({
   setIsSidebarOpen: (isOpen: boolean) => void;
   signOut: (options: { redirectUrl: string }) => void;
 }) {
+  const rounter = useRouter();
   const { theme, toggleTheme } = useTheme();
   const { openUserProfile } = useClerk();
   const { isLoaded, isSignedIn, userId } = useAuth();
@@ -74,6 +75,10 @@ export default function HeaderBar({
     }
   };
 
+  const handleClickonBrochure = () => {
+    rounter.push("/brochure-pro");
+  };
+
   // const getBillingUrl = () => {
   //   if (user && user.publicMetadata && user.publicMetadata.paymentInfo) {
   //     const paymentInfo = user.publicMetadata.paymentInfo as {
@@ -88,7 +93,13 @@ export default function HeaderBar({
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-2 text-white bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] dark:bg-[#A5C3FF3D]">
+      <header
+        className={`fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-2 text-white bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] dark:bg-[#A5C3FF3D] ${
+          pathname === "/brochure-pro"
+            ? "bg-gradient-to-t dark:bg-transparent text-white"
+            : ""
+        } `}
+      >
         <div className="flex items-center">
           <Button
             variant="navbtn"
@@ -96,11 +107,17 @@ export default function HeaderBar({
             className="md:hidden mr-2"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
-            <Menu className="h-5 w-5 text-[#ffffff] dark:text-[#001c4f] hover:text-gray-400 dark:hover:text-blue-800" />
+            <Menu
+              className={` h-5 w-5 text-[#ffffff]  hover:text-gray-400  ${
+                pathname !== "/brochure-pro"
+                  ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
+                  : ""
+              } `}
+            />
           </Button>
 
-          <Link href="/home" className="hidden md:flex">
-            {theme === "light" ? (
+          <Link href="/home" className="hidden md:flex py-1">
+            {pathname === "/brochure-pro" ? (
               <Image
                 src={lightlogo}
                 alt="AgentCoach.ai Logo"
@@ -108,7 +125,7 @@ export default function HeaderBar({
               />
             ) : (
               <Image
-                src={darklogo}
+                src={theme === "light" ? lightlogo : darklogo}
                 alt="AgentCoach.ai Logo"
                 className={`h-10 md:h-10 w-[160px]`}
               />
@@ -116,7 +133,7 @@ export default function HeaderBar({
           </Link>
         </div>
         <div className="flex items-center md:space-x-4 space-x-0">
-          {pathname !== "/property-pitch" && (
+          {pathname !== "/brochure-pro" && (
             <Button
               onClick={toggleTheme}
               variant="navbtn"
@@ -145,18 +162,22 @@ export default function HeaderBar({
             className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
           >
             <BrainCircuit
-              className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
+              className={`size-5 md:h-5 md:w-5 text-[#ffffff]   ${styles.pad} ${
+                pathname !== "/brochure-pro" ? "dark:text-[#001c4f] " : ""
+              }`}
             />
           </Button>
 
           <Button
-            onClick={() => window.open("/property-pitch")}
+            onClick={handleClickonBrochure}
             variant="navbtn"
             size="nav"
             className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
           >
             <ListTodo
-              className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
+              className={`size-5 md:h-5 md:w-5 text-[#ffffff]   ${styles.pad} ${
+                pathname !== "/brochure-pro" ? "dark:text-[#001c4f] " : ""
+              }`}
             />
           </Button>
 
@@ -168,7 +189,11 @@ export default function HeaderBar({
                 className="font-100 text-white md:hidden border-gray-800 hover:text-gray-400 dark:hover:text-blue-800"
               >
                 <Settings
-                  className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f]  ${styles.pad}`}
+                  className={`size-5 md:h-5 md:w-5 text-[#ffffff]   ${
+                    styles.pad
+                  } ${
+                    pathname !== "/brochure-pro" ? "dark:text-[#001c4f] " : ""
+                  }`}
                 />
               </Button>
             </DropdownMenuTrigger>
@@ -195,7 +220,9 @@ export default function HeaderBar({
             className="font-100 text-white md:hidden hover:text-gray-400 dark:hover:text-blue-800"
           >
             <LogOut
-              className={`size-5 md:h-5 md:w-5 text-[#ffffff] dark:text-[#001c4f] ${styles.pad}`}
+              className={`size-5 md:h-5 md:w-5 text-[#ffffff]   ${styles.pad} ${
+                pathname !== "/brochure-pro" ? "dark:text-[#001c4f] " : ""
+              }`}
             />
           </Button>
 
@@ -203,18 +230,26 @@ export default function HeaderBar({
             onClick={() => handleOpenForm()}
             variant="gradient"
             size="sm"
-            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
+            className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
+              pathname !== "/brochure-pro"
+                ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
+                : ""
+            } `}
           >
             <BrainCircuit className="size-5" />
             <p>Personalize AI</p>
           </Button>
 
           <Link
-            href="/property-pitch"
-            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
+            href="/brochure-pro"
+            className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
+              pathname !== "/brochure-pro"
+                ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
+                : ""
+            } `}
           >
             <ListTodo className="size-5" />
-            <p>PropertyPitch</p>
+            <p>Brochure Pro</p>
           </Link>
 
           <DropdownMenu>
@@ -222,7 +257,11 @@ export default function HeaderBar({
               <Button
                 variant="gradient"
                 size="sm"
-                className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
+                className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
+                  pathname !== "/brochure-pro"
+                    ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
+                    : ""
+                } `}
               >
                 <Settings className="size-5" />
                 <p>Settings</p>
@@ -254,7 +293,11 @@ export default function HeaderBar({
             onClick={() => signOut({ redirectUrl: "/home" })}
             variant="gradient"
             size="sm"
-            className="hidden md:flex dark:text-[#001c4f] text-sm space-x-2 hover:text-gray-400 dark:hover:text-blue-800"
+            className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
+              pathname !== "/brochure-pro"
+                ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
+                : ""
+            } `}
           >
             <LogOut className="size-5" />
             <p>Logout</p>

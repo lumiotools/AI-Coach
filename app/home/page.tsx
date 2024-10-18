@@ -23,7 +23,7 @@ export default async function Home() {
 
   return (
     <div className="bg-black text-white">
-      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
+      <div className="flex flex-col items-center justify-center min-h-[700px] text-center px-4">
         <p className="text-base md:text-lg mb-6 text-gray-400">
           Introducing AI-Powered Coaching for Real Estate Agents
         </p>
@@ -57,7 +57,7 @@ export default async function Home() {
                 <Check className="text-black h-3 w-3 md:h-5 md:w-5" />
               </div>
               <p className="text-sm md:text-base">
-                Free general coach included
+                5 specialized AI coaches 
               </p>
             </div>
           </div>
