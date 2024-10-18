@@ -16,7 +16,6 @@ import HeaderBar from "@/components/header";
 import TopicIntroduction from "@/components/topicIntroduction";
 import SpeechToText from "@/components/speechToText";
 import IntroductionModal from "@/components/IntroductionModal";
-import TrialEndPopup from "./FreeTrialEnds/TrialEndsPopup";
 import TrialEndPopupWrapper from "./FreeTrialEnds/TrialEndsPopupWrapper";
 import { ImageIcon } from "lucide-react";
 import UnlockAccessDialog from "./UnlockAccessPopup";

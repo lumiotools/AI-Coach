@@ -36,25 +36,17 @@ export default function TrialEndPopupWrapper() {
   useEffect(() => {
     const checkAndUpdateTrialStatus = async () => {
       if (isLoaded && user) {
-        const metadata = user.publicMetadata as UserMetadata;
-        const planDetails = metadata.planDetails;
-
-        if (planDetails) {
-          setShowPopup(false);
-          return;
-        }
-
         const response = await fetch("/api/update-trial-status", {
           method: "POST",
         });
         const data = await response.json();
         if (data.success) {
-          setRemainingDays(data.trialStatus.remainingDays);
-          setShowPopup(
-            data.trialStatus.remainingDays == 0 &&
-              !planDetails &&
-              data.trialStatus.showPopup
-          );
+          if (!data.hasPaidPlan) {
+            setRemainingDays(data.trialStatus.remainingDays);
+            setShowPopup(data.trialStatus.showPopup);
+          } else {
+            setShowPopup(false);
+          }
         } else {
           console.error("Failed to update trial status:", data.error);
         }
@@ -64,16 +56,12 @@ export default function TrialEndPopupWrapper() {
     checkAndUpdateTrialStatus();
   }, [user, isLoaded, router]);
 
-  console.log("showPopup", showPopup);
-
   if (!showPopup || remainingDays === null) return null;
 
   return (
-    <>
-      <TrialEndPopup
-        onClose={() => setShowPopup(false)}
-        remainingDays={remainingDays}
-      />
-    </>
+    <TrialEndPopup
+      onClose={() => setShowPopup(false)}
+      remainingDays={remainingDays}
+    />
   );
 }

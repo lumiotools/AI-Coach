@@ -55,8 +55,8 @@ export default function TrialEndPopup({
           signOut={signOut}
         />
         <Card className="w-full max-w-md bg-custom-gradient backdrop-blur-20 rounded-lg shadow-lg relative text-white border-gray-700">
-          <CardHeader className="text-right">
-            {!isTrialEnded && (
+          {!isTrialEnded && (
+            <CardHeader className="text-right">
               <Button
                 variant="ghost"
                 size="icon"
@@ -66,8 +66,8 @@ export default function TrialEndPopup({
                 <X className="h-4 w-4" />
                 <span className="sr-only">Close</span>
               </Button>
-            )}
-          </CardHeader>
+            </CardHeader>
+          )}
           <CardContent className="text-center p-6">
             <div className="mb-4">
               <svg
@@ -83,26 +83,26 @@ export default function TrialEndPopup({
                 <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold mb-4">
+            <h2 className="text-xl font-bold mb-4">
               {isTrialEnded
-                ? "Your Free trial has ended"
+                ? "Unlock Full Access to AgentCoach.AI!"
                 : `Your Free trial ends in ${remainingDays} day${
                     remainingDays !== 1 ? "s" : ""
                   }`}
             </h2>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-400 mb-4 text-base">
               {isTrialEnded
-                ? "Your free trial period has come to an end. Upgrade now to continue enjoying our premium features."
+                ? "We hope you've enjoyed exploring AgentCoach.AI during your 7-day trial! Your free access has ended, but your journey doesn't have to stop here. Ready to take your business to the next level? Upgrade today and keep supercharging your real estate success!"
                 : "Upgrade now to continue enjoying our premium features."}
             </p>
           </CardContent>
           <CardFooter className="flex justify-center space-x-4 p-6">
             <Link href="/home/pricing">
               <Button variant="outline" className="rounded-md">
-                SEE PLANS
+                GET FULL ACCESS
               </Button>
             </Link>
-            <a
+            {/* <a
               href="https://cal.com/lumiopartners/30min?date=2024-10-07&month=2024-10"
               target="_blank"
               rel="noopener noreferrer"
@@ -110,7 +110,7 @@ export default function TrialEndPopup({
               <Button variant="outline" className="rounded-md">
                 BOOK A DEMO
               </Button>
-            </a>
+            </a> */}
           </CardFooter>
         </Card>
       </div>

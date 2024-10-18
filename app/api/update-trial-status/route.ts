@@ -23,17 +23,20 @@ export async function POST() {
       showPopup: remainingDays === 0,
     };
 
+    // Check if the user has a paid plan
+    const hasPaidPlan = user.publicMetadata.planDetails !== undefined;
+
     // Preserve existing publicMetadata
     const updatedPublicMetadata = {
       ...user.publicMetadata,
-      trialStatus,
+      trialStatus: hasPaidPlan ? undefined : trialStatus,
     };
 
     await clerkClient.users.updateUser(userId, {
       publicMetadata: updatedPublicMetadata,
     });
 
-    return NextResponse.json({ success: true, trialStatus });
+    return NextResponse.json({ success: true, trialStatus, hasPaidPlan });
   } catch (error) {
     console.error("Failed to update trial status:", error);
     return NextResponse.json(
