@@ -145,7 +145,7 @@ cloudinary.config({
 async function generateImage(prompt: string): Promise<string> {
   try {
     const response = await openai.images.generate({
-      model: "dall-e-2",
+      model: "dall-e-3",
       prompt: prompt,
       n: 1,
       size: "512x512",
