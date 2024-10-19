@@ -54,8 +54,8 @@ export default function BrochureProComponent() {
     propertyType: "",
     locationAmenities: "",
     propertyDescription: "",
-    interiorFeatures: "", // Sample data
-    exteriorFeatures: "", // Sample data
+    interiorFeatures: "", 
+    exteriorFeatures: ""
   });
   const [errors, setErrors] = useState({
     type: "",
@@ -69,7 +69,6 @@ export default function BrochureProComponent() {
   const [brochureContent, setBrochureContent] =
     useState<BrochureContent | null>(null);
   const [isEmailSending, setIsEmailSending] = useState(false);
-  const toastIdRef = useRef<string | number | null>(null);
 
   const { signOut } = useClerk();
 
@@ -110,9 +109,12 @@ export default function BrochureProComponent() {
 
     Object.entries(formData).forEach(([key, value]) => {
       if (!value.trim()) {
-        newErrors[key as keyof typeof errors] = `${key
-          .replace(/([A-Z])/g, " $1")
-          .trim()} is required`;
+        const formattedKey = key
+          .split(/(?=[A-Z])/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+
+        newErrors[key as keyof typeof errors] = `${formattedKey} is required`;
         isValid = false;
       }
     });
@@ -147,7 +149,7 @@ export default function BrochureProComponent() {
     console.log("data", data);
 
     try {
-      const response = await fetch(`/api/property-pitch`, {
+      const response = await fetch(`/api/brochure-pro`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -266,7 +268,7 @@ ${brochureContent.callToAction}
 
     try {
       const response = await fetch(
-        `/api/property-pitch`, // Updated to use the new route
+        `/api/brochure-pro`, // Updated to use the new route
         {
           method: "POST",
           headers: {
@@ -353,14 +355,14 @@ ${brochureContent.callToAction}
         <div className="flex justify-center space-x-4 mt-6">
           <Button
             onClick={handleCopyToClipboard}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-2 rounded-md dark:bg-black dark:text-white" 
           >
             <Copy className="w-4 h-4" />
             <span>Copy</span>
           </Button>
           <Button
             onClick={handleEmailContent}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-2 rounded-md dark:bg-black dark:text-white"
             disabled={isEmailSending}
           >
             <Mail className="w-4 h-4" />
@@ -368,7 +370,7 @@ ${brochureContent.callToAction}
           </Button>
           <Button
             onClick={handleRegenerate}
-            className="flex items-center space-x-2 transition-colors text-white"
+            className="flex items-center space-x-2 rounded-md dark:bg-black dark:text-white"
           >
             <RefreshCcw className="w-4 h-4" />
             <span>Regenerate</span>
@@ -388,13 +390,13 @@ ${brochureContent.callToAction}
       <div className="min-h-screen bg-[#0A0E17] text-white pb-8 pt-24">
         <div className="container mx-auto px-4">
           <header className="text-center mb-12">
-            <h1 className="text-2xl font-semibold mb-2">Property Pitch</h1>
+            <h1 className="text-2xl font-semibold mb-2">Brochure Pro</h1>
             <p className="text-lg text-gray-300 mb-2">
               Turn Key Features into Standout Descriptions
             </p>
             <div className="max-w-3xl mx-auto text-gray-400 text-base">
               <p className="mb-4 text-gray-400 text-base text-balance">
-                PropertyPitch transforms property details into well-crafted
+                Brochure Pro transforms property details into well-crafted
                 descriptions that help sell. With smart text generation tailored
                 for real estate listings, this tool provides a seamless way to
                 copy, download, or share impactful property copy with your
@@ -408,9 +410,7 @@ ${brochureContent.callToAction}
 
           <main className="grid md:grid-cols-2 gap-8">
             <div className="bg-[#131A2B] p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl font-semibold mb-6">
-                Create Property Pitch
-              </h2>
+              <h2 className="text-xl font-semibold mb-6">Create Brochure</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <Label htmlFor="type">Listing Type</Label>
@@ -567,7 +567,7 @@ ${brochureContent.callToAction}
 
             <div className="bg-[#131A2B] p-6 rounded-lg shadow-lg">
               <h2 className="text-xl font-semibold mb-6">
-                Generated Property Pitch
+                Generated Brochure
               </h2>
               <div
                 className="bg-[#1E2738] p-6 rounded-lg overflow-y-auto max-h-[90rem]"
@@ -598,7 +598,7 @@ ${brochureContent.callToAction}
           </main>
 
           <footer className="mt-12 text-center text-sm text-gray-400">
-            © 2024 PropertyPitch. All rights reserved.
+            © 2024 Brochure Pro. All rights reserved.
           </footer>
         </div>
       </div>
