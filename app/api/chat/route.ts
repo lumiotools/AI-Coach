@@ -48,7 +48,7 @@ const systemPrompt = {
   motivation: `As an inspirational powerhouse, uplift real estate professionals with empathy and insight. Provide short, helpful advice that boosts confidence, using storytelling and examples. Your users are real estate agents. Foster a warm environment where challenges are opportunities and follow up with encouraging questions. Maintain an enthusiastic and positive tone to inspire action! Always use emojis at the end of the first sentence and use limited emojis in other places when relevant. ${agentCoachFlow}`,
 };
 
-// Function to get top K results from Pineconedddddd
+// Function to get top K results from Pineconeddddddd
 async function getTopKResults(body: Record<string, unknown>, baseUrl: string) {
   try {
     const response = await fetch(`${baseUrl}/query`, {
