@@ -128,7 +128,7 @@ async function determineModel(question: string): Promise<string> {
       console.error("Response data:", error.response.data);
     }
 
-    // Default to 'llama-3.1-8b-instruct' in case of errordd
+    // Default to 'llama-3.1-8b-instruct' in case of errorddd
     return "llama-3.1-8b-instruct";
   }
 }
