@@ -26,7 +26,7 @@ const components: Components = {
     <p className="inline-block">{props.children}</p>
   ),
   table: (props: React.ComponentProps<"table">) => (
-    <table className="border-collapse border border-gray-300 " {...props} />
+    <table className="border-collapse border border-gray-300 my-2" {...props} />
   ),
   th: (props: React.ComponentProps<"th">) => (
     <th className="border border-gray-300 px-4 py-2" {...props} />
