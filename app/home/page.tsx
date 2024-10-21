@@ -50,7 +50,7 @@ export default async function Home() {
               <div className="p-[6px] rounded-full bg-blue-600">
                 <Check className="text-black h-3 w-3 md:h-5 md:w-5" />
               </div>
-              <p className="text-sm md:text-base">No Credit Card Required</p>
+              <p className="text-sm md:text-base">No Credit Card Required!</p>
             </div>
             <div className="flex flex-row gap-4 mt-5 md:mt-0 items-center">
               <div className="p-[6px] rounded-full bg-blue-600">

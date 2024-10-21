@@ -76,7 +76,7 @@ export default function HeaderBar({
   };
 
   const handleClickonBrochure = () => {
-    rounter.push("/brochure-pro");
+    rounter.push("/property-pitch");
   };
 
   // const getBillingUrl = () => {
@@ -95,7 +95,7 @@ export default function HeaderBar({
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-2 text-white bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] dark:bg-[#A5C3FF3D] ${
-          pathname === "/brochure-pro"
+          pathname === "/property-pitch"
             ? "bg-gradient-to-t dark:bg-transparent text-white"
             : ""
         } `}
@@ -109,7 +109,7 @@ export default function HeaderBar({
           >
             <Menu
               className={` h-5 w-5 text-[#ffffff]  hover:text-gray-400  ${
-                pathname !== "/brochure-pro"
+                pathname !== "/property-pitch"
                   ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
                   : ""
               } `}
@@ -117,7 +117,7 @@ export default function HeaderBar({
           </Button>
 
           <Link href="/home" className="hidden md:flex py-1">
-            {pathname === "/brochure-pro" ? (
+            {pathname === "/property-pitch" ? (
               <Image
                 src={lightlogo}
                 alt="AgentCoach.ai Logo"
@@ -133,7 +133,7 @@ export default function HeaderBar({
           </Link>
         </div>
         <div className="flex items-center md:space-x-4 space-x-0">
-          {pathname !== "/brochure-pro" && (
+          {pathname !== "/property-pitch" && (
             <Button
               onClick={toggleTheme}
               variant="navbtn"
@@ -163,7 +163,7 @@ export default function HeaderBar({
           >
             <BrainCircuit
               className={`size-5 md:h-5 md:w-5 text-[#ffffff]   ${styles.pad} ${
-                pathname !== "/brochure-pro" ? "dark:text-[#001c4f] " : ""
+                pathname !== "/property-pitch" ? "dark:text-[#001c4f] " : ""
               }`}
             />
           </Button>
@@ -176,7 +176,7 @@ export default function HeaderBar({
           >
             <ListTodo
               className={`size-5 md:h-5 md:w-5 text-[#ffffff]   ${styles.pad} ${
-                pathname !== "/brochure-pro" ? "dark:text-[#001c4f] " : ""
+                pathname !== "/property-pitch" ? "dark:text-[#001c4f] " : ""
               }`}
             />
           </Button>
@@ -192,7 +192,7 @@ export default function HeaderBar({
                   className={`size-5 md:h-5 md:w-5 text-[#ffffff]   ${
                     styles.pad
                   } ${
-                    pathname !== "/brochure-pro" ? "dark:text-[#001c4f] " : ""
+                    pathname !== "/property-pitch" ? "dark:text-[#001c4f] " : ""
                   }`}
                 />
               </Button>
@@ -221,7 +221,7 @@ export default function HeaderBar({
           >
             <LogOut
               className={`size-5 md:h-5 md:w-5 text-[#ffffff]   ${styles.pad} ${
-                pathname !== "/brochure-pro" ? "dark:text-[#001c4f] " : ""
+                pathname !== "/property-pitch" ? "dark:text-[#001c4f] " : ""
               }`}
             />
           </Button>
@@ -231,7 +231,7 @@ export default function HeaderBar({
             variant="gradient"
             size="sm"
             className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
-              pathname !== "/brochure-pro"
+              pathname !== "/property-pitch"
                 ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
                 : ""
             } `}
@@ -241,15 +241,15 @@ export default function HeaderBar({
           </Button>
 
           <Link
-            href="/brochure-pro"
+            href="/property-pitch"
             className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
-              pathname !== "/brochure-pro"
+              pathname !== "/property-pitch"
                 ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
                 : ""
             } `}
           >
             <ListTodo className="size-5" />
-            <p>Brochure Pro</p>
+            <p>Property Pitch</p>
           </Link>
 
           <DropdownMenu>
@@ -258,7 +258,7 @@ export default function HeaderBar({
                 variant="gradient"
                 size="sm"
                 className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
-                  pathname !== "/brochure-pro"
+                  pathname !== "/property-pitch"
                     ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
                     : ""
                 } `}
@@ -294,7 +294,7 @@ export default function HeaderBar({
             variant="gradient"
             size="sm"
             className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
-              pathname !== "/brochure-pro"
+              pathname !== "/property-pitch"
                 ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
                 : ""
             } `}

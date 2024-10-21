@@ -54,8 +54,8 @@ export default function BrochureProComponent() {
     propertyType: "",
     locationAmenities: "",
     propertyDescription: "",
-    interiorFeatures: "", 
-    exteriorFeatures: ""
+    interiorFeatures: "",
+    exteriorFeatures: "",
   });
   const [errors, setErrors] = useState({
     type: "",
@@ -355,7 +355,7 @@ ${brochureContent.callToAction}
         <div className="flex justify-center space-x-4 mt-6">
           <Button
             onClick={handleCopyToClipboard}
-            className="flex items-center space-x-2 rounded-md dark:bg-black dark:text-white" 
+            className="flex items-center space-x-2 rounded-md dark:bg-black dark:text-white"
           >
             <Copy className="w-4 h-4" />
             <span>Copy</span>
@@ -390,27 +390,29 @@ ${brochureContent.callToAction}
       <div className="min-h-screen bg-[#0A0E17] text-white pb-8 pt-24">
         <div className="container mx-auto px-4">
           <header className="text-center mb-12">
-            <h1 className="text-2xl font-semibold mb-2">Brochure Pro</h1>
+            <h1 className="text-2xl font-semibold mb-2">Property Pitch</h1>
             <p className="text-lg text-gray-300 mb-2">
               Turn Key Features into Standout Descriptions
             </p>
             <div className="max-w-3xl mx-auto text-gray-400 text-base">
               <p className="mb-4 text-gray-400 text-base text-balance">
-                Brochure Pro transforms property details into well-crafted
+                PropertyPitch transforms property details into well-crafted
                 descriptions that help sell. With smart text generation tailored
                 for real estate listings, this tool provides a seamless way to
-                copy, download, or share impactful property copy with your
-                audience. Whether you&apos;re highlighting key features or
-                creating an entire listing, PropertyPitch ensures your content
-                is polished, professional, and optimized to attract potential
-                buyers.
+                copy, download, or share impactful property copy on your social
+                platforms and with your audience. Whether you're highlighting
+                key features or creating an entire listing, PropertyPitch
+                ensures your content is polished, professional, and optimized to
+                attract potential buyers.
               </p>
             </div>
           </header>
 
           <main className="grid md:grid-cols-2 gap-8">
             <div className="bg-[#131A2B] p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl font-semibold mb-6">Create Brochure</h2>
+              <h2 className="text-xl font-semibold mb-6">
+                Create PropertyPitch
+              </h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <Label htmlFor="type">Listing Type</Label>
@@ -560,14 +562,14 @@ ${brochureContent.callToAction}
                   className="w-full bg-blue-600 hover:bg-blue-700 transition-colors   text-white"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Generating..." : "Create Brochure"}
+                  {isLoading ? "Generating..." : "Create PropertyPitch"}
                 </Button>
               </form>
             </div>
 
             <div className="bg-[#131A2B] p-6 rounded-lg shadow-lg">
               <h2 className="text-xl font-semibold mb-6">
-                Generated Brochure
+                Generated PropertyPitch
               </h2>
               <div
                 className="bg-[#1E2738] p-6 rounded-lg overflow-y-auto max-h-[90rem]"
