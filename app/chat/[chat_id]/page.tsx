@@ -25,9 +25,7 @@ import {
   ImageIcon,
   Loader2,
 } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
+import MarkdownRenderer from "@/components/ReactMarkDown";
 import { useAuth, SignedIn, useClerk } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
@@ -811,7 +809,7 @@ export default function Page({ params: { chat_id } }: Props) {
                           getAIAvatar(currentExpert)
                         )}
                       </Avatar>
-                      <div className="space-y-2 max-w-[70%] md:max-w-[80%]">
+                      <div className="space-y-2 max-w-[70vw] md:max-w-[68vw]">
                         <div
                           className={`p-3 rounded-lg ${
                             message.role === "user"
@@ -828,43 +826,7 @@ export default function Page({ params: { chat_id } }: Props) {
                               />
                             </div>
                           ) : (
-                            <ReactMarkdown
-                              components={{
-                                p: ({ node, ...props }) => (
-                                  <p className="mb-2" {...props} />
-                                ),
-                                ul: ({ node, ...props }) => (
-                                  <ul
-                                    className="list-disc pl-4 mb-2"
-                                    {...props}
-                                  />
-                                ),
-                                ol: ({ node, ...props }) => (
-                                  <ol
-                                    className="list-decimal pl-4 mb-2"
-                                    {...props}
-                                  />
-                                ),
-                                li: ({ node, ...props }) =>
-                                  node && <li className="mb-1" {...props} />,
-                                strong: ({ node, ...props }) =>
-                                  node && (
-                                    <strong className="font-bold" {...props} />
-                                  ),
-                                table: ({ node, ...props }) => (
-                                  <div
-                                    className="my-4 overflow-x-auto"
-                                    dangerouslySetInnerHTML={{
-                                      __html: props.children?.toString() || "",
-                                    }}
-                                  />
-                                ),
-                              }}
-                              remarkPlugins={[remarkGfm]}
-                              rehypePlugins={[rehypeRaw]}
-                            >
-                              {parseCustomTags(formatTables(message.content))}
-                            </ReactMarkdown>
+                            <MarkdownRenderer markdownText={message.content} />
                           )}
                         </div>
 
