@@ -12,11 +12,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Brain, Copy, Mail, RefreshCcw } from "lucide-react";
+import { Brain, Copy, Mail, RefreshCcw, ChevronLeft } from "lucide-react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HeaderBar from "@/components/header";
 import { useClerk } from "@clerk/nextjs";
+import Link from "next/link";
 
 interface Description {
   title: string;
@@ -388,6 +389,12 @@ ${brochureContent.callToAction}
         signOut={signOut}
       />
       <div className="min-h-screen bg-[#0A0E17] text-white pb-8 pt-24">
+        <Link
+          href="/"
+          className="text-sm ml-10 text-[#2F76FF] flex gap-2 justify-start items-center"
+        >
+          <ChevronLeft size={15} /> Back
+        </Link>
         <div className="container mx-auto px-4">
           <header className="text-center mb-12">
             <h1 className="text-2xl font-semibold mb-2">Property Pitch</h1>
