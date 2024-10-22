@@ -10,13 +10,27 @@ async function getLandingPageData() {
     { cache: "no-store" }
   );
   if (!response.ok) {
-    throw new Error("Failed to fetch landing page data");
+    // Return some default data if the API is down
+    return {
+      title: "Accelerate Your Real Estate Career With Cutting-Edge AI Driven ",
+      subtitle: "Coaching Tools",
+      rotatingTexts: [
+        "Real Estate",
+        "Marketing",
+        "Negotiation",
+        "Motivation",
+        "Sale",
+      ],
+      preTitle: "Introducing Ai-Powered Coaching for Real Estate Agent",
+    };
   }
+  console.log("Home data ok");
   return response.json();
 }
 
 export default async function Home() {
-  const { title, subtitle, rotatingTexts } = await getLandingPageData();
+  const { title, subtitle, rotatingTexts, preTitle } =
+    await getLandingPageData();
 
   const title1 = title.split("With")[0];
   const title2 = title.split("Career")[1];
