@@ -6,17 +6,31 @@ import PromptCards from "@/components/PromptCards";
 
 async function getLandingPageData() {
   const response = await fetch(
-    "https://lumioadmin.ritesh.live/get-landing-page",
+    `${process.env.NEXT_PUBLIC_ADMIN_DASHBOARD_API}/get-landing-page`,
     { cache: "no-store" }
   );
   if (!response.ok) {
-    throw new Error("Failed to fetch landing page data");
+    // Return some default data if the API is down
+    return {
+      title: "Accelerate Your Real Estate Career With Cutting-Edge AI Driven ",
+      subtitle: "Coaching Tools",
+      rotatingTexts: [
+        "Real Estate",
+        "Marketing",
+        "Negotiation",
+        "Motivation",
+        "Sale",
+      ],
+      preTitle: "Introducing Ai-Powered Coaching for Real Estate Agent",
+    };
   }
+  console.log("Home data ok");
   return response.json();
 }
 
 export default async function Home() {
-  const { title, subtitle, rotatingTexts } = await getLandingPageData();
+  const { title, subtitle, rotatingTexts, preTitle } =
+    await getLandingPageData();
 
   const title1 = title.split("With")[0];
   const title2 = title.split("Career")[1];
@@ -24,9 +38,7 @@ export default async function Home() {
   return (
     <div className="bg-black text-white">
       <div className="flex flex-col items-center justify-center min-h-[700px] text-center px-4">
-        <p className="text-base md:text-lg mb-6 text-gray-400">
-          Introducing AI-Powered Coaching for Real Estate Agents
-        </p>
+        <p className="text-base md:text-lg mb-6 text-gray-400">{preTitle}</p>
         <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white">
           {title1}
           <br className="hidden md:block" />

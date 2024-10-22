@@ -86,8 +86,6 @@ export default function WaveformRecordingModal({
       .padStart(2, "0")}`;
   };
 
-  console.log("isProcessing", isProcessing);
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="w-80 h-48 bg-gradient-to-br from-[#000362] to-[#07323F] rounded-lg flex flex-col items-center justify-center shadow-lg p-4">

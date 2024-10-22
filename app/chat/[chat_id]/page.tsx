@@ -278,6 +278,8 @@ export default function Page({ params: { chat_id } }: Props) {
     if (isSending) return;
     setIsSending(true);
 
+    console.log(message);
+
     if (message.trim().toLowerCase().startsWith("picture")) {
       setIsLoadingImage(true);
     }
@@ -677,6 +679,7 @@ export default function Page({ params: { chat_id } }: Props) {
 
   const handleTranscription = (transcribedText: string) => {
     setInputValue((prev) => `${prev} ${transcribedText}`);
+    setIsSending(false);
   };
 
   const handleActionClick = (action: string) => {
