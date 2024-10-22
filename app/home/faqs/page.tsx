@@ -10,7 +10,7 @@ interface FaqItem {
 
 async function getFaqs(): Promise<FaqItem[]> {
   const response = await fetch(
-    "https://lumioadmin.ritesh.live/faqs",
+    `${process.env.NEXT_PUBLIC_ADMIN_DASHBOARD_API}/faqs`,
     { next: { revalidate: 3600 } }
   );
   if (!response.ok) {

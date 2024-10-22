@@ -6,7 +6,7 @@ import PromptCards from "@/components/PromptCards";
 
 async function getLandingPageData() {
   const response = await fetch(
-    "https://lumioadmin.ritesh.live/get-landing-page",
+    `${process.env.NEXT_PUBLIC_ADMIN_DASHBOARD_API}/get-landing-page`,
     { cache: "no-store" }
   );
   if (!response.ok) {

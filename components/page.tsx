@@ -61,10 +61,6 @@ export function Page() {
       action: () => setSelectedCommand("picture"),
     },
   ]);
-  console.log("commandOptions", commandOptions);
-  console.log("showCommandMenu", showCommandMenu);
-  console.log("inputValue", inputValue);
-  console.log("selectedCommand", selectedCommand);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
