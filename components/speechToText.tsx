@@ -122,8 +122,6 @@ const SpeechToText: React.FC<SpeechToTextProps> = ({ onTranscribe }) => {
     }
   };
 
-  console.log("isProcessing", isProcessing);
-
   return (
     <>
       {showModal && (

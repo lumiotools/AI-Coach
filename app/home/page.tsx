@@ -38,9 +38,7 @@ export default async function Home() {
   return (
     <div className="bg-black text-white">
       <div className="flex flex-col items-center justify-center min-h-[700px] text-center px-4">
-        <p className="text-base md:text-lg mb-6 text-gray-400">
-          Introducing AI-Powered Coaching for Real Estate Agents
-        </p>
+        <p className="text-base md:text-lg mb-6 text-gray-400">{preTitle}</p>
         <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold mb-8 text-white">
           {title1}
           <br className="hidden md:block" />

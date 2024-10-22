@@ -25,6 +25,7 @@ export default function CustomerPortalButton() {
         }
       );
 
+      console.log("response", response);
       if (!response.ok) {
         throw new Error("Failed to create portal session");
       }
