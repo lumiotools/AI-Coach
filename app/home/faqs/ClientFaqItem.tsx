@@ -10,10 +10,9 @@ interface FaqItemProps {
     question: string;
     answer: string;
   };
-  index: number;
 }
 
-export default function ClientFaqItem({ item, index }: FaqItemProps) {
+export default function ClientFaqItem({ item }: FaqItemProps) {
   const [isOpen, setIsOpen] = useState(false);
   const answerRef = useRef<HTMLDivElement>(null);
 

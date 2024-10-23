@@ -5,35 +5,47 @@ import RotatingText from "./RotatingText";
 import PromptCards from "@/components/PromptCards";
 
 async function getLandingPageData() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_ADMIN_DASHBOARD_API}/get-landing-page`,
-    { cache: "no-store" }
-  );
-  if (!response.ok) {
-    // Return some default data if the API is down
-    return {
-      title: "Accelerate Your Real Estate Career With Cutting-Edge AI Driven ",
-      subtitle: "Coaching Tools",
-      rotatingTexts: [
-        "Real Estate",
-        "Marketing",
-        "Negotiation",
-        "Motivation",
-        "Sale",
-      ],
-      preTitle: "Introducing Ai-Powered Coaching for Real Estate Agent",
-    };
+  const defaultData = {
+    title: "Accelerate Your Real Estate Career With Cutting-Edge AI Driven ",
+    subtitle: "Coaching Tools",
+    rotatingTexts: [
+      "Real Estate",
+      "Marketing",
+      "Negotiation",
+      "Motivation",
+      "Sale",
+    ],
+    preTitle: "Introducing AI-Powered Coaching for Real Estate Agents",
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_ADMIN_DASHBOARD_API}/get-landing-page`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Home data ok");
+    return { ...defaultData, ...data };
+  } catch (error) {
+    console.error("Error fetching landing page data:", error);
+    return defaultData;
   }
-  console.log("Home data ok");
-  return response.json();
 }
 
 export default async function Home() {
   const { title, subtitle, rotatingTexts, preTitle } =
     await getLandingPageData();
 
-  const title1 = title.split("With")[0];
-  const title2 = title.split("Career")[1];
+  const title1 =
+    title.split("With")[0] || "Accelerate Your Real Estate Career ";
+  const title2 = title.split("Career")[1] || "With Cutting-Edge AI Driven";
 
   return (
     <div className="bg-black text-white">
@@ -45,8 +57,8 @@ export default async function Home() {
           {title2}
           <br className="hidden md:block" />
           <RotatingText
-            texts={rotatingTexts.filter((text: any) => text)}
-            subtitle={subtitle}
+            texts={rotatingTexts.filter((text: string) => text) || ["Coaching"]}
+            subtitle={subtitle || "Tools"}
           />
         </h1>
 
