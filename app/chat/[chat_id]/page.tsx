@@ -45,6 +45,7 @@ import useTheme from "@/app/hooks/useTheme";
 import TrialEndPopupWrapper from "@/components/FreeTrialEnds/TrialEndsPopupWrapper";
 import PercentageLoader from "@/components/PercentageLoader";
 import UnlockAccessDialog from "@/components/UnlockAccessPopup";
+import { set } from "date-fns";
 
 type Message = {
   role: "user" | "assistant" | "system";
@@ -217,6 +218,8 @@ export default function Page({ params: { chat_id } }: Props) {
 
   const [showUnlockPopup, setShowUnlockPopup] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
+  let retryCount = 0;
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -279,7 +282,6 @@ export default function Page({ params: { chat_id } }: Props) {
   const handleSendMessage = async (message: string) => {
     if (isSending) return;
     setIsSending(true);
-
     console.log(message);
 
     if (message.trim().toLowerCase().startsWith("picture")) {
@@ -317,11 +319,13 @@ export default function Page({ params: { chat_id } }: Props) {
         setIsSending(false);
         return;
       }
-
-      setMessages((prev) => [...prev, userMessage]);
+      if (retryCount === 0) {
+        setMessages((prev) => [...prev, userMessage]);
+      }
+      setIsThinking(true);
 
       try {
-        const response = await fetch("/api/cht", {
+        const response = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -332,8 +336,17 @@ export default function Page({ params: { chat_id } }: Props) {
           }),
         });
 
-        if (!response.ok) {
+        if (!response.ok && retryCount >= 5) {
+          console.log("Errrrrrorrrr");
+          setIsThinking(false);
           throw new Error(`HTTP error! status: ${response.status}`);
+        } else if (!response.ok && retryCount < 5) {
+          ++retryCount;
+          console.log("Retrying", retryCount);
+          handleSendMessage(message);
+          return;
+        } else {
+          setIsThinking(false);
         }
 
         const reader = response.body!.getReader();
@@ -933,6 +946,7 @@ export default function Page({ params: { chat_id } }: Props) {
                           </div>
                         )}
                       </div>
+
                       {message.role === "assistant" &&
                         message.content ===
                           "Sorry, I encountered an error. Please try again." && (
@@ -968,6 +982,16 @@ export default function Page({ params: { chat_id } }: Props) {
                     </div>
                   )}
 
+                {isThinking && (
+                  <div className="flex gap-2">
+                    <Avatar className="w-8 h-8 flex-shrink-0">
+                      {getAIAvatar(currentExpert)}
+                    </Avatar>
+                    <div className="bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black p-3 rounded-lg">
+                      Thinking...
+                    </div>
+                  </div>
+                )}
                 <div ref={chatEndRef} />
               </div>
             </ScrollArea>
