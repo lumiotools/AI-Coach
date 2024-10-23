@@ -250,8 +250,6 @@ export async function POST(req: NextRequest) {
       context += "No relevant context found.";
     }
 
-    console.log("Personalized AI Data:", personalizedAIData);
-
     // Add personalization details to the context
     if (personalizedAIData) {
       context +=
@@ -259,7 +257,6 @@ export async function POST(req: NextRequest) {
       for (const [key, value] of Object.entries(personalizedAIData)) {
         context += `${key}: ${value}\n`;
       }
-      console.log("Context with Personalization:", context);
     }
 
     // Use the 'expert' parameter to select the appropriate promptgg

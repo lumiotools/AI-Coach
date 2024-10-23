@@ -440,6 +440,7 @@ export default function Page({ params: { chat_id } }: Props) {
         setIsLoadingImage(false);
         setSelectedCommand(null);
         setIsFirstMessage(false);
+        setIsThinking(false);
       }
     }
   };
