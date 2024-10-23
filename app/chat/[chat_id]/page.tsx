@@ -322,7 +322,9 @@ export default function Page({ params: { chat_id } }: Props) {
       if (retryCount === 0) {
         setMessages((prev) => [...prev, userMessage]);
       }
-      setIsThinking(true);
+      if (!message.trim().toLowerCase().startsWith("picture")) {
+        setIsThinking(true);
+      }
 
       try {
         const response = await fetch("/api/chat", {
