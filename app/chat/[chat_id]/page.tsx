@@ -24,6 +24,7 @@ import {
   Share,
   ImageIcon,
   Loader2,
+  RefreshCw,
 } from "lucide-react";
 import MarkdownRenderer from "@/components/ReactMarkDown";
 import { useAuth, SignedIn, useClerk } from "@clerk/nextjs";
@@ -215,6 +216,7 @@ export default function Page({ params: { chat_id } }: Props) {
   const [imageReady, setImageReady] = useState(false);
 
   const [showUnlockPopup, setShowUnlockPopup] = useState(false);
+  const [isRegenerating, setIsRegenerating] = useState(false);
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -319,7 +321,7 @@ export default function Page({ params: { chat_id } }: Props) {
       setMessages((prev) => [...prev, userMessage]);
 
       try {
-        const response = await fetch("/api/chat", {
+        const response = await fetch("/api/cht", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -424,6 +426,33 @@ export default function Page({ params: { chat_id } }: Props) {
         setSelectedCommand(null);
         setIsFirstMessage(false);
       }
+    }
+  };
+
+  const handleRegenerateResponse = async () => {
+    if (isRegenerating) return;
+    setIsRegenerating(true);
+
+    const lastUserMessageIndex = messages.findLastIndex(
+      (message) => message.role === "user"
+    );
+    if (lastUserMessageIndex === -1) {
+      setIsRegenerating(false);
+      return;
+    }
+
+    const lastUserMessage = messages[lastUserMessageIndex];
+    const messagesToKeep = messages.slice(0, lastUserMessageIndex + 1);
+
+    setMessages(messagesToKeep);
+
+    try {
+      await handleSendMessage(lastUserMessage.content);
+    } catch (error) {
+      console.error("Error regenerating response:", error);
+      toast.error("Failed to regenerate response. Please try again.");
+    } finally {
+      setIsRegenerating(false);
     }
   };
 
@@ -904,6 +933,22 @@ export default function Page({ params: { chat_id } }: Props) {
                           </div>
                         )}
                       </div>
+                      {message.role === "assistant" &&
+                        message.content ===
+                          "Sorry, I encountered an error. Please try again." && (
+                          <Button
+                            onClick={handleRegenerateResponse}
+                            disabled={isRegenerating}
+                            className="mt-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+                          >
+                            {isRegenerating ? (
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                              <RefreshCw className="mr-2 h-4 w-4" />
+                            )}
+                            Regenerate Response
+                          </Button>
+                        )}
                     </div>
                   ))
                 )}
