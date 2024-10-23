@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import React from "react";
 import styles from "./faq.module.css";
 import ClientFaqItem from "./ClientFaqItem";

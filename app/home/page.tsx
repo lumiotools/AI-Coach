@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Check } from "lucide-react";
 import TestimonialSlider from "@/components/LandingPage/TestimonialSlider";
 import Link from "next/link";

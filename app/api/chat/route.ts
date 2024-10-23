@@ -254,10 +254,12 @@ export async function POST(req: NextRequest) {
 
     // Add personalization details to the context
     if (personalizedAIData) {
-      context += "\n\nUser Personalization Details:\n";
+      context +=
+        "\n\nProvide responses tailored to the user based on the personalization data.:\n";
       for (const [key, value] of Object.entries(personalizedAIData)) {
         context += `${key}: ${value}\n`;
       }
+      console.log("Context with Personalization:", context);
     }
 
     // Use the 'expert' parameter to select the appropriate promptgg
