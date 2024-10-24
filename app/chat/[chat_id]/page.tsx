@@ -194,6 +194,7 @@ export default function Page({ params: { chat_id } }: Props) {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const searchParam = useSearchParams();
   const { user } = useUser();
+  const [isFetchingUserInrest,setIsFetchingUserInrest] =useState(true);
   const [placeholder, setPlaceholder] = useState(
     `Ask me any question about ${currentExpert.toLowerCase()}! Just type or use the microphone.`
   );
@@ -224,11 +225,15 @@ export default function Page({ params: { chat_id } }: Props) {
  
 
   useEffect(()=>{
+    let id;
     if(personalizedData && inputValue){
       handleSendMessage(inputValue);
       setInputValue("");
+    }else if(isFetchingUserInrest==false && inputValue){
+      handleSendMessage(inputValue);
+      setInputValue("");
     }
-  },[personalizedData])
+  },[personalizedData,isFetchingUserInrest])
 
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
@@ -273,6 +278,7 @@ export default function Page({ params: { chat_id } }: Props) {
   useEffect(() => {
     const fetchPersonalizedData = async () => {
       if (user) {
+        setIsFetchingUserInrest(true);
         const { data, error } = await supabase
           .from("user")
           .select("personalized_data")
@@ -285,6 +291,7 @@ export default function Page({ params: { chat_id } }: Props) {
           setPersonalizedData(data.personalized_data);
         }
       }
+      setIsFetchingUserInrest(false);
     };
 
     fetchPersonalizedData();
