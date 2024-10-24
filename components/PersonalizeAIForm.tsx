@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "@clerk/nextjs";
+import { json } from "stream/consumers";
 
 interface PersonalizedAIFormProps {
   isOpen: boolean;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -221,11 +221,22 @@ export default function Page({ params: { chat_id } }: Props) {
   const [isThinking, setIsThinking] = useState(false);
   let retryCount = 0;
 
+ 
+
+  useEffect(()=>{
+    if(personalizedData && inputValue){
+      handleSendMessage(inputValue);
+      setInputValue("");
+    }
+  },[personalizedData])
+
   useEffect(() => {
     if (Boolean(searchParam.get("new"))) {
       if (newRouteRef.current) return;
       newRouteRef.current = "true";
-      handleSendMessage(searchParam.get("ques") || "");
+      console.log("demo data 1-->",personalizedData);
+      setInputValue(searchParam.get("ques") || "");
+      // handleSendMessage(searchParam.get("ques") || "");
       router.replace(`/chat/${chat_id}`, undefined);
       return;
     }
