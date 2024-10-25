@@ -738,6 +738,8 @@ export default function Page({ params: { chat_id } }: Props) {
     setCurrentExpert(expert);
     setMessages([]);
     setIsSidebarOpen(false);
+
+    router.push("/?expertType=" + expert);
   };
 
   const handleTranscription = (transcribedText: string) => {

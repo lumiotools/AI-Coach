@@ -61,7 +61,7 @@ const tiers: Tier[] = [
     name: "Individual",
     monthlyPrice: {
       original: "$49.95",
-      discounted: "$29.95",
+      discounted: "$9.95",
       strikethrough: true,
     },
     annualPrice: {
@@ -83,7 +83,7 @@ const tiers: Tier[] = [
     name: "Team",
     monthlyPrice: {
       original: "$99.95",
-      discounted: "$49.95",
+      discounted: "$29.95",
       strikethrough: true,
     },
     annualPrice: {

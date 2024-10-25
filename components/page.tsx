@@ -160,6 +160,8 @@ export function Page() {
   const handleExpertClick = (expert: ExpertType) => {
     setCurrentExpert(expert);
     setIsSidebarOpen(false);
+
+    router.replace("/?expertType=" + expert);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
