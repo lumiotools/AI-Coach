@@ -900,7 +900,8 @@ export default function Page({ params: { chat_id } }: Props) {
                               : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
                           }`}
                         >
-                          {message.content.includes("https:") ? (
+                          {message.content.includes("https:") &&
+                          message.role === "assistant" ? (
                             <div className="w-[200px] md:w-[340px] h-[200px] md:h-[340px]">
                               <img
                                 src={message.content}
