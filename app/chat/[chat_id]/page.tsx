@@ -265,8 +265,22 @@ export default function Page({ params: { chat_id } }: Props) {
       }
     };
 
+    const fetchChatExpertType = async () => {
+      const { data: chats, error } = await supabase
+        .from("chat")
+        .select()
+        .eq("chat_id", chat_id);
+
+      if (!chats) return;
+
+      if (chats[0]) {
+        setCurrentExpert(chats[0].coach_type);
+      }
+    };
+
     if (userId && chat_id) {
       fetchMessages();
+      fetchChatExpertType();
     }
   }, []);
 
