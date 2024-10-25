@@ -194,7 +194,7 @@ export default function Page({ params: { chat_id } }: Props) {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const searchParam = useSearchParams();
   const { user } = useUser();
-  const [isFetchingUserInrest,setIsFetchingUserInrest] =useState(true);
+  const [isFetchingUserInrest, setIsFetchingUserInrest] = useState(true);
   const [placeholder, setPlaceholder] = useState(
     `Ask me any question about ${currentExpert.toLowerCase()}! Just type or use the microphone.`
   );
@@ -222,24 +222,39 @@ export default function Page({ params: { chat_id } }: Props) {
   const [isThinking, setIsThinking] = useState(false);
   let retryCount = 0;
 
- 
-
-  useEffect(()=>{
+  useEffect(() => {
     let id;
-    if(personalizedData && inputValue){
+    if (personalizedData && inputValue) {
       handleSendMessage(inputValue);
       setInputValue("");
-    }else if(isFetchingUserInrest==false && inputValue){
+    } else if (isFetchingUserInrest == false && inputValue) {
       handleSendMessage(inputValue);
       setInputValue("");
     }
-  },[personalizedData,isFetchingUserInrest])
+  }, [personalizedData, isFetchingUserInrest]);
 
   useEffect(() => {
+    const fetchChatExpertType = async () => {
+      const { data: chats, error } = await supabase
+        .from("chat")
+        .select()
+        .eq("chat_id", chat_id);
+
+      if (!chats) return;
+
+      if (chats[0]) {
+        setCurrentExpert(chats[0].coach_type);
+      }
+    };
+
+    if (userId && chat_id) {
+      fetchChatExpertType();
+    }
+
     if (Boolean(searchParam.get("new"))) {
       if (newRouteRef.current) return;
       newRouteRef.current = "true";
-      console.log("demo data 1-->",personalizedData);
+      console.log("demo data 1-->", personalizedData);
       setInputValue(searchParam.get("ques") || "");
       // handleSendMessage(searchParam.get("ques") || "");
       router.replace(`/chat/${chat_id}`, undefined);
@@ -265,22 +280,8 @@ export default function Page({ params: { chat_id } }: Props) {
       }
     };
 
-    const fetchChatExpertType = async () => {
-      const { data: chats, error } = await supabase
-        .from("chat")
-        .select()
-        .eq("chat_id", chat_id);
-
-      if (!chats) return;
-
-      if (chats[0]) {
-        setCurrentExpert(chats[0].coach_type);
-      }
-    };
-
     if (userId && chat_id) {
       fetchMessages();
-      fetchChatExpertType();
     }
   }, []);
 
