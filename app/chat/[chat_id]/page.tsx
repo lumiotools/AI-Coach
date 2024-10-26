@@ -25,6 +25,7 @@ import {
   ImageIcon,
   Loader2,
   RefreshCw,
+  ImagePlus,
 } from "lucide-react";
 import MarkdownRenderer from "@/components/ReactMarkDown";
 import { useAuth, SignedIn, useClerk } from "@clerk/nextjs";
@@ -409,7 +410,7 @@ export default function Page({ params: { chat_id } }: Props) {
           done = doneReading;
           const chunkValue = decoder.decode(value, { stream: true }); // Ensure streaming is handled correctly
 
-          if (chunkValue.includes("https://")) {
+          if (chunkValue.includes("res.cloudinary.com")) {
             setImageReady(true);
             setIsLoadingImage(false);
           }
@@ -900,7 +901,7 @@ export default function Page({ params: { chat_id } }: Props) {
                               : "bg-gray-800 text-gray-300 dark:bg-custom-gradient dark:bg-transparent dark:text-black"
                           }`}
                         >
-                          {message.content.includes("https:") &&
+                          {message.content.includes("res.cloudinary.com") &&
                           message.role === "assistant" ? (
                             <div className="w-[200px] md:w-[340px] h-[200px] md:h-[340px]">
                               <img
@@ -1042,6 +1043,18 @@ export default function Page({ params: { chat_id } }: Props) {
                   <div
                     className={`action-buttons space-x-2 mb-5 ${styles.sugesttext} flex`}
                   >
+                  <button
+                  onClick={() => setInputValue("Picture - ")}
+                  // className="ml-[220px] md:ml-[0px] bg-[rgba(30,42,94,0.4)] text-gray-200 px-[13px] py-[8px] rounded-[42px] text-sm hover:bg-[rgba(30,42,94,1)] hover:text-white transition-colors duration-200 flex items-center space-x-[10px] relative group whitespace-nowrap flex-shrink-0 border border-[#2F76FF] box-border"
+                  className="ml-[220px] dark:text-[#1E2A5E] md:ml-[0px] bg-[rgba(30,42,94,0.4)] dark:bg-[rgba(165,195,255,0.24)] text-gray-200 px-[13px] py-[8px] rounded-[42px] text-sm hover:bg-[rgba(30,42,94,1)] hover:dark:bg-[rgba(165,195,255,0.4)] hover:text-white transition-colors duration-200 flex items-center space-x-[10px] relative group whitespace-nowrap flex-shrink-0 border border-[#2F76FF] box-border"
+                  title="type / to create the Picture"
+                >
+                <ImagePlus className="h-3.5 w-3.5" />
+                  <span>Create Picture</span>
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-2 whitespace-nowrap">
+                    type {"/"} to create the Picture
+                  </div>
+                </button>
                     <button
                       onClick={() => handleActionClick("examples")}
                       // className="ml-[220px] md:ml-[0px] bg-[rgba(30,42,94,0.4)] text-gray-200 px-[13px] py-[8px] rounded-[42px] text-sm hover:bg-[rgba(30,42,94,1)] hover:text-white transition-colors duration-200 flex items-center space-x-[10px] relative group whitespace-nowrap flex-shrink-0 border border-[#2F76FF] box-border"

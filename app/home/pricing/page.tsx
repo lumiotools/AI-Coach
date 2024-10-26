@@ -61,12 +61,12 @@ const tiers: Tier[] = [
     name: "Individual",
     monthlyPrice: {
       original: "$49.95",
-      discounted: "$9.95",
+      discounted: "$19.95",
       strikethrough: true,
     },
     annualPrice: {
       original: "$445",
-      discounted: "$285",
+      discounted: "$179.55",
       strikethrough: true,
     },
     description: "Advanced Multi-Category AI Coaching for Real Estate Agents",
@@ -83,12 +83,12 @@ const tiers: Tier[] = [
     name: "Team",
     monthlyPrice: {
       original: "$99.95",
-      discounted: "$29.95",
+      discounted: "$39.95",
       strikethrough: true,
     },
     annualPrice: {
       original: "$895",
-      discounted: "$445",
+      discounted: "$359.55",
       strikethrough: true,
     },
     description: "Comprehensive AI Coaching Solutions for Real Estate Teams",
