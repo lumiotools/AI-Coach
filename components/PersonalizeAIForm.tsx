@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "@clerk/nextjs";
-import { json } from "stream/consumers";
+import { json, text } from "stream/consumers";
 
 interface PersonalizedAIFormProps {
   isOpen: boolean;
@@ -28,7 +28,7 @@ export default function PersonalizedAIForm({
   const [formData, setFormData] = useState({
     name: "",
     yearsInRealEstate: "",
-    currentRole: "",
+    companyName: "",
     businessGoals: "",
     learningStyle: "",
     personalDevelopment: "",
@@ -181,14 +181,14 @@ export default function PersonalizedAIForm({
                     htmlFor="currentRole"
                     className="text-sm font-medium text-white dark:text-black"
                   >
-                    What is Your Current Role?
+                    What is Your Company Name?
                   </Label>
                   <Input
-                    id="currentRole"
-                    name="currentRole"
-                    value={formData.currentRole}
+                    id="companyName"
+                    name="companyName"
+                    value={formData.companyName}
                     onChange={handleInputChange}
-                    placeholder="Your current role (e.g., agent, broker)"
+                    placeholder="Name of Your Company..."
                     className="w-full flex-1 bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] text-[#f0f0f0] border border-[#2F76FF]  rounded-[8px] focus:outline-none 
                     dark:bg-[#A5C3FF3D] dark:text-black dark:border-[#2F76FF] 
                     placeholder:text-gray-100 dark:placeholder:text-gray-600"
