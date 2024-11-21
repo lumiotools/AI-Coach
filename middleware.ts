@@ -10,6 +10,7 @@ export default authMiddleware({
     "/home/about",
     "/api/(.*)",
     "/stripe",
+    "/property-pitch"
   ],
 });
 
