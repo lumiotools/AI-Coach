@@ -64,6 +64,7 @@ export function Header() {
               </li>
             );
           })}
+          <li className="text-black hover:text-blue-400"><Link href={"/property-pitch"}>Property Pitch</Link></li>
           {isSignedIn ? (
             <>
               <li className="md:hidden">
