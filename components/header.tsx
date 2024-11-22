@@ -10,6 +10,8 @@ import {
   User,
   CreditCard,
   ListTodo,
+  LogIn,
+  BrainCog,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -241,15 +243,18 @@ export default function HeaderBar({
           </Button>
 
           <Link
-            href="/property-pitch"
+            href={pathname!="/property-pitch"?"/property-pitch":"/"}
             className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
               pathname !== "/property-pitch"
                 ? "dark:hover:text-blue-800 dark:text-[#001c4f]"
                 : ""
             } `}
           >
-            <ListTodo className="size-5" />
-            <p>Property Pitch</p>
+            {
+              pathname=="/property-pitch" ? <BrainCog className="size-5"/> :<ListTodo className="size-5" />
+            }
+            
+            <p>{pathname!="/property-pitch"?"Property Pitch":"AgentCoach"}</p>
           </Link>
 
           <DropdownMenu>
@@ -290,7 +295,6 @@ export default function HeaderBar({
           </DropdownMenu>
 
           <Button
-            onClick={() => signOut({ redirectUrl: "/home" })}
             variant="gradient"
             size="sm"
             className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
@@ -299,8 +303,16 @@ export default function HeaderBar({
                 : ""
             } `}
           >
-            <LogOut className="size-5" />
-            <p>Logout</p>
+            {
+              isSignedIn?   <div className="flex gap-x-2" onClick={() => signOut({ redirectUrl: "/home" })}>
+              <LogOut className="size-5" />
+              <p>Logout</p>
+              </div>:<Link href={"/signin"} className="flex gap-x-2">
+              <LogIn className="size-5" />
+              <p>login</p>
+              </Link>
+            }
+         
           </Button>
         </div>
       </header>
