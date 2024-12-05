@@ -641,7 +641,7 @@ export default function Page({ params: { chat_id } }: Props) {
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; color: #333; background-color: #f9f9f9; border-radius: 10px;">
         <h1 style="color: #2c3e50; font-size: 24px; margin-bottom: 20px; text-align: center;">Message from AgentCoach.ai</h1>
         ${formattedContent}
-        <p style="font-size: 12px; color: #777; text-align: center; margin-top: 30px;">© 2024 AgentCoach.ai. All rights reserved.</p>
+        <p style="font-size: 12px; color: #777; text-align: center; margin-top: 30px;">© 2024 AgentPartner.ai All rights reserved.</p>
       </div>
     `;
   };
@@ -1159,7 +1159,7 @@ export default function Page({ params: { chat_id } }: Props) {
                 </form>
 
                 <p className="text-xs text-gray-500 mt-3  text-center pb-2">
-                  © 2024 AgentCoach.ai. All rights reserved.
+                  © 2024 AgentPartner.ai All rights reserved.
                 </p>
               </div>
             </div>

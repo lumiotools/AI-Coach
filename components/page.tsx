@@ -305,7 +305,7 @@ export function Page() {
               </div>
             )}
             <p className="text-xs text-gray-500 mt-4 text-center">
-              © 2024 AgentCoach.ai. All rights reserved.
+              © 2024 AgentPartner.ai All rights reserved.
             </p>
           </div>
         </div>
