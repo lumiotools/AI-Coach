@@ -53,8 +53,8 @@ const tiers: Tier[] = [
       discounted: "$0",
       strikethrough: false,
     },
-    description: "General AI coaching for individuals",
-    features: ["General AI Coach Only", "Usage Limits"],
+    description: "Limited Access to all Features and Functionality",
+    features: ["7 Day Free Trial"],
     plan: "free",
   },
   {
@@ -69,12 +69,12 @@ const tiers: Tier[] = [
       discounted: "$179.55",
       strikethrough: true,
     },
-    description: "Advanced Multi-Category AI Coaching for Real Estate Agents",
+    description: "Advanced Access to all AI Bots and Tools.",
     features: [
-      "Specialized AI Coaches",
       "24/7 Access",
       "No Usage Limits",
       "Single User Access",
+      "Specialized AI Bots",
     ],
     plan: "individual",
     popular: true,
@@ -91,12 +91,12 @@ const tiers: Tier[] = [
       discounted: "$359.55",
       strikethrough: true,
     },
-    description: "Comprehensive AI Coaching Solutions for Real Estate Teams",
+    description: "Advanced Access to all AI Bots and Tools.",
     features: [
-      "Specialized AI Coaches",
       "24/7 Access",
-      "No Usage Limits",
       "Up to 5 Users",
+      "No Usage Limits",
+      "Specialized AI Coaches",
     ],
     plan: "team",
   },
@@ -112,12 +112,12 @@ const tiers: Tier[] = [
       discounted: "Contact us",
       strikethrough: false,
     },
-    description: "Tailored Solutions for Organizations",
+    description: "Custom Tailored Solutions for Brokerages.",
     features: [
-      "Custom Built AI Coaches",
+      "Custom Trained AI Bots",
       "Organizational Branding",
       "API Access & Integration",
-      "Dedicated Account Manager",
+      "24/7 Company Wide Access",
     ],
     plan: "organization",
   },
@@ -249,7 +249,7 @@ export default function PricingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          AgentCoach.ai Pricing
+          AgentPartner.AI Pricing
         </motion.h1>
         <motion.p
           className="text-xl text-center mb-12 text-gray-400 font-light"
@@ -257,7 +257,8 @@ export default function PricingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Choose the perfect plan for your coaching needs
+          Choose the Perfect Plan to Automate and Elevate Your Real Estate
+          Business
         </motion.p>
         <motion.div
           className="text-xl text-center mb-12 text-gray-400 font-light"
