@@ -93,11 +93,11 @@ export default async function Faq() {
     <div className={styles.main}>
       <div className={styles.box}>
         <h1 className="text-3xl font-normal text-white mb-2">
-          Frequently Asked Questions About AgentCoach.ai
+          Frequently Asked Questions About AgentPartner.ai
         </h1>
         <p className="text-lg text-gray-400 text-center w-11/12">
-          Get the Answers You Need About AgentCoach.ai's Powerful Features and
-          Benefits!
+          Get the Answers You Need About AgentPartner.ai&#39;s Powerful Features
+          and Benefits for Real Estate Professionals
         </p>
       </div>
       <div className={styles.faqContainer}>

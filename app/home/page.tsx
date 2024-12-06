@@ -92,11 +92,14 @@ export default async function Home() {
 
       <div className="py-16 px-4 bg-white text-black">
         <h2 className="text-3xl font-bold text-center mb-1">
-          Explore AI Chatbots
+          Discover Our Al Chatbots - Your Real Estate Success Partner
         </h2>
         <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
-          Engage with our AI chatbots to receive expert guidance tailored to
-          your needs in Sales, Negotiation, Marketing, and more.
+          Instantly generate everything you need - from Facebook ads and home
+          buyer or relocation guides, to scripts for calling expired listings
+          and property brochures that impress at every listing appointment. Our
+          Al-powered chatbot "partners" make content creation effortless,
+          delivering top-notch results in seconds.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <ChatbotCard
@@ -106,12 +109,13 @@ export default async function Home() {
           />
           <ChatbotCard
             title="Negotiation Expert"
-            description="Master the art of negotiation with advice on closing deals, overcoming objections, and maximizing value."
+            description="Paste in the text of your negotiation and receive the perfect crafted response - in script or
+document form."
             icon="🤝"
           />
           <ChatbotCard
-            title="Marketing Guru"
-            description="Elevate your marketing game with creative campaigns, branding insights, and social media strategies that attract clients."
+            title="Marketing Partner"
+            description="Elevate your marketing game with consistent, creative content for social media, blogs, articles,guides and more."
             icon="📢"
           />
         </div>
@@ -122,7 +126,7 @@ export default async function Home() {
             icon="🎯"
           />
           <ChatbotCard
-            title="Real Estate Coach"
+            title="Real Estate"
             description="Get comprehensive advice on various aspects of real estate, from legalities to client management, tailored to your needs."
             icon="🏢"
           />
@@ -147,11 +151,10 @@ export default async function Home() {
 
       <div className="py-16 px-4" id="home-page-bottom-section">
         <h2 className="text-3xl font-bold text-center mb-1">
-          Start Transforming Your Real Estate Career Today - For Free!
+          Revolutionize Your Real Estate Operations Today - Free Access!
         </h2>
         <p className="text-center mb-10 max-w-4xl mx-auto text-gray-400">
-          Unlock expert AI-driven advice for real estate, sales, negotiation.
-          Get started for free and elevate your career today!
+          Introducing Your Perfect Business Partner - Unlock Al-Powered Tools and Intelligence to Elevate Your Real Estate Business, Achieve Balance, and Grow Your Wealth.
         </p>
         <div className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-5xl mx-auto">
           <div className="md:w-1/2 border-gray-100 rounded-lg">
@@ -168,18 +171,10 @@ export default async function Home() {
           </div>
           <div className="md:w-1/2 flex flex-col justify-center">
             <p className="mb-4 text-justify text-lg text-gray-400">
-              Get instant access to{" "}
-              <span className="text-white text-lg">AgentCoach.ai</span> and
-              start experiencing expert advice tailored just for you in{" "}
-              <span className="text-white text-lg">
-                {" "}
-                Real Estate, Sales, Negotiation, Marketing, and Motivation.
-              </span>
+              Take the Next Step Towards Success - Start Your Free Trial Today
             </p>
             <p className="mb-4 text-justify text-gray-500">
-              Best of all, you can get started right now, completely free! Take
-              advantage of this opportunity to boost your career and see the
-              difference AI-powered coaching can make.
+              Experience firsthand how AgentPartner.ai can transform your real estate business. Imagine reducing your marketing expenses while increasing your efficiency, allowing you to focus on what you do best - closing deals and building relationships. Don't wait to elevate your business, achieve greater balance, and grow your wealth. Join countless other real estate professionals who have already unlocked their potential with AgentPartner.ai. Start your free trial now and see the difference intelligent technology can make in your career.
             </p>
             <Link
               className="text-center w-[180px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-2 px-3 rounded-md transition duration-300 ease-in-out transform hover:scale-105"

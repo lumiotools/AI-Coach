@@ -17,7 +17,7 @@ export const testimonials = [
     id: 1,
     image: "/images/kathy.png",
     icon: icon12,
-    text: '"The real-time feedback is invaluable. It\'s like having a mentor in my pocket."',
+    text: '"My marketing costs have dropped by 40%, reducing stress and allowing me to invest more in quality client relationships."',
     name: "Kathy Welsh",
     position: "Real Estate Agent",
   },
@@ -25,7 +25,7 @@ export const testimonials = [
     id: 2,
     image: "/images/jeff.png",
     icon: icon12,
-    text: '"AgentCoach.ai has revolutionized my approach to negotiations. I feel more confident than ever!"',
+    text: '"AgentPartner.ai has streamlined my daily tasks, giving me more time to focus on closing deals and growing my business."',
     name: "Jeff Hammerberg",
     position: "Real Estate Agent",
   },
@@ -33,7 +33,7 @@ export const testimonials = [
     id: 3,
     image: "/images/merlin.png",
     icon: icon12,
-    text: '"The interactive scenarios have empowered me to negotiate confidently and overcome objections with ease."',
+    text: '"By scheduling the use of AgentPartner daily, I\'ve minimized my marketing budget and maximized my outreach, bringing consistency into my marketing efforts."',
     name: "Merlin Parker",
     position: "Broker/Owner",
   },
@@ -41,7 +41,7 @@ export const testimonials = [
     id: 4,
     image: "/images/james.png",
     icon: icon12,
-    text: '"I love how convenient it is to access my AI coach 24/7!"',
+    text: '"I love the competitive edge it\'s given me in negotiations, ensuring my clients get top value and I\'m earning top commissions."',
     name: "James Alonso",
     position: "Realtor",
   },
@@ -112,13 +112,15 @@ const TestimonialSlider: React.FC = () => {
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-black">
-            What Users Say <br className="block md:hidden" /> About
-            AgentCoach.ai
+            What Agents Say <br className="block md:hidden" /> About
+            AgentPartner.ai
           </h2>
-          <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
-            Hear from real estate professionals who have{" "}
-            <br className="block md:hidden" /> transformed their careers with
-            our AI Coach.
+          <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
+            Hear How Real Estate Professionals Are
+            <br className="block md:hidden" /> Dramatically Reducing Marketing
+            Expenses and
+            <br className="block md:hidden" /> Streamlining Their Workflows with
+            an Al Partner.
           </p>
         </div>
         <div className="relative">

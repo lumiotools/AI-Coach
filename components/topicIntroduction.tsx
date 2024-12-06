@@ -35,20 +35,23 @@ const TopicIntroduction: React.FC<{
         <Brain className="w-10 h-10 md:w-16 md:h-16 text-blue-400 dark:text-[rgba(0,3,98,1)]" />
       ),
       description:
-        "Your personal AI Coach to transform your business and life!",
+        "Explore the Potential of Artificial Intelligence – You’re in the General Knowledge Section",
       questions: [
         {
           icon: <HelpCircle />,
-          text: "How can AI real estate coaching benefit me?",
+          text: "How can AI help increase my business as a residential realtor?",
         },
-        { icon: <Target />, text: "What areas can you assist me with?" },
+        {
+          icon: <Target />,
+          text: "Can you help me write personalized email campaigns for new leads?",
+        },
         {
           icon: <MessageCircle />,
-          text: "How do I get started with AI real-estate coaching?",
+          text: "Can you help me plan my daily schedule to focus on revenue-generating activities?",
         },
         {
           icon: <FileText />,
-          text: "Can you explain your coaching methodology?",
+          text: "How do I generate blog posts about neighborhoods or market conditions?",
         },
       ],
     },
@@ -188,7 +191,10 @@ const TopicIntroduction: React.FC<{
         </p>
         <p className="text-center text-[#B5B5B5] dark:text-gray-600 font-satoshi text-[16px] font-normal leading-normal tracking-[0.32px]">
           Click a sample question below, type your own, or tap the microphone
-          button to speak your question!
+          button to speak your question! For more specialized tools and tailored
+          results, explore the AI bots on the left. Each bot is designed to
+          focus on a specific area of expertise, giving you powerful tools,
+          solutions and insights for your unique needs.
         </p>
       </div>
 

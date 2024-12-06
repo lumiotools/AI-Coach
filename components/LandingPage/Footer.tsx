@@ -58,8 +58,7 @@ export function Footer() {
             <Image src={logo} alt="AgentCoach Logo" className="h-10 w-auto" />
           </div>
           <p className="text-sm text-gray-500 flex flex-col">
-            <span>Empowering real estate professionals with </span>
-            <span>AI-driven coaching and insights.</span>
+            The Ultimate Al Partner for Growing <br className=""/> Your Real Estate Business.
           </p>
         </div>
 
@@ -87,7 +86,7 @@ export function Footer() {
         </div>
       </div>
       <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-gray-300">
-        <p>© 2024 Agentcoach.ai. All rights reserved.</p>
+        <p>© 2024 AgentPartner.ai All rights reserved.</p>
         <div className="mt-2 space-x-4">
           <a href="/privacy-policy.pdf" className="transition-colors hover:text-blue-400" >Privacy Policy</a>
           <a href="/terms-of-service.pdf" className="transition-colors hover:text-blue-400">Terms of Service</a>
