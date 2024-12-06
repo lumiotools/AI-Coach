@@ -311,13 +311,13 @@ export default function Sidebar({
       >
         <Brain className="h-6 w-6 mr-2" />
         <span className="font-semibold common-text dark:text-[#1E2A5E] ">
-          Your AI Coach
+          Artificial Intelligence
         </span>
       </Button>
 
       <div className="p-4 space-y-[8px]">
         <h3 className="text-sm text-start text-gray-400 mb-2 common-text font-normal dark:text-[#1E2A5E]">
-          Chat With An AI Expert
+          Select Your AI Partner
         </h3>
         {["Real Estate", "Sales", "Marketing", "Negotiation", "Motivation"].map(
           (expert) => (
@@ -341,7 +341,7 @@ export default function Sidebar({
                 <Handshake className="mr-2 h-4 w-4" />
               )}
               {expert === "Motivation" && <Zap className="mr-2 h-4 w-4" />}
-              {expert}
+              AI {expert} Partner
             </Button>
           )
         )}
