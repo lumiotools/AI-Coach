@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useUser, useClerk } from "@clerk/nextjs";
-import logo from "@/components/Assets/logo.png";
+import logo from "@/components/Assets/blue.png";
 import Image from "next/image";
 import { usePathname} from 'next/navigation';
 

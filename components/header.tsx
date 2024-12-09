@@ -18,8 +18,8 @@ import Image from "next/image";
 import styles from "./overall.module.css";
 import sun from "@/components/Assets/sun.svg";
 import moon from "@/components/Assets/MoonStars.svg";
-import lightlogo from "@/components/Assets/light-logo1.png";
-import darklogo from "@/components/Assets/dark-logo3.png";
+import lightlogo from "@/components/Assets/white.png";
+import darklogo from "@/components/Assets/black.png";
 import useTheme from "@/app/hooks/useTheme";
 import { useClerk, useUser, useAuth } from "@clerk/nextjs";
 import PersonalizedAIForm from "./PersonalizeAIForm";
@@ -123,13 +123,13 @@ export default function HeaderBar({
               <Image
                 src={lightlogo}
                 alt="AgentCoach.ai Logo"
-                className={`h-10 md:h-10 w-[160px]`}
+                className={`h-10 md:h-14 w-[210px] object-cover`}
               />
             ) : (
               <Image
                 src={theme === "light" ? lightlogo : darklogo}
                 alt="AgentCoach.ai Logo"
-                className={`h-10 md:h-10 w-[160px]`}
+                className={`h-10 md:h-14 w-[210px] object-cover`}
               />
             )}
           </Link>
