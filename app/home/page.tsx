@@ -115,7 +115,7 @@ document form."
           />
           <ChatbotCard
             title="Marketing Partner"
-            description="Elevate your marketing game with consistent, creative content for social media, blogs, articles,guides and more."
+            description="Elevate your marketing game with consistent, creative content for social media, blogs, articles, guides and more."
             icon="📢"
           />
         </div>
