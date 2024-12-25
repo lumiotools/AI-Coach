@@ -26,7 +26,7 @@ export function Header() {
     <header className="flex justify-between items-center bg-white fixed w-full z-50 px-7 shadow-md">
       <div className="flex items-center">
         <Link href="/home">
-          <Image src={logo} alt="AgentCoach Logo" className="w-auto h-16" />
+          <Image src={logo} alt="AgentPartner Logo" className="w-auto h-16" />
         </Link>
       </div>
       <button

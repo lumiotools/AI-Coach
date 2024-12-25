@@ -34,14 +34,14 @@ export async function POST(req: NextRequest) {
         res = await resend.emails.send({
           from: "aiagentcoach@teamlumio.ai",
           to: [userEmail],
-          subject: "Shared Message from AgentCoach.ai",
+          subject: "Shared Message from AgentPartner.ai",
           react: RenderBrochureContentEmail({ brochureContent: content }), // Now we're sending the formatted HTML content
         });
       } else {
         res = await resend.emails.send({
           from: "aiagentcoach@teamlumio.ai",
           to: [userEmail],
-          subject: "Shared Message from AgentCoach.ai",
+          subject: "Shared Message from AgentPartner.ai",
           html: content, // Now we're sending the formatted HTML content
         });
       }
