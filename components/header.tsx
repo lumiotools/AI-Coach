@@ -122,13 +122,13 @@ export default function HeaderBar({
             {pathname === "/property-pitch" ? (
               <Image
                 src={lightlogo}
-                alt="AgentCoach.ai Logo"
+                alt="AgentPartner.ai Logo"
                 className={`h-10 md:h-14 w-[210px] object-cover`}
               />
             ) : (
               <Image
                 src={theme === "light" ? lightlogo : darklogo}
-                alt="AgentCoach.ai Logo"
+                alt="AgentPartner.ai Logo"
                 className={`h-10 md:h-14 w-[210px] object-cover`}
               />
             )}
@@ -254,7 +254,7 @@ export default function HeaderBar({
               pathname=="/property-pitch" ? <BrainCog className="size-5"/> :<ListTodo className="size-5" />
             }
             
-            <p>{pathname!="/property-pitch"?"Property Pitch":"AgentCoach"}</p>
+            <p>{pathname!="/property-pitch"?"Property Pitch":"AgentPartner"}</p>
           </Link>
 
           <DropdownMenu>

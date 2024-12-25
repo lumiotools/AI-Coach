@@ -25,7 +25,7 @@ export default function IntroductionModal({ isOpen, onClose }: IntroductionModal
         backdropFilter: 'blur(10px)',
       }}>
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-white">Welcome to AgentCoach.AI!</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-white">Welcome to AgentPartner.AI!</DialogTitle>
         </DialogHeader>
         <div className="mt-4 space-y-3 text-white">
           <p className="text-justify">

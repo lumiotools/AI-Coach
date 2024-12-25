@@ -365,14 +365,14 @@ export default function PricingPage() {
                 functions&quot;
               </h3>
               <p className="text-center text-gray-300 mb-6 lg:w-1/2 mx-auto">
-                AgentCoach.AI has completely transformed my real estate business
+                AgentPartner.AI has completely transformed my real estate business
                 reigniting my love and passion for the business again! The
                 AI-powered tools instantly provide everything from marketing
                 materials to client communication, saving me hours of work each
                 week. The personalized ai coaching bots have sharpened my sales
                 and negotiation skills, and the automated reports make it easy
                 to provide clients with up-to-date market insights, personalized
-                new buyer guides, sellers CMA, etc. Since using AgentCoach.AI,
+                new buyer guides, sellers CMA, etc. Since using AgentPartner.AI,
                 I’ve seen a noticeable boost in both my productivity and income,
                 with more free time. I highly recommend it to any real estate
                 professional looking to take their business and life to the next

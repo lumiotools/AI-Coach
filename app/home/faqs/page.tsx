@@ -12,15 +12,15 @@ interface FaqItem {
 
 const defaultFaqs: FaqItem[] = [
   {
-    question: "What is AgentCoach.ai?",
+    question: "What is AgentPartner.ai?",
     answer:
-      "AgentCoach.ai is an AI-powered platform specifically designed for real estate agents. By providing personalized advice, strategies, and insights based on your prompts, it helps you improve your skills and communication, create marketing materials and reports, and effectively grow your business.",
+      "AgentPartner.ai is an AI-powered platform specifically designed for real estate agents. By providing personalized advice, strategies, and insights based on your prompts, it helps you improve your skills and communication, create marketing materials and reports, and effectively grow your business.",
     _id: "66fa7b5eaec6a9c1269bc133",
   },
   {
-    question: "How does AgentCoach.ai work?",
+    question: "How does AgentPartner.ai work?",
     answer:
-      "AgentCoach.ai delivers expert sales and negotiation tips with precise responses to your specific queries, providing you with tailored objection-handling tactics and strategies. Elevate your marketing game with instant custom-written articles, email campaigns, and eye-catching ads for Facebook and Instagram. Create compelling branding, taglines and more - your imagination is the only limit! Get specialized advice on any real estate, sales, marketing, negotiation or motivation topic, all backed by the latest in AI technology. With AgentCoach.ai, you're never alone in your real estate journey!",
+      "AgentPartner.ai delivers expert sales and negotiation tips with precise responses to your specific queries, providing you with tailored objection-handling tactics and strategies. Elevate your marketing game with instant custom-written articles, email campaigns, and eye-catching ads for Facebook and Instagram. Create compelling branding, taglines and more - your imagination is the only limit! Get specialized advice on any real estate, sales, marketing, negotiation or motivation topic, all backed by the latest in AI technology. With AgentPartner.ai, you're never alone in your real estate journey!",
     _id: "66fa7b75aec6a9c1269bc138",
   },
   {
@@ -30,13 +30,13 @@ const defaultFaqs: FaqItem[] = [
     _id: "66fa7b9caec6a9c1269bc148",
   },
   {
-    question: "Can I access AgentCoach.ai on my mobile device?",
+    question: "Can I access AgentPartner.ai on my mobile device?",
     answer:
-      "Yes, AgentCoach.ai is fully responsive and can be accessed on any device with an internet connection, including smartphones and tablets.",
+      "Yes, AgentPartner.ai is fully responsive and can be accessed on any device with an internet connection, including smartphones and tablets.",
     _id: "66fa7b86aec6a9c1269bc13f",
   },
   {
-    question: "Is my data secure with AgentCoach.ai?",
+    question: "Is my data secure with AgentPartner.ai?",
     answer:
       "We take data security very seriously. All your information is encrypted and stored securely. We adhere to strict privacy policies and never share your personal data with third parties without your explicit consent.",
     _id: "66fa7bb0aec6a9c1269bc153",
@@ -44,7 +44,7 @@ const defaultFaqs: FaqItem[] = [
   {
     question: "Do you offer a free trial?",
     answer:
-      "Yes, we offer a 7-day free trial for new users! This gives you the chance to explore all the features of AgentCoach.ai and discover how it can enhance your real estate career before committing to one of our affordable paid plans.",
+      "Yes, we offer a 7-day free trial for new users! This gives you the chance to explore all the features of AgentPartner.ai and discover how it can enhance your real estate career before committing to one of our affordable paid plans.",
     _id: "66fc337bb2d230a0d040c2b0",
   },
   {

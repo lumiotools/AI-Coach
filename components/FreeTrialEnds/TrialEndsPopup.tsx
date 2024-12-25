@@ -85,14 +85,14 @@ export default function TrialEndPopup({
             </div>
             <h2 className="text-xl font-bold mb-4">
               {isTrialEnded
-                ? "Unlock Full Access to AgentCoach.AI!"
+                ? "Unlock Full Access to AgentPartner.AI!"
                 : `Your Free trial ends in ${remainingDays} day${
                     remainingDays !== 1 ? "s" : ""
                   }`}
             </h2>
             <p className="text-gray-400 mb-4 text-base">
               {isTrialEnded
-                ? "We hope you've enjoyed exploring AgentCoach.AI during your 7-day trial! Your free access has ended, but your journey doesn't have to stop here. Ready to take your business to the next level? Upgrade today and keep supercharging your real estate success!"
+                ? "We hope you've enjoyed exploring AgentPartner.AI during your 7-day trial! Your free access has ended, but your journey doesn't have to stop here. Ready to take your business to the next level? Upgrade today and keep supercharging your real estate success!"
                 : "Upgrade now to continue enjoying our premium features."}
             </p>
           </CardContent>
