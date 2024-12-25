@@ -32,7 +32,7 @@ export default function IntroductionModal({ isOpen, onClose }: IntroductionModal
             Next, you’ll have the option to complete a brief questionnaire, which helps our bots gain insights into your current real estate business and goals, ensuring you receive the most personalized responses.
           </p>
           <p className="text-justify">
-            Once you’ve submitted the questionnaire, you’ll enter our “General Coach” area. From there, you can select one of our pre-written questions or simply type or speak any general knowledge question or request in the search box. Our General AI will provide you with personalized advice right away!
+            Once you’ve submitted the questionnaire, you’ll enter our “General Partner area. From there, you can select one of our pre-written questions or simply type or speak any general knowledge question or request in the search box. Our General AI will provide you with personalized advice right away!
           </p>
           <p className="text-justify">
             If you’re looking for more specialized help, explore the other sections: Real Estate, Sales, Marketing, Negotiation or Motivation, tailored to your needs.
