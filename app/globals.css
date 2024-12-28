@@ -123,3 +123,7 @@ body {
 /* document.addEventListener('DOMContentLoaded', function() {
   document.documentElement.classList.remove('no-transition');
 }); */
+
+#password-field::placeholder{
+  content: "Create password";
+}
