@@ -159,7 +159,7 @@ document form."
         <div className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-5xl mx-auto">
           <div className="md:w-1/2 border-gray-100 rounded-lg">
             <video
-              className="w-full object-cover h-auto"
+              className="w-full object-contain h-auto"
               preload="auto"
               autoPlay
               loop
