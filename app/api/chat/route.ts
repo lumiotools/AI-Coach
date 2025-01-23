@@ -114,12 +114,12 @@ async function determineModel(question: string): Promise<string> {
       .toLowerCase();
 
     if (answer.includes("requires real-time data")) {
-      return "llama-3.1-sonar-small-128k-online";
+      return "sonar-pro";
     } else if (answer.includes("agentpartner specific")) {
-      return "llama-3.1-8b-instruct";
+      return "sonar";
     } else {
-      // Default to 'llama-3.1-8b-instruct' for general knowledge and AgentPartner specific queries
-      return "llama-3.1-8b-instruct";
+      // Default to 'sonar' for general knowledge and AgentPartner specific queries
+      return "sonar";
     }
   } catch (error) {
     console.error("Error in determineModel:", error);
@@ -128,8 +128,8 @@ async function determineModel(question: string): Promise<string> {
       console.error("Response data:", error.response.data);
     }
 
-    // Default to 'llama-3.1-8b-instruct' in case of errorddd
-    return "llama-3.1-8b-instruct";
+    // Default to 'sonar' in case of errorddd
+    return "sonar";
   }
 }
 
