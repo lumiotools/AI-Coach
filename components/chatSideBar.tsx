@@ -279,7 +279,7 @@ export default function Sidebar({
       setActiveExpert(expert);
       handleExpertClick(expert);
     } else {
-      setShowPopup(true);
+      // setShowPopup(true);
     }
   };
 
