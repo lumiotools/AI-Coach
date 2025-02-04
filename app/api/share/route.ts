@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { Resend } from "resend";
 import { clerkClient } from "@clerk/nextjs/server";
-import { RenderBrochureContentEmail } from "@/app/property-pitch/RenderBrochureContentEmail";
+import { RenderBrochureContentEmail } from "@/components/RenderBrochureContentEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
