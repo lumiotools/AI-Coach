@@ -97,12 +97,12 @@ export default function TrialEndPopup({
             </p>
           </CardContent>
           <CardFooter className="flex justify-center space-x-4 p-6">
-            <Link href="/home/pricing">
+            <Link href="/home">
               <Button variant="outline" className="rounded-md">
                 GET FULL ACCESS
               </Button>
             </Link>
-            {/* <a
+            <a
               href="https://cal.com/lumiopartners/30min?date=2024-10-07&month=2024-10"
               target="_blank"
               rel="noopener noreferrer"
@@ -110,7 +110,7 @@ export default function TrialEndPopup({
               <Button variant="outline" className="rounded-md">
                 BOOK A DEMO
               </Button>
-            </a> */}
+            </a>
           </CardFooter>
         </Card>
       </div>

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useUser, useClerk } from "@clerk/nextjs";
 import logo from "@/components/Assets/blue.png";
 import Image from "next/image";
-import { usePathname} from 'next/navigation';
+import { usePathname } from "next/navigation";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,25 +37,29 @@ export function Header() {
         {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
       <nav
-        className={`${isMenuOpen ? "block" : "hidden"
-          } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-50 items-center`}
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } md:block absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-50 items-center`}
       >
         <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 p-4 md:p-0 md:justify-center">
-          {["home", "about", "pricing", "faqs", "blog"].map((page) => {
+          {["home", "about", "faqs", "blog"].map((page) => {
             const href =
               page === "home"
                 ? "/home"
                 : page === "blog"
-                  ? "https://blog.agentcoach.ai/"
-                  : `/home/${page}`;
+                ? "https://blog.agentcoach.ai/"
+                : `/home/${page}`;
             const isActive = pathname === href;
 
             return (
               <li key={page}>
                 <Link
                   href={href}
-                  className={`w-full text-left ${isActive ? "text-blue-500" : "text-black hover:text-blue-400"
-                    }`}
+                  className={`w-full text-left ${
+                    isActive
+                      ? "text-blue-500"
+                      : "text-black hover:text-blue-400"
+                  }`}
                 >
                   {page === "faqs"
                     ? "FAQ's"
@@ -64,7 +68,6 @@ export function Header() {
               </li>
             );
           })}
-          <li className="text-black hover:text-blue-400"><Link href={"/property-pitch"}>Property Pitch</Link></li>
           {isSignedIn ? (
             <>
               <li className="md:hidden">
@@ -74,13 +77,6 @@ export function Header() {
                     className="text-black hover:text-blue-500 w-full text-left"
                   >
                     Go to Chatbot
-                  </Button>
-                </Link>
-              </li>
-              <li className="md:hidden">
-                <Link href="/home#home-page-bottom-section">
-                  <Button className="text-blue-500 w-full rounded-md border-blue-500 border-[1px] bg-white hover:bg-blue-100">
-                    See Demo
                   </Button>
                 </Link>
               </li>
@@ -104,13 +100,6 @@ export function Header() {
                   </Button>
                 </Link>
               </li>
-              <li className="md:hidden">
-                <Link href="/home#home-page-bottom-section">
-                  <Button  variant="outline" className="text-blue-500 w-full rounded-md border-blue-500 border-[1px] bg-white">
-                    See Demo
-                  </Button>
-                </Link>
-              </li>
             </>
           )}
         </ul>
@@ -122,9 +111,6 @@ export function Header() {
               <Button className="text-white bg-blue-500 hover:bg-blue-600 rounded-md w-full text-left">
                 Go to Chatbot
               </Button>
-            </Link>
-            <Link href="/home#home-page-bottom-section">
-              <Button className="text-blue-500 w-full rounded-md border-blue-500 border-[1px] bg-white hover:bg-blue-100">See Demo</Button>
             </Link>
           </>
         ) : (
@@ -140,11 +126,6 @@ export function Header() {
             <Link href="/signup">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md">
                 Sign Up
-              </Button>
-            </Link>
-            <Link href="/home#home-page-bottom-section">
-              <Button className="text-blue-500 w-full rounded-md border-blue-500 border-[1px] bg-white hover:bg-blue-100">
-                See Demo
               </Button>
             </Link>
           </>

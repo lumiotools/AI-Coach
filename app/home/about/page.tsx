@@ -7,10 +7,10 @@ export default function AboutUs() {
     <div className="bg-white text-[#001D5B] py-16 px-4">
       <div className="max-w-6xl mx-auto py-20">
         <h1 className="text-4xl font-bold text-center mb-12">
-          About AgentPartner.ai
+          About AI Coach
         </h1>
         <p className="text-lg mb-12 text-justify">
-          Welcome to AgentPartner.ai, where cutting-edge AI technology meets
+          Welcome to AI Coach, where cutting-edge AI technology meets
           decades of real estate expertise to deliver powerful, AI-driven
           solutions tailored for today's real estate professionals. Our platform
           is the result of extensive industry knowledge and a passion for
@@ -21,7 +21,7 @@ export default function AboutUs() {
           <div className="md:w-[400px] flex-shrink-0">
             <Image
               src={jeff}
-              alt="AgentPartner.ai Team"
+              alt="AI Coach Team"
               className="rounded-lg shadow-lg w-full h-full object-cover"
             />
           </div>
@@ -39,12 +39,12 @@ export default function AboutUs() {
               thousands of agents with home buyers and sellers, a venture he
               successfully sold for several million dollars in 2024. His legacy
               of excellence and innovative spirit continues through
-              AgentPartner.ai.
+              AI Coach.
             </p>
           </div>
         </div>
         <p className="text-lg mb-6 text-justify">
-          Our mission at AgentPartner.ai is to empower agents at every level
+          Our mission at AI Coach is to empower agents at every level
           with AI-powered tools that streamline real estate sales, enhance and
           automate marketing efforts, improve client communication, and support
           business and personal growth. By integrating artificial intelligence
@@ -52,7 +52,7 @@ export default function AboutUs() {
           business building expenses, make data-driven decisions, and focus on
           building meaningful client relationships and closing more deals.
         </p>
-        <h2 className="text-2xl font-bold mb-4">Why Choose AgentPartner.ai?</h2>
+        <h2 className="text-2xl font-bold mb-4">Why Choose AI Coach?</h2>
         <ul className="list-disc list-inside mb-6 text-lg">
           <li>
             <span className="font-bold">Cost Efficiency:</span> Dramatically
@@ -87,19 +87,19 @@ export default function AboutUs() {
         </ul>
         <h2 className="text-2xl font-bold mb-4">Built by Agents, for Agents</h2>
         <p className="text-lg mb-6 text-justify">
-          We take pride in offering AgentPartner.ai as a comprehensive resource,
+          We take pride in offering AI Coach as a comprehensive resource,
           designed by agents for agents. Our platform adapts to the unique needs
           of real estate professionals, providing the flexibility and
           functionality required to navigate the ever-evolving market with
           confidence and ease. Whether you're just starting out or looking to
-          elevate your established business, AgentPartner.ai is here to support
+          elevate your established business, AI Coach is here to support
           your journey.
         </p>
         <h2 className="text-2xl font-bold mb-4">
           Join Us in Redefining Success in Real Estate
         </h2>
         <p className="text-lg text-justify">
-          Embrace the future of real estate with AgentPartner.ai by your side.
+          Embrace the future of real estate with AI Coach by your side.
           Our AI-powered tools and intelligent solutions are here to help you
           streamline operations, reduce costs, grow your wealth and expand your
           freedom. Experience the transformative impact of having a dedicated AI

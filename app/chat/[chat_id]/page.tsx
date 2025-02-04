@@ -639,9 +639,9 @@ export default function Page({ params: { chat_id } }: Props) {
     // Wrap the content in a div with improved styling
     return `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; color: #333; background-color: #f9f9f9; border-radius: 10px;">
-        <h1 style="color: #2c3e50; font-size: 24px; margin-bottom: 20px; text-align: center;">Message from AgentPartner.ai</h1>
+        <h1 style="color: #2c3e50; font-size: 24px; margin-bottom: 20px; text-align: center;">Message from AI Coach</h1>
         ${formattedContent}
-        <p style="font-size: 12px; color: #777; text-align: center; margin-top: 30px;">© 2024 AgentPartner.ai All rights reserved.</p>
+        <p style="font-size: 12px; color: #777; text-align: center; margin-top: 30px;">© 2024 AI Coach All rights reserved.</p>
       </div>
     `;
   };
@@ -1043,18 +1043,18 @@ export default function Page({ params: { chat_id } }: Props) {
                   <div
                     className={`action-buttons space-x-2 mb-5 ${styles.sugesttext} flex`}
                   >
-                  <button
-                  onClick={() => setInputValue("Picture - ")}
-                  // className="ml-[220px] md:ml-[0px] bg-[rgba(30,42,94,0.4)] text-gray-200 px-[13px] py-[8px] rounded-[42px] text-sm hover:bg-[rgba(30,42,94,1)] hover:text-white transition-colors duration-200 flex items-center space-x-[10px] relative group whitespace-nowrap flex-shrink-0 border border-[#2F76FF] box-border"
-                  className="ml-[220px] dark:text-[#1E2A5E] md:ml-[0px] bg-[rgba(30,42,94,0.4)] dark:bg-[rgba(165,195,255,0.24)] text-gray-200 px-[13px] py-[8px] rounded-[42px] text-sm hover:bg-[rgba(30,42,94,1)] hover:dark:bg-[rgba(165,195,255,0.4)] hover:text-white transition-colors duration-200 flex items-center space-x-[10px] relative group whitespace-nowrap flex-shrink-0 border border-[#2F76FF] box-border"
-                  title="type / to create the Picture"
-                >
-                <ImagePlus className="h-3.5 w-3.5" />
-                  <span>Create Picture</span>
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-2 whitespace-nowrap">
-                    type {"/"} to create the Picture
-                  </div>
-                </button>
+                    <button
+                      onClick={() => setInputValue("Picture - ")}
+                      // className="ml-[220px] md:ml-[0px] bg-[rgba(30,42,94,0.4)] text-gray-200 px-[13px] py-[8px] rounded-[42px] text-sm hover:bg-[rgba(30,42,94,1)] hover:text-white transition-colors duration-200 flex items-center space-x-[10px] relative group whitespace-nowrap flex-shrink-0 border border-[#2F76FF] box-border"
+                      className="ml-[220px] dark:text-[#1E2A5E] md:ml-[0px] bg-[rgba(30,42,94,0.4)] dark:bg-[rgba(165,195,255,0.24)] text-gray-200 px-[13px] py-[8px] rounded-[42px] text-sm hover:bg-[rgba(30,42,94,1)] hover:dark:bg-[rgba(165,195,255,0.4)] hover:text-white transition-colors duration-200 flex items-center space-x-[10px] relative group whitespace-nowrap flex-shrink-0 border border-[#2F76FF] box-border"
+                      title="type / to create the Picture"
+                    >
+                      <ImagePlus className="h-3.5 w-3.5" />
+                      <span>Create Picture</span>
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 mb-2 whitespace-nowrap">
+                        type {"/"} to create the Picture
+                      </div>
+                    </button>
                     <button
                       onClick={() => handleActionClick("examples")}
                       // className="ml-[220px] md:ml-[0px] bg-[rgba(30,42,94,0.4)] text-gray-200 px-[13px] py-[8px] rounded-[42px] text-sm hover:bg-[rgba(30,42,94,1)] hover:text-white transition-colors duration-200 flex items-center space-x-[10px] relative group whitespace-nowrap flex-shrink-0 border border-[#2F76FF] box-border"
@@ -1159,7 +1159,7 @@ export default function Page({ params: { chat_id } }: Props) {
                 </form>
 
                 <p className="text-xs text-gray-500 mt-3  text-center pb-2">
-                  © 2024 AgentPartner.ai All rights reserved.
+                  © 2024 AI Coach All rights reserved.
                 </p>
               </div>
             </div>
@@ -1174,7 +1174,7 @@ export default function Page({ params: { chat_id } }: Props) {
           setShowUnlockPopup(false);
         }}
         onUnlock={() => {
-          router.push("/home/pricing");
+          router.push("/home");
         }}
       />
     </div>

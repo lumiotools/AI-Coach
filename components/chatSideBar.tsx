@@ -288,7 +288,7 @@ export default function Sidebar({
   };
 
   const handleUnlock = () => {
-    router.push("/home/pricing");
+    router.push("/home");
   };
 
   return (

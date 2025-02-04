@@ -122,13 +122,13 @@ export default function HeaderBar({
             {pathname === "/property-pitch" ? (
               <Image
                 src={lightlogo}
-                alt="AgentPartner.ai Logo"
+                alt="AI Coach Logo"
                 className={`h-10 md:h-14 w-[210px] object-cover`}
               />
             ) : (
               <Image
                 src={theme === "light" ? lightlogo : darklogo}
-                alt="AgentPartner.ai Logo"
+                alt="AI Coach Logo"
                 className={`h-10 md:h-14 w-[210px] object-cover`}
               />
             )}
@@ -242,7 +242,7 @@ export default function HeaderBar({
             <p>Personalize AI</p>
           </Button>
 
-          <Link
+          {/* <Link
             href={pathname!="/property-pitch"?"/property-pitch":"/"}
             className={`hidden md:flex  text-sm space-x-2 hover:text-gray-400  ${
               pathname !== "/property-pitch"
@@ -255,7 +255,7 @@ export default function HeaderBar({
             }
             
             <p>{pathname!="/property-pitch"?"Property Pitch":"AgentPartner"}</p>
-          </Link>
+          </Link> */}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -105,7 +105,7 @@ export default function PromptCards() {
   return (
     <div className="bg-black py-16 px-4">
       <h2 className="text-3xl font-bold text-center mb-1 text-white">
-        See How AgentPartner.ai Empowers Your Business
+        See How AI Coach Empowers Your Business
       </h2>
       <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
         Explore the sample prompts below to discover actionable questions and

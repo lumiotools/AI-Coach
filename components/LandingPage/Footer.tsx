@@ -21,7 +21,6 @@ const quickLinks = [
   { href: "/", label: "Home" },
   { href: "/home/about", label: "About" },
   { href: "/home/faqs", label: "FAQ's" },
-  { href: "/home/pricing", label: "Pricing" },
   { href: "https://blog.agentcoach.ai/", label: "Blog" },
 ];
 
@@ -86,7 +85,7 @@ export function Footer() {
         </div>
       </div>
       <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-gray-300">
-        <p>© 2024 AgentPartner.ai All rights reserved.</p>
+        <p>© 2024 AI Coach All rights reserved.</p>
         <div className="mt-2 space-x-4">
           <a href="/privacy-policy.pdf" className="transition-colors hover:text-blue-400" >Privacy Policy</a>
           <a href="/terms-of-service.pdf" className="transition-colors hover:text-blue-400">Terms of Service</a>

@@ -25,7 +25,7 @@ export const testimonials = [
     id: 2,
     image: "/images/jeff.png",
     icon: icon12,
-    text: '"AgentPartner.ai has streamlined my daily tasks, giving me more time to focus on closing deals and growing my business."',
+    text: '"AI Coach has streamlined my daily tasks, giving me more time to focus on closing deals and growing my business."',
     name: "Jeff Hammerberg",
     position: "Real Estate Agent",
   },
@@ -113,7 +113,7 @@ const TestimonialSlider: React.FC = () => {
         <div className="mb-12 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-black">
             What Agents Say <br className="block md:hidden" /> About
-            AgentPartner.ai
+            AI Coach
           </h2>
           <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
             Hear How Real Estate Professionals Are

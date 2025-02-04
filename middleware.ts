@@ -5,7 +5,7 @@ export default authMiddleware({
     "/",
     "/home",
     "/home/faqs",
-    "/home/pricing",
+    "/home",
     "/home/blog",
     "/home/about",
     "/api/(.*)",

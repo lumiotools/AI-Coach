@@ -143,46 +143,9 @@ document form."
 
       <PromptCards />
 
-      <div className="bg-white py-16 px-4">
+      <div className="bg-white pt-16 px-4">
         <div className="flex justify-center items-center overflow-hidden">
           <TestimonialSlider />
-        </div>
-      </div>
-
-      <div className="py-16 px-4" id="home-page-bottom-section">
-        <h2 className="text-3xl font-bold text-center mb-1">
-          Revolutionize Your Real Estate Operations Today - Free Access!
-        </h2>
-        <p className="text-center mb-10 max-w-4xl mx-auto text-gray-400">
-          Introducing Your Perfect Business Partner - Unlock Al-Powered Tools and Intelligence to Elevate Your Real Estate Business, Achieve Balance, and Grow Your Wealth.
-        </p>
-        <div className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-5xl mx-auto">
-          <div className="md:w-1/2 border-gray-100 rounded-lg">
-            <video
-              className="w-full object-contain h-auto"
-              preload="auto"
-              autoPlay
-              loop
-              muted
-              controls
-            >
-              <source src="/video/demo.mp4" type="video/mp4" />
-            </video>
-          </div>
-          <div className="md:w-1/2 flex flex-col justify-center">
-            <p className="mb-4 text-justify text-lg text-gray-400">
-              Take the Next Step Towards Success - Start Your Free Trial Today
-            </p>
-            <p className="mb-4 text-justify text-gray-500">
-              Experience firsthand how AgentPartner.ai can transform your real estate business. Imagine reducing your marketing expenses while increasing your efficiency, allowing you to focus on what you do best - closing deals and building relationships. Don't wait to elevate your business, achieve greater balance, and grow your wealth. Join countless other real estate professionals who have already unlocked their potential with AgentPartner.ai. Start your free trial now and see the difference intelligent technology can make in your career.
-            </p>
-            <Link
-              className="text-center w-[180px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm py-2 px-3 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
-              href="/signup"
-            >
-              SIGN UP FOR FREE
-            </Link>
-          </div>
         </div>
       </div>
     </div>
@@ -197,7 +160,7 @@ type ChatbotCardProps = {
 
 function ChatbotCard({ title, description, icon }: ChatbotCardProps) {
   return (
-    <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white p-6 rounded-lg flex flex-col items-center justify-center cursor-pointer">
+    <div className="bg-gradient-to-r from-blue-800 to-blue-600 text-white px-6 pt-6 rounded-lg flex flex-col items-center justify-center cursor-pointer">
       <div className="text-4xl mb-4 bg-blue-600 w-16 h-16 flex items-center justify-center rounded-full">
         {icon}
       </div>
