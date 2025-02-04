@@ -15,12 +15,13 @@ export async function POST() {
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     const trialDuration = 7;
 
-    const remainingDays = Math.max(trialDuration - diffDays, 0);
+    // const remainingDays = Math.max(trialDuration - diffDays, 0);
+    const remainingDays=100;
 
     const trialStatus = {
       remainingDays,
-      trialEnded: remainingDays === 0,
-      showPopup: remainingDays === 0,
+      trialEnded: false,
+      showPopup: false,
     };
 
     // Check if the user has a paid plan
