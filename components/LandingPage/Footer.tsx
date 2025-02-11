@@ -54,7 +54,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto gap-12 flex flex-col md:flex-row justify-between">
         <div className="flex space-y-4 flex-col">
           <div className="w-full">
-            <Image src={logo} alt="AgentPartner Logo" className="h-14 w-auto" />
+            <Image src={logo} alt="AI Coach Logo" className="h-14 w-auto invisible" />
           </div>
           <p className="text-sm text-gray-500 flex flex-col">
             The Ultimate Al Partner for Growing <br className=""/> Your Real Estate Business.

@@ -123,13 +123,13 @@ export default function HeaderBar({
               <Image
                 src={lightlogo}
                 alt="AI Coach Logo"
-                className={`h-10 md:h-14 w-[210px] object-cover`}
+                className={`h-10 md:h-14 w-[210px] object-cover invisible`}
               />
             ) : (
               <Image
                 src={theme === "light" ? lightlogo : darklogo}
                 alt="AI Coach Logo"
-                className={`h-10 md:h-14 w-[210px] object-cover`}
+                className={`h-10 md:h-14 w-[210px] object-cover invisible`}
               />
             )}
           </Link>
